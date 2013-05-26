@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.matoski.adbm"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="17" />
+
+    <!-- SuperSU access -->
+    <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
+
+    <!-- For when we start the phone -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- To be able to access the Internet, useful for Ads -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- To be able to control the network state and check the WiFi state -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+
+        <!-- Main activity the main screen -->
+        <activity
+            android:name="com.matoski.adbm.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Execute on boot complete -->
+        <receiver android:name="com.matoski.adbm.BootCompleteReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.HOME" />
+            </intent-filter>
+        </receiver>
+
+        <!-- ADB Manager service -->
+        <service
+            android:name="com.matoski.adbm.service.ManagerService"
+            android:description="@string/service_description"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/service_name" />
+
+        <!-- Starts the ADB Manager Service -->
+        <receiver android:name="MyStartServiceReceiver" />
+    </application>
+
+</manifest>

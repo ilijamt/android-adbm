@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ADB Manager</string>
+    <string name="action_settings">Settings</string>
+    
+    <!-- Service -->
+    <string name="service_name">ADB Manager Service</string>
+    <string name="service_description">Used to start/stop the ADB process, and present a notification on the notification bar about the state of ADB.</string>
+
+</resources>
