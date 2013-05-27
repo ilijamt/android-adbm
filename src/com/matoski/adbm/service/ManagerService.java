@@ -1,13 +1,15 @@
 package com.matoski.adbm.service;
 
-import com.matoski.adbm.R;
-
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.matoski.adbm.R;
 
 public class ManagerService extends Service {
 
@@ -15,11 +17,16 @@ public class ManagerService extends Service {
 	private final IBinder mBinder = new ServiceBinder();
     private int NOTIFICATION = R.string.service_name;
 
+    private SharedPreferences preferences;
+
 	
 	@Override
 	public void onCreate() {
 		super.onCreate();
         this.mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);		
+        this.preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        
+        
         this.showNotification();
 	}
 	

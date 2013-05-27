@@ -8,4 +8,11 @@
     <string name="service_name">ADB Manager Service</string>
     <string name="service_description">Used to start/stop the ADB process, and present a notification on the notification bar about the state of ADB.</string>
 
+    <!-- Preferences -->
+    
+    <!-- Generic -->
+    <string name="service_general_settings">Service</string>
+    <string name="service_general_start_on_boot">Start on boot</string>
+    <string name="service_general_start_on_boot_enabled">+</string>
+    <string name="service_general_start_on_boot_disabled">Start on boot</string>
 </resources>

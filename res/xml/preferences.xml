@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory
+        android:orderingFromXml="true"
+        android:title="@string/service_general_settings" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="start_on_boot"
+            android:summaryOff="@string/service_general_start_on_boot_disabled"
+            android:summaryOn="@string/service_general_start_on_boot_enabled"
+            android:title="@string/service_general_start_on_boot" />
+
+        <ListPreference
+            android:defaultValue="30"
+            android:dependency="start_on_boot"
+            android:entries="@array/time_delay_entires"
+            android:entryValues="@array/time_delay_values"
+            android:key="start_delay" />
+        <ListPreference
+            android:defaultValue="30"
+            android:dependency="start_on_boot"
+            android:entries="@array/time_delay_entires"
+            android:entryValues="@array/time_delay_values"
+            android:key="alarm_timeout_interval" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/action_settings">
+    </PreferenceCategory>
+
+</PreferenceScreen>
