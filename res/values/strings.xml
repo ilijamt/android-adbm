@@ -2,17 +2,35 @@
 <resources>
 
     <string name="app_name">ADB Manager</string>
+    <string name="app_settings">Settings</string>
     <string name="action_settings">Settings</string>
-    
+
     <!-- Service -->
     <string name="service_name">ADB Manager Service</string>
     <string name="service_description">Used to start/stop the ADB process, and present a notification on the notification bar about the state of ADB.</string>
 
     <!-- Preferences -->
-    
+    <string name="settings_reset">Reset settings</string>
+    <string name="settings_reset_summary">This will reset all the values to the default values for the application.</string>
+    <string name="settings_reset_button_dialog_title">Reset</string>
+    <string name="settings_reset_button_dialog_message">This will reset the application to it\'s default values, this action is IRREVERSIBLE.</string>
+    <string name="service_general">General</string>
+
     <!-- Generic -->
     <string name="service_general_settings">Service</string>
     <string name="service_general_start_on_boot">Start on boot</string>
-    <string name="service_general_start_on_boot_enabled">+</string>
-    <string name="service_general_start_on_boot_disabled">Start on boot</string>
+    <string name="service_general_start_on_boot_enabled">Will start the service on startup of the device.</string>
+    <string name="service_general_start_on_boot_disabled">Will not start the service on the startup of the device.</string>
+    <string name="service_general_start_delay">Startup delay</string>
+    <string name="service_general_start_delay_summary">We will start the service in %s after boot.</string>
+    <string name="service_general_alarm_timeout">Alarm timeout</string>
+    <string name="service_general_alarm_timeout_summary">We will recheck if the service is running every %s.</string>
+
+    <!-- Settings -->
+    <string name="service_settings_start_adb_off">Will not start the ADB server automatically</string>
+    <string name="service_settings_start_adb_on">Will start the ADB server automatically</string>
+    <string name="service_settings_start_adb">ADB Server</string>
+    <string name="service_settings_adb_port">ADB Port</string>
+    <string name="service_settings_adb_port_summary">ADB will listen on port %d for connections.</string>
+
 </resources>

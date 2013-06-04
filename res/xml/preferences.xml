@@ -7,6 +7,7 @@
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="start_on_boot"
+            android:persistent="true"
             android:summaryOff="@string/service_general_start_on_boot_disabled"
             android:summaryOn="@string/service_general_start_on_boot_enabled"
             android:title="@string/service_general_start_on_boot" />
@@ -16,16 +17,44 @@
             android:dependency="start_on_boot"
             android:entries="@array/time_delay_entires"
             android:entryValues="@array/time_delay_values"
-            android:key="start_delay" />
+            android:key="start_delay"
+            android:persistent="true"
+            android:summary="@string/service_general_start_delay_summary"
+            android:title="@string/service_general_start_delay" />
         <ListPreference
             android:defaultValue="30"
             android:dependency="start_on_boot"
             android:entries="@array/time_delay_entires"
             android:entryValues="@array/time_delay_values"
-            android:key="alarm_timeout_interval" />
+            android:key="alarm_timeout_interval"
+            android:persistent="true"
+            android:summary="@string/service_general_alarm_timeout_summary"
+            android:title="@string/service_general_alarm_timeout" />
     </PreferenceCategory>
-    
-    <PreferenceCategory android:title="@string/action_settings">
+    <PreferenceCategory android:title="@string/action_settings" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="start_on_app_start"
+            android:persistent="true"
+            android:summaryOff="@string/service_settings_start_adb_off"
+            android:summaryOn="@string/service_settings_start_adb_on"
+            android:title="@string/service_settings_start_adb" />
+
+        <EditTextPreference
+            android:dependency="start_on_app_start"
+            android:defaultValue="5555"
+            android:inputType="number"
+            android:key="adb_port"
+            android:persistent="true"
+            android:summary="@string/service_settings_adb_port_summary"
+            android:title="@string/service_settings_adb_port" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/service_general" >
+        <Preference
+            android:key="reset_button"
+            android:persistent="false"
+            android:summary="@string/settings_reset_summary"
+            android:title="@string/settings_reset" />
     </PreferenceCategory>
 
 </PreferenceScreen>

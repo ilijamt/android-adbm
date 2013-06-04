@@ -37,6 +37,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.matoski.adbm.MyPreferencesActivity"
+            android:label="@string/app_settings" >
+        </activity>
 
         <!-- Execute on boot complete -->
         <receiver android:name="com.matoski.adbm.BootCompleteReceiver" >

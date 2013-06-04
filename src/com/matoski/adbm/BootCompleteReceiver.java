@@ -12,8 +12,6 @@ import android.preference.PreferenceManager;
 
 public class BootCompleteReceiver extends BroadcastReceiver {
 
-	private static final long REPEAT_TIME = 1000 * 30;
-
 	private SharedPreferences preferences;
 
 	private boolean bRunOnBoot = Constants.START_ON_BOOT;
@@ -26,8 +24,8 @@ public class BootCompleteReceiver extends BroadcastReceiver {
 		this.preferences = PreferenceManager
 				.getDefaultSharedPreferences(context);
 
-		this.bRunOnBoot = this.preferences.getBoolean(Constants.KEY_START_ON_BOOT,
-				Constants.START_ON_BOOT);
+		this.bRunOnBoot = this.preferences.getBoolean(
+				Constants.KEY_START_ON_BOOT, Constants.START_ON_BOOT);
 
 		this.iDelayStart = this.preferences.getInt(Constants.KEY_START_DELAY,
 				Constants.DELAY_START_AFTER_BOOT);
@@ -48,8 +46,8 @@ public class BootCompleteReceiver extends BroadcastReceiver {
 			calendar.add(Calendar.SECOND, this.iDelayStart);
 
 			alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
-					calendar.getTimeInMillis(),
-					BootCompleteReceiver.REPEAT_TIME, pendingIntent);
+					calendar.getTimeInMillis(), this.iRepeatTimeout,
+					pendingIntent);
 		}
 
 	}

@@ -17,7 +17,8 @@ public class ManagerService extends Service {
 	private final IBinder mBinder = new ServiceBinder();
     private int NOTIFICATION = R.string.service_name;
 
-    private SharedPreferences preferences;
+    @SuppressWarnings("unused")
+	private SharedPreferences preferences;
 
 	
 	@Override
@@ -25,8 +26,6 @@ public class ManagerService extends Service {
 		super.onCreate();
         this.mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);		
         this.preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        
-        
         this.showNotification();
 	}
 	
