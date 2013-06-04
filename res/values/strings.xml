@@ -33,4 +33,6 @@
     <string name="service_settings_adb_port">ADB Port</string>
     <string name="service_settings_adb_port_summary">ADB will listen on port %d for connections.</string>
 
+    <!-- Main -->
+    <string name="main_adb_command">adb connect %1$s:%2$s</string>
 </resources>
