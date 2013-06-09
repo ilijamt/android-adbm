@@ -5,8 +5,10 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="10"
         android:targetSdkVersion="17" />
+
+    <uses-feature android:name="android.hardware.wifi" />
 
     <!-- SuperSU access -->
     <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
@@ -29,8 +31,9 @@
 
         <!-- Main activity the main screen -->
         <activity
-            android:name="com.matoski.adbm.MainActivity"
-            android:label="@string/app_name" >
+            android:name="com.matoski.adbm.activity.MainActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,16 +41,31 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.matoski.adbm.MyPreferencesActivity"
-            android:label="@string/app_settings" >
-        </activity>
+            android:name="com.matoski.adbm.activity.MyPreferencesActivity"
+            android:label="@string/app_settings" />
+        <activity
+            android:name="com.matoski.adbm.activity.ListViewCheckboxesActivity"
+            android:label="@string/app_wifi_list" />
+        <activity
+            android:name="com.matoski.adbm.activity.HelperServiceActivity"
+            android:noHistory="true"
+            android:stateNotNeeded="true" />
 
         <!-- Execute on boot complete -->
-        <receiver android:name="com.matoski.adbm.BootCompleteReceiver" >
+        <receiver android:name="com.matoski.adbm.receiver.BootCompleteReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
 
                 <category android:name="android.intent.category.HOME" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Execute on boot complete -->
+        <receiver android:name="com.matoski.adbm.receiver.ConnectionDetectionReceiver" >
+            <intent-filter>
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+                <action android:name="android.net.wifi.STATE_CHANGE" />
+                <action android:name="android.net.wifi.supplicant.CONNECTION_CHANGE" />
             </intent-filter>
         </receiver>
 
@@ -59,7 +77,7 @@
             android:label="@string/service_name" />
 
         <!-- Starts the ADB Manager Service -->
-        <receiver android:name="MyStartServiceReceiver" />
+        <receiver android:name="com.matoski.adbm.receiver.MyStartServiceReceiver" />
     </application>
 
 </manifest>

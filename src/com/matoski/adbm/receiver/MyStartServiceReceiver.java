@@ -1,4 +1,4 @@
-package com.matoski.adbm;
+package com.matoski.adbm.receiver;
 
 import com.matoski.adbm.service.ManagerService;
 
@@ -12,6 +12,5 @@ public class MyStartServiceReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 	    Intent service = new Intent(context, ManagerService.class);
 	    context.startService(service);
-		
 	}
 }

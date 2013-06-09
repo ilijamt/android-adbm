@@ -4,12 +4,12 @@ import java.io.DataOutputStream;
 
 import android.util.Log;
 
-public class RootCommand {
+public class RootCommandUtil {
 
 	public static final String NEWLINE = "\n";
 
 	public static String formatCommand(String command) {
-		return command + RootCommand.NEWLINE;
+		return command + RootCommandUtil.NEWLINE;
 	}
 
 	public static boolean execute(String command) {
@@ -22,14 +22,14 @@ public class RootCommand {
 			process = Runtime.getRuntime().exec("su");
 			os = new DataOutputStream(process.getOutputStream());
 
-			os.writeBytes(RootCommand.formatCommand(command));
-			os.writeBytes(RootCommand.formatCommand("exit"));
+			os.writeBytes(RootCommandUtil.formatCommand(command));
+			os.writeBytes(RootCommandUtil.formatCommand("exit"));
 			os.flush();
 
 			process.waitFor();
 
 		} catch (Exception e) {
-			Log.e(RootCommand.class.getSimpleName(), e.getMessage());
+			Log.e(RootCommandUtil.class.getSimpleName(), e.getMessage());
 			return false;
 		} finally {
 			try {
@@ -38,7 +38,7 @@ public class RootCommand {
 				}
 				process.destroy();
 			} catch (Exception e) {
-				Log.e(RootCommand.class.getSimpleName(), e.getMessage());
+				Log.e(RootCommandUtil.class.getSimpleName(), e.getMessage());
 			}
 		}
 

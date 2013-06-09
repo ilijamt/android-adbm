@@ -1,9 +1,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/action_clear_list"
+        android:enabled="true"
+        android:icon="@drawable/ic_clear"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_settings"
+        android:visible="true"/>
+    <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_settings"
+        android:visible="true"/>
+    <item
+        android:id="@+id/action_adb"
+        android:checkable="true"
+        android:checked="false"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_mylocation"
         android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:title="@string/adb"
+        android:visible="true"/>
 
 </menu>

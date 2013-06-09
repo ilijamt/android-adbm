@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/status_bar_latest_event_content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <ImageView
+        android:id="@+id/notification_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:contentDescription="@string/info"
+        android:padding="5dip"
+        android:scaleType="center"
+        android:src="@drawable/ic_launcher" />
+
+    <TextView
+        android:id="@+id/notification_title"
+        style="@style/NotificationTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/notification_image"
+        android:text="@string/ip_and_port" />
+
+    <TextView
+        android:id="@+id/notification_text"
+        style="@style/NotificationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/notification_title"
+        android:layout_toRightOf="@id/notification_image"
+        android:text="@string/ip_and_port" />
+
+</RelativeLayout>
