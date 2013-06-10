@@ -1,13 +1,14 @@
 package com.matoski.adbm.receiver;
 
-import com.matoski.adbm.Constants;
-import com.matoski.adbm.util.ServiceUtil;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
+import com.matoski.adbm.Constants;
+import com.matoski.adbm.util.PreferenceUtil;
+import com.matoski.adbm.util.ServiceUtil;
 
 public class BootCompleteReceiver extends BroadcastReceiver {
 
@@ -31,20 +32,17 @@ public class BootCompleteReceiver extends BroadcastReceiver {
 		}
 
 		try {
-			this.iDelayStart = this.preferences
-					.getInt(Constants.KEY_START_DELAY,
-							Constants.DELAY_START_AFTER_BOOT);
+			this.iDelayStart = Integer.parseInt(PreferenceUtil.getString(
+					context, Constants.KEY_START_DELAY,
+					Constants.DELAY_START_AFTER_BOOT));
 		} catch (Exception e) {
 			this.iDelayStart = Constants.DELAY_START_AFTER_BOOT;
 		}
 
-		this.iDelayStart = this.preferences.getInt(Constants.KEY_START_DELAY,
-				Constants.DELAY_START_AFTER_BOOT);
-
 		try {
-			this.iRepeatTimeout = this.preferences.getLong(
-					Constants.KEY_ALARM_TIMEOUT_INTERVAL,
-					Constants.ALARM_TIMEOUT_INTERVAL * 1000);
+			this.iRepeatTimeout = Long.parseLong(PreferenceUtil.getString(
+					context, Constants.KEY_ALARM_TIMEOUT_INTERVAL,
+					Constants.ALARM_TIMEOUT_INTERVAL * 1000));
 		} catch (Exception e) {
 			this.iRepeatTimeout = Constants.ALARM_TIMEOUT_INTERVAL * 1000;
 		}

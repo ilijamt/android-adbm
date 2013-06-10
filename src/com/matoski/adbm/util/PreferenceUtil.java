@@ -22,7 +22,7 @@ public class PreferenceUtil {
 		} catch (Exception e) {
 			Log.e(LOG_TAG, e.getMessage());
 		}
-	
+
 		return value;
 
 	}
@@ -33,5 +33,9 @@ public class PreferenceUtil {
 
 	public static String getString(Context context, String key, Long dflt) {
 		return PreferenceUtil.getString(context, key, Long.toString(dflt));
+	}
+
+	public static String getString(Context context, String key, Integer dflt) {
+		return PreferenceUtil.getString(context, key, Integer.toString(dflt));
 	}
 }

@@ -6,7 +6,7 @@ public class Constants {
 	public final static boolean ADB_START_ON_KNOWN_WIFI = false;
 	public final static int DELAY_START_AFTER_BOOT = 30;
 	public final static int CHECK_IF_STARTED_INTERVAL = 30;
-	public final static int ALARM_TIMEOUT_INTERVAL = 30;
+	public final static int ALARM_TIMEOUT_INTERVAL = 120;
 	public final static long ADB_PORT = 5555;
 	public final static boolean SHOW_NOTIFICATIONS = true;
 	
@@ -23,6 +23,7 @@ public class Constants {
 	public static final String KEY_ACTION_AUTO_WIFI = "AUTO_WIFI_CONNECT";
 	public static final String KEY_ACTION_ADB_STOP = "ADB_STOP";
 	public static final String KEY_ACTION_ADB_START = "ADB_START";
+	public static final String KEY_ACTION_ADB_TOGGLE = "ADB_TOGGLE";
 	public static final String KEY_ACTION_UPDATE_NOTIFICATION = "UPDATE_NOTIFICATION";
 
 }

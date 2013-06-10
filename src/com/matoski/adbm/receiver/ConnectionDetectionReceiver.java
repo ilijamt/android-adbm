@@ -10,7 +10,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.matoski.adbm.Constants;
-import com.matoski.adbm.activity.HelperServiceActivity;
+import com.matoski.adbm.service.HelperIntentService;
 
 public class ConnectionDetectionReceiver extends BroadcastReceiver {
 
@@ -47,13 +47,23 @@ public class ConnectionDetectionReceiver extends BroadcastReceiver {
 					if (bAutoWiFiConnect) {
 
 						mHelperIntent = new Intent(context,
-								HelperServiceActivity.class);
+								HelperIntentService.class);
 
 						mHelperIntent.putExtra(Constants.EXTRA_ACTION,
 								Constants.KEY_ACTION_AUTO_WIFI);
-						mHelperIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-						context.startActivity(mHelperIntent);
+						context.startService(mHelperIntent);
+						
+					} else {
+
+						mHelperIntent = new Intent(context,
+								HelperIntentService.class);
+
+						mHelperIntent.putExtra(Constants.EXTRA_ACTION,
+								Constants.KEY_ACTION_UPDATE_NOTIFICATION);
+
+						context.startService(mHelperIntent);
+
 					}
 
 					break;
@@ -61,13 +71,12 @@ public class ConnectionDetectionReceiver extends BroadcastReceiver {
 				case DISCONNECTED:
 
 					mHelperIntent = new Intent(context,
-							HelperServiceActivity.class);
+							HelperIntentService.class);
 
 					mHelperIntent.putExtra(Constants.EXTRA_ACTION,
 							Constants.KEY_ACTION_ADB_STOP);
-					mHelperIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-					context.startActivity(mHelperIntent);
+					context.startService(mHelperIntent);
 
 					break;
 

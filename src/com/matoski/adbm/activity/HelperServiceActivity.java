@@ -58,8 +58,11 @@ public class HelperServiceActivity extends Activity {
 					service.startNetworkADB();
 				} else if (action.equals(Constants.KEY_ACTION_AUTO_WIFI)) {
 					service.AutoConnectionAdb();
-				} else if ( action.equals(Constants.KEY_ACTION_UPDATE_NOTIFICATION)) {
+				} else if (action
+						.equals(Constants.KEY_ACTION_UPDATE_NOTIFICATION)) {
 					service.notificationUpdate();
+				} else if (action.equals(Constants.KEY_ACTION_ADB_TOGGLE)) {
+					service.toggleADB();
 				} else {
 					Log.e(LOG_TAG, String.format("Invalid action: %", action));
 				}
@@ -75,7 +78,7 @@ public class HelperServiceActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);		
+		super.onCreate(savedInstanceState);
 		Log.d(LOG_TAG, "Helper utils activity started.");
 		ServiceUtil.bind(this, mConnection);
 	}

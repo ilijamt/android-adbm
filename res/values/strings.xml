@@ -12,6 +12,8 @@
     <string name="service">Service</string>
     <string name="running">Running</string>
     <string name="stopped">Stopped</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
     <string name="address">Address</string>
     <string name="forward_slash">/</string>
     <string name="backward_slash">\</string>

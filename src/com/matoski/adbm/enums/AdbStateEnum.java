@@ -1,4 +1,4 @@
-package com.matoski.adbm;
+package com.matoski.adbm.enums;
 
 public enum AdbStateEnum {
 	

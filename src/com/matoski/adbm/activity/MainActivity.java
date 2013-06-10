@@ -21,7 +21,6 @@ import android.widget.ToggleButton;
 import com.matoski.adbm.Constants;
 import com.matoski.adbm.R;
 import com.matoski.adbm.enums.IPMode;
-import com.matoski.adbm.interfaces.IMessageHandler;
 import com.matoski.adbm.service.ManagerService;
 import com.matoski.adbm.util.NetworkUtil;
 import com.matoski.adbm.util.ServiceUtil;
@@ -54,14 +53,6 @@ public class MainActivity extends Activity {
 
 	private String mNewLine;
 
-	private IMessageHandler handler = new IMessageHandler() {
-
-		@Override
-		public void message(String message) {
-			addItem(message);
-		}
-	};
-
 	/**
 	 * The {@link ManagerService} is the service used to control the application
 	 * for ADB.
@@ -74,7 +65,6 @@ public class MainActivity extends Activity {
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder binder) {
 			service = ((ManagerService.ServiceBinder) binder).getService();
-			service.setHandler(handler);
 			if (prefs.getBoolean(Constants.KEY_ADB_START_ON_KNOWN_WIFI,
 					Constants.ADB_START_ON_KNOWN_WIFI)) {
 				service.AutoConnectionAdb();

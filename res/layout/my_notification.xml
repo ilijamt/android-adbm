@@ -9,9 +9,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:clickable="true"
         android:contentDescription="@string/info"
+        android:hapticFeedbackEnabled="true"
         android:padding="5dip"
-        android:scaleType="center"
+        android:soundEffectsEnabled="true"
         android:src="@drawable/ic_launcher" />
 
     <TextView
@@ -20,7 +22,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="5dip"
         android:layout_toRightOf="@id/notification_image"
+        android:scrollHorizontally="true"
         android:text="@string/ip_and_port" />
 
     <TextView
@@ -30,6 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/notification_title"
         android:layout_toRightOf="@id/notification_image"
+        android:scrollHorizontally="true"
         android:text="@string/ip_and_port" />
 
 </RelativeLayout>
