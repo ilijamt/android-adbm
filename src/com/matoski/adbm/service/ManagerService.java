@@ -276,7 +276,7 @@ public class ManagerService extends Service {
 			}
 
 		} catch (Exception e) {
-			Log.w(LOG_TAG, e.getMessage(), e);
+			//Log.w(LOG_TAG, e.getMessage(), e);
 		}
 
 		Log.i(LOG_TAG, "onStartCommand: " + action);
