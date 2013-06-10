@@ -253,13 +253,32 @@ public class ManagerService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		String action = "";
+		String action = "No available action";
 
 		try {
+
 			action = intent.getExtras().getString(Constants.EXTRA_ACTION);
+
+			Log.d(LOG_TAG, String.format("Running action: %s", action));
+
+			if (action.equals(Constants.KEY_ACTION_ADB_STOP)) {
+				this.stopNetworkADB();
+			} else if (action.equals(Constants.KEY_ACTION_ADB_START)) {
+				this.startNetworkADB();
+			} else if (action.equals(Constants.KEY_ACTION_AUTO_WIFI)) {
+				this.AutoConnectionAdb();
+			} else if (action.equals(Constants.KEY_ACTION_UPDATE_NOTIFICATION)) {
+				this.notificationUpdate();
+			} else if (action.equals(Constants.KEY_ACTION_ADB_TOGGLE)) {
+				this.toggleADB();
+			} else {
+				Log.e(LOG_TAG, String.format("Invalid action: %", action));
+			}
+
 		} catch (Exception e) {
-			action = "No available action";
+			Log.w(LOG_TAG, e.getMessage(), e);
 		}
+
 		Log.i(LOG_TAG, "onStartCommand: " + action);
 		return Service.START_STICKY;
 	}

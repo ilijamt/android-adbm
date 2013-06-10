@@ -83,5 +83,5 @@ public class ServiceUtil {
 		Log.i(LOG_TAG, "Service is not running");
 		return false;
 	}
-
+	
 }

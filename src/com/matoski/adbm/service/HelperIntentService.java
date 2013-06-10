@@ -24,15 +24,12 @@ public class HelperIntentService extends IntentService {
 		super.onCreate();
 	}
 
-	protected boolean runAction(String action) {
-
+	protected void runAction(String action) {
 		Intent mServiceIntent = new Intent(getBaseContext(),
 				ManagerService.class);
 		mServiceIntent.putExtra(Constants.EXTRA_ACTION, action);
 		Log.d(LOG_TAG, String.format("Running action: %s", action));
 		startService(mServiceIntent);
-		return true;
-
 	}
 
 	@Override
