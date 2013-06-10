@@ -76,7 +76,6 @@
             android:name="com.matoski.adbm.service.ManagerService"
             android:description="@string/service_description"
             android:icon="@drawable/ic_launcher"
-            android:process=":adbms"
             android:label="@string/service_name" />
 
         <!-- To perform various interactions with the ADB Manager service -->

@@ -253,6 +253,14 @@ public class ManagerService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		String action = "";
+		
+		try {
+			action = intent.getExtras().getString(Constants.EXTRA_ACTION);
+		} catch (Exception e) {
+			action = "No available action";
+		}
+		Log.i(LOG_TAG, "onStartCommand: " + action);
 		return Service.START_STICKY;
 	}
 
@@ -333,7 +341,7 @@ public class ManagerService extends Service {
 		//
 		// remoteView.setOnClickPendingIntent(R.id.notification_image,
 		// pendingIntent);
-		
+
 		builder.setContent(remoteView);
 
 		Notification notification = builder.build();
