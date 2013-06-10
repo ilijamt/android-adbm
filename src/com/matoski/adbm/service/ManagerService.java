@@ -254,7 +254,7 @@ public class ManagerService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		String action = "";
-		
+
 		try {
 			action = intent.getExtras().getString(Constants.EXTRA_ACTION);
 		} catch (Exception e) {

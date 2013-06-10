@@ -5,11 +5,10 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.matoski.adbm.Constants;
-import com.matoski.adbm.activity.HelperServiceActivity;
 
 public class HelperIntentService extends IntentService {
 
-	private static String LOG_TAG = HelperServiceActivity.class.getName();
+	private static String LOG_TAG = HelperIntentService.class.getName();
 
 	public HelperIntentService() {
 		super(HelperIntentService.class.getName());
@@ -27,7 +26,8 @@ public class HelperIntentService extends IntentService {
 
 	protected boolean runAction(String action) {
 
-		Intent mServiceIntent = new Intent(getBaseContext(), ManagerService.class);
+		Intent mServiceIntent = new Intent(getBaseContext(),
+				ManagerService.class);
 		mServiceIntent.putExtra(Constants.EXTRA_ACTION, action);
 		Log.d(LOG_TAG, String.format("Running action: %s", action));
 		startService(mServiceIntent);
@@ -38,10 +38,16 @@ public class HelperIntentService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 
-		final String action = intent.getStringExtra(Constants.EXTRA_ACTION);
+		try {
 
-		Log.i(LOG_TAG, String.format(
-				"Request for executing action \"%s\" received.", action));
+			final String action = intent.getStringExtra(Constants.EXTRA_ACTION);
+			runAction(action);
+			Log.i(LOG_TAG, String.format(
+					"Request for executing action \"%s\" received.", action));
+
+		} catch (Exception e) {
+			Log.e(LOG_TAG, e.getMessage(), e);
+		}
 
 	}
 }
