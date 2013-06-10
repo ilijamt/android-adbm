@@ -134,6 +134,32 @@ public class MainActivity extends Activity {
 		}
 	}
 
+	private void toggleNetworkState(boolean isActive) {
+
+		if (isActive) {
+			switch (service.stopNetworkADB()) {
+			case ACTIVE:
+				addItem("ADB service failed to stop");
+				break;
+
+			case NOT_ACTIVE:
+				addItem("ADB service stoped successfully");
+				break;
+			}
+		} else {
+
+			switch (service.startNetworkADB()) {
+			case ACTIVE:
+				addItem("ADB service started successfully");
+				break;
+
+			case NOT_ACTIVE:
+				addItem("ADB service failed to start");
+				break;
+			}
+		}
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -167,28 +193,7 @@ public class MainActivity extends Activity {
 							if (service == null) {
 								buttonView.setChecked(false);
 							} else {
-								if (!isChecked) {
-									switch (service.stopNetworkADB()) {
-									case ACTIVE:
-										addItem("ADB service failed to stop");
-										break;
-
-									case NOT_ACTIVE:
-										addItem("ADB service stoped successfully");
-										break;
-									}
-								} else {
-
-									switch (service.startNetworkADB()) {
-									case ACTIVE:
-										addItem("ADB service started successfully");
-										break;
-
-									case NOT_ACTIVE:
-										addItem("ADB service failed to start");
-										break;
-									}
-								}
+								toggleNetworkState(!isChecked);
 							}
 
 							updateScreenDetails();
@@ -251,27 +256,7 @@ public class MainActivity extends Activity {
 			return true;
 		case R.id.action_adb:
 			if (this.service != null) {
-				if (item.isChecked()) {
-					switch (service.stopNetworkADB()) {
-					case ACTIVE:
-						addItem("ADB service failed to stop");
-						break;
-
-					case NOT_ACTIVE:
-						addItem("ADB service stoped successfully");
-						break;
-					}
-				} else {
-					switch (service.startNetworkADB()) {
-					case ACTIVE:
-						addItem("ADB service started successfully");
-						break;
-
-					case NOT_ACTIVE:
-						addItem("ADB service failed to start");
-						break;
-					}
-				}
+				toggleNetworkState(item.isChecked());
 				this.updateScreenDetails();
 			}
 			return true;
