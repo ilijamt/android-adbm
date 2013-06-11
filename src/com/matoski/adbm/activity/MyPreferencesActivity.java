@@ -90,6 +90,21 @@ public class MyPreferencesActivity extends PreferenceActivity {
 
 						});
 
+		findPreference(Constants.KEY_HIDEABLE_NOTIFICATION_BAR)
+				.setOnPreferenceChangeListener(
+						new OnPreferenceChangeListener() {
+
+							@Override
+							public boolean onPreferenceChange(
+									Preference preference, Object newValue) {
+								if (service != null) {
+									service.notificationUpdate();
+								}
+								return true;
+							}
+
+						});
+
 		findPreference("wifi_button").setOnPreferenceClickListener(
 				new OnPreferenceClickListener() {
 					@Override

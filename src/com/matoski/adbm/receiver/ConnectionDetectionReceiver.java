@@ -46,8 +46,10 @@ public class ConnectionDetectionReceiver extends BroadcastReceiver {
 						ServiceUtil.runServiceAction(context,
 								Constants.KEY_ACTION_AUTO_WIFI);
 					} else {
-						ServiceUtil.runServiceAction(context,
-								Constants.KEY_ACTION_UPDATE_NOTIFICATION);
+						ServiceUtil
+								.runServiceAction(
+										context,
+										Constants.KEY_ACTION_UPDATE_NOTIFICATION_NETWORK_ADB);
 					}
 
 					break;

@@ -62,6 +62,7 @@ public class ManagerService extends Service {
 	private final IBinder mBinder = new ServiceBinder();
 	private int NOTIFICATION = R.string.service_name;
 
+	private boolean bNotificationHideable = Constants.SHOW_HIDEABLE_NOTIFICATIONS;
 	private boolean bNetworkADBStatus = false;
 	private AdbStateEnum mAdbState = AdbStateEnum.NOT_ACTIVE;
 
@@ -132,7 +133,7 @@ public class ManagerService extends Service {
 			super.onPostExecute(result);
 			bNetworkADBStatus = result == AdbStateEnum.ACTIVE;
 			mAdbState = result;
-			notificationUpdate();
+			notificationUpdateRemoteOnly(result == AdbStateEnum.ACTIVE);
 		}
 
 	}
@@ -367,6 +368,9 @@ public class ManagerService extends Service {
 				this.notificationUpdate();
 			} else if (action.equals(Constants.KEY_ACTION_ADB_TOGGLE)) {
 				this.toggleADB();
+			} else if (action
+					.equals(Constants.KEY_ACTION_UPDATE_NOTIFICATION_NETWORK_ADB)) {
+				this.isNetworkADBRunning();
 			} else {
 				Log.e(LOG_TAG, String.format("Invalid action: %", action));
 			}
@@ -432,6 +436,7 @@ public class ManagerService extends Service {
 			} else {
 				stringADB = "ADB service is not running";
 				stringIP = "WiFi connection available";
+				imageViewId = R.drawable.ic_launcher_wifi;
 			}
 
 		} else {
@@ -457,7 +462,13 @@ public class ManagerService extends Service {
 
 		Notification notification = builder.build();
 
-		notification.flags |= Notification.FLAG_NO_CLEAR;
+		bNotificationHideable = this.preferences.getBoolean(
+				Constants.KEY_HIDEABLE_NOTIFICATION_BAR,
+				Constants.SHOW_HIDEABLE_NOTIFICATIONS);
+
+		if (!bNotificationHideable) {
+			notification.flags |= Notification.FLAG_NO_CLEAR;
+		}
 
 		this.mNM.notify(NOTIFICATION, notification);
 

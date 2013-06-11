@@ -9,6 +9,7 @@ public class Constants {
 	public final static int ALARM_TIMEOUT_INTERVAL = 120;
 	public final static long ADB_PORT = 5555;
 	public final static boolean SHOW_NOTIFICATIONS = true;
+	public final static boolean SHOW_HIDEABLE_NOTIFICATIONS = false;
 	
 	public final static String KEY_ALARM_TIMEOUT_INTERVAL = "alarm_timeout_interval";
 	public final static String KEY_START_DELAY = "start_delay";
@@ -18,6 +19,7 @@ public class Constants {
 	public final static String KEY_NOTIFICATIONS = "show_notifications";
 	public final static String KEY_WIFI_LIST = "wifi_list";
 	public final static String KEY_WIFI_LIST_ENTRIES = "wifi_list_entries";
+	public final static String KEY_HIDEABLE_NOTIFICATION_BAR = "hideable_notification_bar";
 	public static final String EXTRA_ACTION = "action";
 	
 	public static final String KEY_ACTION_AUTO_WIFI = "AUTO_WIFI_CONNECT";
@@ -25,5 +27,6 @@ public class Constants {
 	public static final String KEY_ACTION_ADB_START = "ADB_START";
 	public static final String KEY_ACTION_ADB_TOGGLE = "ADB_TOGGLE";
 	public static final String KEY_ACTION_UPDATE_NOTIFICATION = "UPDATE_NOTIFICATION";
+	public static final String KEY_ACTION_UPDATE_NOTIFICATION_NETWORK_ADB = "UPDATE_NOTIFICATION_NETWORK_ADB";
 
 }

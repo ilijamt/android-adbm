@@ -44,6 +44,9 @@
     <string name="service_show_notifications">Notification bar</string>
     <string name="service_show_notifications_on">Will display a notification bar while running.</string>
     <string name="service_show_notifications_off">Will not display a notification bar while running.</string>
+    <string name="service_hideable_notification_bar">Notification hideable</string>
+    <string name="service_hideable_notification_bar_on">You can remove the notification by swyping it away.</string>
+    <string name="service_hideable_notification_bar_off">Notification is permanent cannot be removed.</string>
     
     <!-- Generic -->
     <string name="service_general_settings">Service</string>

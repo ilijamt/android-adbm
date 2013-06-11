@@ -23,6 +23,10 @@ Future versions:
 + Auto awake on PACKAGE_ADDED broadcast
 + Always screen on in Wireless ADB mode
 + Delay between switching states
++ Added new icon for the states, now it has different icons for various states.
+   White overlay: No WiFi connections
+   Sky blue overlay: WiFi connection available but no connections
+   Red overlay: WiFi connected, and ADB is running in network state
 
 Permissions:
 + android.permission.ACCESS_SUPERUSER 
