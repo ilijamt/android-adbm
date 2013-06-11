@@ -10,6 +10,7 @@ Features:
 + Auto start on boot, you can select if you want to or not from the preferences screen
 + Automatically switch between USB and NETWORK when you disconnect/connect from/to WiFi
 + Configurable service management
++ Different color coded icons depending on the state of the ADB 
 
 It's really more simple to use than others, is always visible in notification bar. It supports advanced features like fully automate adb state control based on the WiFi network, and the state of the network.
 
@@ -23,10 +24,6 @@ Future versions:
 + Auto awake on PACKAGE_ADDED broadcast
 + Always screen on in Wireless ADB mode
 + Delay between switching states
-+ Added new icon for the states, now it has different icons for various states.
-   White overlay: No WiFi connections
-   Sky blue overlay: WiFi connection available but no connections
-   Red overlay: WiFi connected, and ADB is running in network state
 
 Permissions:
 + android.permission.ACCESS_SUPERUSER 
