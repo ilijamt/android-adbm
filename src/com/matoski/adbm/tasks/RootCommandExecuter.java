@@ -16,41 +16,52 @@ public class RootCommandExecuter extends
 
 	@Override
 	protected AdbStateEnum doInBackground(String... commands) {
-				
+
+		Log.d(LOG_TAG, "Executing root commands");
+		
 		if (!Shell.SU.available()) {
 			Log.e(LOG_TAG, "No superuser access available");
 			publishProgress("No superuser access available");
 			return AdbStateEnum.NOT_ACTIVE;
 		}
 
-		if ( null == Shell.SU.run(commands) ) {
+		publishProgress("Executing commands");
+		publishProgress(commands);
+
+		if (null == Shell.SU.run(commands)) {
 			publishProgress("Root access denied");
 		}
-		
+
 		Log.d(LOG_TAG, "Processed the root commands");
-
+		
+		final String getTcpPort = "getprop service.adb.tcp.port";
+		publishProgress(String.format("Executing command: %s", getTcpPort));
+		
 		List<String> networkStatus = Shell.SU
-				.run("getprop service.adb.tcp.port");
+				.run(getTcpPort);
 		
-		if ( null == networkStatus ) {
+		if (null == networkStatus) {
 			publishProgress("Root access denied");
+			publishProgress("Couldn't retrieve the adb network status");
+			return AdbStateEnum.NOT_ACTIVE;
 		}
-		
-		Log.d(LOG_TAG, "Checking network status");
-
-		if (networkStatus.isEmpty()) {
-			Log.w(LOG_TAG, "Couldn't retrive network status");
-			publishProgress("Couldn't retrive network status");
+		if (!(networkStatus.size() > 0)) {
+			publishProgress("Couldn't retrieve the adb network status");
 			return AdbStateEnum.NOT_ACTIVE;
 		}
 	
-
 		final String command = networkStatus.get(0);
 		final AdbStateEnum stateEnum = command.equalsIgnoreCase("-1") ? AdbStateEnum.NOT_ACTIVE
 				: AdbStateEnum.ACTIVE;
 
-		Log.d(LOG_TAG, "Network status: " + stateEnum.toString());
+		publishProgress(String.format("%s = %s", getTcpPort, command));
+		
+		Log.d(LOG_TAG,
+				String.format("Network status: %s", stateEnum.toString()));
 
+		publishProgress(String.format("Network status: %s", stateEnum.toString()));
+		
 		return stateEnum;
+
 	}
 }

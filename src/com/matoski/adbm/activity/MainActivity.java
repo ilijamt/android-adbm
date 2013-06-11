@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -35,12 +36,18 @@ import com.matoski.adbm.util.ServiceUtil;
  */
 public class MainActivity extends Activity {
 
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+	}
+
 	private final class MyNetworkStatusChecker extends NetworkStatusChecker {
 
 		@Override
 		protected void onPostExecute(AdbStateEnum result) {
 			super.onPostExecute(result);
 			updateNetworkDependentScreenDetails(result);
+			service.notificationUpdateRemoteOnly(result == AdbStateEnum.ACTIVE);
 		}
 
 		@Override
@@ -119,7 +126,7 @@ public class MainActivity extends Activity {
 
 	private long alarmTimeout;
 
-	private int counter = 0;
+	// private int counter = 0;
 
 	protected boolean addItem(String message) {
 
@@ -127,8 +134,10 @@ public class MainActivity extends Activity {
 			return false;
 		}
 
-		this.mList.append(String.format("%03d", ++counter) + ". "
-				+ message.concat(this.mNewLine));
+		// this.mList.append(String.format("%03d", ++counter) + ". "
+		// + message.concat(this.mNewLine));
+
+		this.mList.append("> " + message.concat(this.mNewLine));
 
 		try {
 
@@ -275,6 +284,9 @@ public class MainActivity extends Activity {
 			this.addItem("Openning " + item.getTitle());
 			startActivity(new Intent(this, MyPreferencesActivity.class));
 			return true;
+		case R.id.action_refresh:
+			updateScreenDetails();
+			return true;
 		case R.id.action_adb:
 			if (this.service != null) {
 				toggleNetworkState(item.isChecked());
@@ -284,7 +296,7 @@ public class MainActivity extends Activity {
 
 		case R.id.action_clear_list:
 			this.mList.setText("");
-			this.counter = 0;
+			// this.counter = 0;
 			return true;
 		}
 
@@ -334,6 +346,10 @@ public class MainActivity extends Activity {
 	private final void updateNetworkDependentScreenDetails(
 			AdbStateEnum stateEnum) {
 
+		this.addItem("Updating screen details based on state result: " + stateEnum.toString());
+
+		Log.d(LOG_TAG, "Updating screen details based on state result: " + stateEnum.toString());
+		
 		// update the view status
 		viewStatus.setText(service == null ? R.string.stopped
 				: (stateEnum == AdbStateEnum.ACTIVE ? R.string.running

@@ -120,12 +120,21 @@ public class ManagerService extends Service {
 	private final class MyRootCommandExecuter extends RootCommandExecuter {
 
 		@Override
+		protected void onProgressUpdate(String... messages) {
+			super.onProgressUpdate(messages);
+			for (String message : messages) {
+				addItem(message);
+			}
+		}
+
+		@Override
 		protected void onPostExecute(AdbStateEnum result) {
 			super.onPostExecute(result);
 			bNetworkADBStatus = result == AdbStateEnum.ACTIVE;
 			mAdbState = result;
 			notificationUpdate();
 		}
+
 	}
 
 	private final class MyToggleNetworkAdb extends NetworkStatusChecker {
@@ -237,6 +246,15 @@ public class ManagerService extends Service {
 	}
 
 	public void notificationUpdate(boolean update) {
+		notificationUpdate(update, bNetworkADBStatus);
+	}
+
+	public void notificationUpdateRemoteOnly(boolean isNetworkADBRunning) {
+
+		this.mShowNotification = this.preferences.getBoolean(
+				Constants.KEY_NOTIFICATIONS, Constants.SHOW_NOTIFICATIONS);
+
+		boolean update = mShowNotification;
 
 		Log.i(LOG_TAG,
 				"Triggered notification update: " + Boolean.toString(update));
@@ -245,11 +263,26 @@ public class ManagerService extends Service {
 				+ Boolean.toString(update));
 
 		if (update) {
-			showNotification();
+			showNotification(isNetworkADBRunning, true);
 		} else {
 			this.removeNotification();
 		}
 
+	}
+
+	public void notificationUpdate(boolean update, boolean isNetworkADBRunning) {
+
+		Log.i(LOG_TAG,
+				"Triggered notification update: " + Boolean.toString(update));
+
+		this.addItem("Triggered notification update: "
+				+ Boolean.toString(update));
+
+		if (update) {
+			showNotification(isNetworkADBRunning);
+		} else {
+			this.removeNotification();
+		}
 	}
 
 	@Override
@@ -367,11 +400,12 @@ public class ManagerService extends Service {
 		this.handler = handler;
 	}
 
-	private void showNotification() {
-		showNotification(bNetworkADBStatus);
+	private void showNotification(boolean isNetworkADBRunning) {
+		showNotification(isNetworkADBRunning, false);
 	}
 
-	private void showNotification(boolean isNetworkADBRunning) {
+	private void showNotification(boolean isNetworkADBRunning,
+			boolean dontTriggerHandlerUpdate) {
 
 		Log.d(LOG_TAG, "Prepearing notification bar");
 
@@ -406,7 +440,8 @@ public class ManagerService extends Service {
 		}
 
 		builder.setSmallIcon(imageViewId);
-		builder.setContentTitle("ADB Manager");
+		builder.setContentTitle(stringADB);
+		builder.setContentText(stringIP);
 		builder.setContentIntent(PendingIntent.getActivity(
 				getApplicationContext(), 0,
 				new Intent(this, MainActivity.class), 0));
@@ -425,7 +460,10 @@ public class ManagerService extends Service {
 		notification.flags |= Notification.FLAG_NO_CLEAR;
 
 		this.mNM.notify(NOTIFICATION, notification);
-		triggerBoundActivityUpdate();
+
+		if (!dontTriggerHandlerUpdate) {
+			triggerBoundActivityUpdate();
+		}
 
 	}
 
@@ -443,8 +481,8 @@ public class ManagerService extends Service {
 
 			(new MyRootCommandExecuter()).execute(new String[] {
 					"setprop service.adb.tcp.port "
-							+ Long.toString(this.mADBPort), "stop adb",
-					"start adb" });
+							+ Long.toString(this.mADBPort), "stop adbd",
+					"start adbd" });
 		} else {
 			this.addItem("No WiFi connection available");
 		}
@@ -453,7 +491,7 @@ public class ManagerService extends Service {
 	public void stopNetworkADB() {
 		Log.i(LOG_TAG, "Stopping network ADB.");
 		(new MyRootCommandExecuter()).execute(new String[] {
-				"setprop service.adb.tcp.port -1", "stop adb", "start adb" });
+				"setprop service.adb.tcp.port -1", "stop adbd", "start adbd" });
 
 	}
 

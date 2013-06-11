@@ -2,17 +2,17 @@
 <resources>
 
     <string name="app_name">ADB Manager</string>
-    <string name="app_settings">Settings</string>
+    <string name="app_settings">設定</string>
     <string name="app_wifi_list">WiFi List</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">設定</string>
 
     <!-- Main Screen -->
     <string name="adb_status">Network ADB Status</string>
     <string name="status">Status</string>
     <string name="clear">Clear</string>
     <string name="service">Service</string>
-    <string name="running">Running</string>
-    <string name="stopped">Stopped</string>
+    <string name="running">能動</string>
+    <string name="stopped">停止</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
     <string name="refresh">Refresh</string>
