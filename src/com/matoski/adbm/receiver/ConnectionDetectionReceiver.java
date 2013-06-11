@@ -10,7 +10,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.matoski.adbm.Constants;
-import com.matoski.adbm.service.HelperIntentService;
+import com.matoski.adbm.util.ServiceUtil;
 
 public class ConnectionDetectionReceiver extends BroadcastReceiver {
 
@@ -36,8 +36,6 @@ public class ConnectionDetectionReceiver extends BroadcastReceiver {
 				Log.d(LOG_TAG, String.format("Going through network state: %s",
 						networkInfo.getDetailedState().toString()));
 
-				Intent mHelperIntent = null;
-
 				switch (networkInfo.getDetailedState()) {
 				case CONNECTED:
 
@@ -45,38 +43,18 @@ public class ConnectionDetectionReceiver extends BroadcastReceiver {
 							Boolean.toString(bAutoWiFiConnect)));
 
 					if (bAutoWiFiConnect) {
-
-						mHelperIntent = new Intent(context,
-								HelperIntentService.class);
-
-						mHelperIntent.putExtra(Constants.EXTRA_ACTION,
+						ServiceUtil.runServiceAction(context,
 								Constants.KEY_ACTION_AUTO_WIFI);
-
-						context.startService(mHelperIntent);
-						
 					} else {
-
-						mHelperIntent = new Intent(context,
-								HelperIntentService.class);
-
-						mHelperIntent.putExtra(Constants.EXTRA_ACTION,
+						ServiceUtil.runServiceAction(context,
 								Constants.KEY_ACTION_UPDATE_NOTIFICATION);
-
-						context.startService(mHelperIntent);
-
 					}
 
 					break;
 
 				case DISCONNECTED:
-
-					mHelperIntent = new Intent(context,
-							HelperIntentService.class);
-
-					mHelperIntent.putExtra(Constants.EXTRA_ACTION,
+					ServiceUtil.runServiceAction(context,
 							Constants.KEY_ACTION_ADB_STOP);
-
-					context.startService(mHelperIntent);
 
 					break;
 
@@ -101,4 +79,5 @@ public class ConnectionDetectionReceiver extends BroadcastReceiver {
 		}
 
 	}
+
 }

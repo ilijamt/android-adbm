@@ -40,6 +40,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <!--
+                 <meta-data
+                android:name="eu.chainfire.supersu.meta.contentlogging.problematic"
+                android:value="true" />
+            -->
         </activity>
         <activity
             android:name="com.matoski.adbm.activity.MyPreferencesActivity"
@@ -47,11 +53,6 @@
         <activity
             android:name="com.matoski.adbm.activity.ListViewCheckboxesActivity"
             android:label="@string/app_wifi_list" />
-        <activity
-            android:name="com.matoski.adbm.activity.HelperServiceActivity"
-            android:excludeFromRecents="true"
-            android:noHistory="true"
-            android:stateNotNeeded="true" />
 
         <!-- Execute on boot complete -->
         <receiver android:name="com.matoski.adbm.receiver.BootCompleteReceiver" >

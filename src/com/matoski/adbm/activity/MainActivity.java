@@ -20,8 +20,11 @@ import android.widget.ToggleButton;
 
 import com.matoski.adbm.Constants;
 import com.matoski.adbm.R;
+import com.matoski.adbm.enums.AdbStateEnum;
 import com.matoski.adbm.enums.IPMode;
+import com.matoski.adbm.interfaces.IMessageHandler;
 import com.matoski.adbm.service.ManagerService;
+import com.matoski.adbm.tasks.NetworkStatusChecker;
 import com.matoski.adbm.util.NetworkUtil;
 import com.matoski.adbm.util.ServiceUtil;
 
@@ -31,6 +34,23 @@ import com.matoski.adbm.util.ServiceUtil;
  * @author Ilija Matoski (ilijamt@gmail.com)
  */
 public class MainActivity extends Activity {
+
+	private final class MyNetworkStatusChecker extends NetworkStatusChecker {
+
+		@Override
+		protected void onPostExecute(AdbStateEnum result) {
+			super.onPostExecute(result);
+			updateNetworkDependentScreenDetails(result);
+		}
+
+		@Override
+		protected void onProgressUpdate(String... messages) {
+			super.onProgressUpdate(messages);
+			for (String message : messages) {
+				addItem(message);
+			}
+		}
+	}
 
 	private static final String LOG_TAG = MainActivity.class.getName();
 
@@ -59,18 +79,34 @@ public class MainActivity extends Activity {
 	 */
 	private ManagerService service;
 
+	protected IMessageHandler handler = new IMessageHandler() {
+
+		@Override
+		public void message(String message) {
+			addItem(message);
+		}
+
+		@Override
+		public void update(AdbStateEnum state) {
+			Log.w(LOG_TAG, "Update through handler");
+			updateScreenDetails(false, state);
+		}
+	};
+
 	/** Interface connection to the {@link ManagerService} service */
 	private ServiceConnection mConnection = new ServiceConnection() {
 
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder binder) {
 			service = ((ManagerService.ServiceBinder) binder).getService();
+			service.setHandler(handler);
 			if (prefs.getBoolean(Constants.KEY_ADB_START_ON_KNOWN_WIFI,
 					Constants.ADB_START_ON_KNOWN_WIFI)) {
-				service.AutoConnectionAdb();
+				service.autoConnectionAdb();
 
+			} else {
+				updateScreenDetails();
 			}
-			updateScreenDetails();
 		}
 
 		@Override
@@ -134,32 +170,6 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	private void toggleNetworkState(boolean isActive) {
-
-		if (isActive) {
-			switch (service.stopNetworkADB()) {
-			case ACTIVE:
-				addItem("ADB service failed to stop");
-				break;
-
-			case NOT_ACTIVE:
-				addItem("ADB service stoped successfully");
-				break;
-			}
-		} else {
-
-			switch (service.startNetworkADB()) {
-			case ACTIVE:
-				addItem("ADB service started successfully");
-				break;
-
-			case NOT_ACTIVE:
-				addItem("ADB service failed to start");
-				break;
-			}
-		}
-	}
-	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -196,7 +206,7 @@ public class MainActivity extends Activity {
 								toggleNetworkState(!isChecked);
 							}
 
-							updateScreenDetails();
+							// updateScreenDetails();
 
 						}
 
@@ -219,8 +229,8 @@ public class MainActivity extends Activity {
 			ServiceUtil.start(getApplicationContext(), 0, this.alarmTimeout);
 		}
 
+		updateScreenDetails(false, AdbStateEnum.NOT_ACTIVE);
 		this.doBindService();
-		this.updateScreenDetails();
 	}
 
 	/*
@@ -241,6 +251,17 @@ public class MainActivity extends Activity {
 		super.onDestroy();
 	}
 
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		switch (keyCode) {
+		case KeyEvent.KEYCODE_BACK:
+			moveTaskToBack(true);
+			return true;
+		}
+
+		return false;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -257,7 +278,7 @@ public class MainActivity extends Activity {
 		case R.id.action_adb:
 			if (this.service != null) {
 				toggleNetworkState(item.isChecked());
-				this.updateScreenDetails();
+				// this.updateScreenDetails();
 			}
 			return true;
 
@@ -279,13 +300,13 @@ public class MainActivity extends Activity {
 	protected void onPause() {
 		super.onPause();
 		this.addItem("ADB Manager activity paused");
-		this.updateScreenDetails();
+		// this.updateScreenDetails();
 	}
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		this.mMenuADB = (MenuItem) menu.findItem(R.id.action_adb);
-		this.updateScreenDetails();
+		// this.updateScreenDetails();
 		return true;
 	}
 
@@ -299,12 +320,46 @@ public class MainActivity extends Activity {
 		super.onResume();
 		this.addItem("ADB Manager resumed");
 		this.updateScreenDetails();
+	};
+
+	private void toggleNetworkState(boolean isActive) {
+
+		if (isActive) {
+			this.service.stopNetworkADB();
+		} else {
+			this.service.startNetworkADB();
+		}
+	}
+
+	private final void updateNetworkDependentScreenDetails(
+			AdbStateEnum stateEnum) {
+
+		// update the view status
+		viewStatus.setText(service == null ? R.string.stopped
+				: (stateEnum == AdbStateEnum.ACTIVE ? R.string.running
+						: R.string.stopped));
+
+		// update the toggle button
+		mSsButton.setChecked(service == null ? false
+				: stateEnum == AdbStateEnum.ACTIVE);
+
+		// menu item for ADB
+		if (mMenuADB != null) {
+			mMenuADB.setChecked(service == null ? false
+					: stateEnum == AdbStateEnum.ACTIVE);
+		}
+
+	}
+
+	private void updateScreenDetails() {
+		updateScreenDetails(true, AdbStateEnum.NOT_ACTIVE);
 	}
 
 	/**
 	 * Update details.
 	 */
-	private void updateScreenDetails() {
+	private void updateScreenDetails(boolean bCheckNetworkState,
+			AdbStateEnum stateEnum) {
 
 		this.addItem("Updating screen details");
 
@@ -312,9 +367,6 @@ public class MainActivity extends Activity {
 
 		this.viewServiceStatus.setText(this.service == null ? R.string.stopped
 				: R.string.running);
-		this.viewStatus.setText(this.service == null ? R.string.stopped
-				: (this.service.isNetworkADBRunning() ? R.string.running
-						: R.string.stopped));
 
 		String ip = NetworkUtil.getLocalIPAddress(IPMode.ipv4);
 		String port = this.prefs.getString(Constants.KEY_ADB_PORT,
@@ -327,25 +379,16 @@ public class MainActivity extends Activity {
 		}
 
 		this.mSsButton.setEnabled(this.service != null);
-		this.mSsButton.setChecked(this.service == null ? false : this.service
-				.isNetworkADBRunning());
 
 		if (this.mMenuADB != null) {
-			this.mMenuADB.setChecked(this.service == null ? false
-					: this.service.isNetworkADBRunning());
 			this.mMenuADB.setEnabled(this.service != null);
-
-		}
-	}
-
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		switch (keyCode) {
-		case KeyEvent.KEYCODE_BACK:
-			moveTaskToBack(true);
-			return true;
 		}
 
-		return false;
+		if (bCheckNetworkState) {
+			(new MyNetworkStatusChecker()).execute();
+		} else {
+			updateNetworkDependentScreenDetails(stateEnum);
+		}
+
 	}
 }

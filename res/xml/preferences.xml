@@ -13,7 +13,7 @@
             android:title="@string/service_general_start_on_boot" />
 
         <ListPreference
-            android:defaultValue="120"
+            android:defaultValue="10"
             android:dependency="start_on_boot"
             android:entries="@array/time_delay_entires"
             android:entryValues="@array/time_delay_values"
@@ -22,7 +22,7 @@
             android:summary="@string/service_general_start_delay_summary"
             android:title="@string/service_general_start_delay" />
         <ListPreference
-            android:defaultValue="30"
+            android:defaultValue="120"
             android:dependency="start_on_boot"
             android:entries="@array/time_delay_entires"
             android:entryValues="@array/time_delay_values"

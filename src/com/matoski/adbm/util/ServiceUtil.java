@@ -10,8 +10,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Bundle;
 import android.util.Log;
 
+import com.matoski.adbm.Constants;
 import com.matoski.adbm.receiver.MyStartServiceReceiver;
 import com.matoski.adbm.service.ManagerService;
 
@@ -83,5 +85,21 @@ public class ServiceUtil {
 		Log.i(LOG_TAG, "Service is not running");
 		return false;
 	}
+	
+	public static void runServiceAction(Context context, String action) {
+		ServiceUtil.runServiceAction(context, action, null);
+	}
+	
+	public static void runServiceAction(Context context, String action, Bundle bundle) {
+		Intent mServiceIntent = new Intent(context, ManagerService.class);
+		mServiceIntent.putExtra(Constants.EXTRA_ACTION, action);
+		if ( bundle != null ) { 
+			mServiceIntent.putExtras(bundle);
+		}
+		Log.d(LOG_TAG, String.format("Running action: %s", action));
+		context.startService(mServiceIntent);
+	}
+
+
 	
 }
