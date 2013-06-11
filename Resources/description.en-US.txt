@@ -1,5 +1,7 @@
 ADB Manager, your one stop to developing more easily on Android.
 
+Warning: REQUIRES ROOT!
+
 The most automated, easy-to-use and stable ADB management tool with a great support.
 
 Features:
@@ -16,6 +18,8 @@ ADB manager enables you to automatically start ADB in network mode when you conn
 Developing in cafes/bars/trains/toilet/other places over WiFi? ADB Manager will switch ADB into wireless and back automatically.
 
 Future versions:
++ Investigate if possible to switch without root (able to do so from shell) 
+(If anyone is willing to help me with this for testing drop me an email, all my devices are rooted)
 + Auto awake on PACKAGE_ADDED broadcast
 + Always screen on in Wireless ADB mode
 + Delay between switching states
@@ -30,6 +34,9 @@ Used to automatically start the service on the boot of the device, how long shou
 + android.permission.ACCESS_NETWORK_STATE
    android.permission.ACCESS_WIFI_STATE
 Used to automate the switching between the the ADB states
+
++ android.permission.INTERNET
+Used to retrieve the IP, as it crashes when checking for the IP address without this permission.
 
 Known issues:
 On API 8, the menu icons look a little weird on LDPI devices.
