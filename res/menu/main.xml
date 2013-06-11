@@ -1,12 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-        <item
+    <item
         android:id="@+id/action_refresh"
         android:icon="@drawable/ic_action_refresh"
         android:showAsAction="ifRoom"
         android:title="@string/refresh"
         android:visible="true"/>
-    
     <item
         android:id="@+id/action_settings"
         android:enabled="true"
@@ -14,7 +13,6 @@
         android:showAsAction="ifRoom"
         android:title="@string/action_settings"
         android:visible="true"/>
-        
     <item
         android:id="@+id/action_clear_list"
         android:enabled="true"
@@ -22,7 +20,6 @@
         android:showAsAction="ifRoom"
         android:title="@string/clear"
         android:visible="true"/>
-    
     <item
         android:id="@+id/action_adb"
         android:checkable="true"
@@ -32,5 +29,17 @@
         android:showAsAction="never"
         android:title="@string/adb"
         android:visible="true"/>
-    
+    <item
+        android:id="@+id/action_about"
+        android:icon="@android:drawable/ic_menu_help"
+        android:showAsAction="ifRoom"
+        android:title="@string/about"
+        android:visible="true"/>
+    <item
+        android:id="@+id/action_change_log"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:showAsAction="ifRoom"
+        android:title="@string/change_log"
+        android:visible="true"/>
+
 </menu>

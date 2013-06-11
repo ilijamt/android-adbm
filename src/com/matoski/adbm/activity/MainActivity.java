@@ -291,13 +291,18 @@ public class MainActivity extends Activity {
 		case R.id.action_adb:
 			if (this.service != null) {
 				toggleNetworkState(item.isChecked());
-				// this.updateScreenDetails();
 			}
 			return true;
-
+		case R.id.action_about:
+			this.addItem("Openning " + item.getTitle());
+			startActivity(new Intent(this, AboutActivity.class));
+			return true;
+		case R.id.action_change_log:
+			this.addItem("Openning " + item.getTitle());
+			startActivity(new Intent(this, ChangeLogActivity.class));
+			return true;
 		case R.id.action_clear_list:
 			this.mList.setText("");
-			// this.counter = 0;
 			return true;
 		}
 

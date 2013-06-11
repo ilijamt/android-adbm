@@ -1,0 +1,37 @@
+0.8.4
+-----
+Features: 
++ Added About menu
++ Added Change Log menu
+
+Bugfixes:
++ Various optimizations and bugfixes
+
+0.8.3
+-----
+Features:
++ Added the ability to make the notification permanent or be able to clear it
+
+Bugfixes:
++ ADB Network status not updating properly
+
+0.8.2
+-----
+Features:
++ Added new icon for the states, now it has different icons for various states.
+  White overlay: No WiFi connections
+  Sky blue overlay: WiFi connection available but no connections
+  Yellow overlay: WiFi connected, and ADB is running in network state
+
+Bugfixes:
++ Sometimes the DISCONNECT event didn't update the notification bar
+
+0.8.0 - Initial release
+-----------------------
+
+Features:
++ Easy control and access details from notification bar
++ Auto connect on saved WiFi networks
++ Auto start on boot, you can select if you want to or not from the preferences screen
++ Automatically switch between USB and NETWORK when you disconnect/connect from/to WiFi
++ Configurable service management

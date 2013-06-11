@@ -29,6 +29,9 @@
     <string name="save">Save</string>
     <string name="cancel">Cancel</string> 
     <string name="label">label</string>
+    <string name="about">About</string>
+    <string name="no_data">No data available</string>
+    <string name="change_log">Change Log</string>
     
 
     <!-- Service -->
