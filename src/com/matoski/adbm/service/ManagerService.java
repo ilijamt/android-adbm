@@ -31,6 +31,8 @@ import com.matoski.adbm.enums.AdbStateEnum;
 import com.matoski.adbm.interfaces.IMessageHandler;
 import com.matoski.adbm.pojo.IP;
 import com.matoski.adbm.pojo.Model;
+import com.matoski.adbm.tasks.NetworkStatusChecker;
+import com.matoski.adbm.tasks.RootCommandExecuter;
 import com.matoski.adbm.util.NetworkUtil;
 import com.matoski.adbm.util.PreferenceUtil;
 
@@ -61,6 +63,7 @@ public class ManagerService extends Service {
 	private int NOTIFICATION = R.string.service_name;
 
 	private boolean bNetworkADBStatus = false;
+	private AdbStateEnum mAdbState = AdbStateEnum.NOT_ACTIVE;
 
 	private long mADBPort = Constants.ADB_PORT;
 	private boolean mShowNotification = Constants.SHOW_NOTIFICATIONS;
@@ -92,17 +95,21 @@ public class ManagerService extends Service {
 		}
 	}
 
-	public AdbStateEnum toggleADB() {
-
-		if (this.isNetworkADBRunning()) {
-			return this.stopNetworkADB();
-		}
-
-		return this.startNetworkADB();
-
+	private void triggerBoundActivityUpdate() {
+		triggerBoundActivityUpdate(mAdbState);
 	}
 
-	public void AutoConnectionAdb() {
+	private void triggerBoundActivityUpdate(AdbStateEnum state) {
+		if (handler != null) {
+			handler.update(state);
+		}
+	}
+
+	public void toggleADB() {
+		(new MyToggleNetworkAdb()).execute();
+	}
+
+	public void autoConnectionAdb() {
 
 		if (this.isValidConnectionToWiFi()) {
 			this.startNetworkADB();
@@ -110,11 +117,75 @@ public class ManagerService extends Service {
 
 	}
 
-	public boolean isNetworkADBRunning() {
-		Log.i(LOG_TAG,
-				"Is network ADB running? "
-						+ Boolean.toString(this.bNetworkADBStatus));
-		return this.bNetworkADBStatus;
+	private final class MyRootCommandExecuter extends RootCommandExecuter {
+
+		@Override
+		protected void onProgressUpdate(String... messages) {
+			super.onProgressUpdate(messages);
+			for (String message : messages) {
+				addItem(message);
+			}
+		}
+
+		@Override
+		protected void onPostExecute(AdbStateEnum result) {
+			super.onPostExecute(result);
+			bNetworkADBStatus = result == AdbStateEnum.ACTIVE;
+			mAdbState = result;
+			notificationUpdate();
+		}
+
+	}
+
+	private final class MyToggleNetworkAdb extends NetworkStatusChecker {
+
+		@Override
+		protected void onProgressUpdate(String... messages) {
+			super.onProgressUpdate(messages);
+			for (String message : messages) {
+				addItem(message);
+			}
+		}
+
+		@Override
+		protected void onPostExecute(AdbStateEnum result) {
+			super.onPostExecute(result);
+			Log.i(LOG_TAG, "Toggling the ADB state: " + result.toString());
+			bNetworkADBStatus = result == AdbStateEnum.ACTIVE;
+			mAdbState = result;
+			switch (result) {
+			case ACTIVE:
+				stopNetworkADB();
+				break;
+
+			case NOT_ACTIVE:
+				startNetworkADB();
+			}
+		}
+
+	}
+
+	private final class MyNetworkStatusChecker extends NetworkStatusChecker {
+
+		@Override
+		protected void onProgressUpdate(String... messages) {
+			super.onProgressUpdate(messages);
+			for (String message : messages) {
+				addItem(message);
+			}
+		}
+
+		@Override
+		protected void onPostExecute(AdbStateEnum result) {
+			super.onPostExecute(result);
+			bNetworkADBStatus = result == AdbStateEnum.ACTIVE;
+			mAdbState = result;
+			notificationUpdate();
+		}
+	}
+
+	public void isNetworkADBRunning() {
+		(new MyNetworkStatusChecker()).execute();
 	}
 
 	/**
@@ -175,20 +246,43 @@ public class ManagerService extends Service {
 	}
 
 	public void notificationUpdate(boolean update) {
+		notificationUpdate(update, bNetworkADBStatus);
+	}
+
+	public void notificationUpdateRemoteOnly(boolean isNetworkADBRunning) {
+
+		this.mShowNotification = this.preferences.getBoolean(
+				Constants.KEY_NOTIFICATIONS, Constants.SHOW_NOTIFICATIONS);
+
+		boolean update = mShowNotification;
 
 		Log.i(LOG_TAG,
-				"Triggered notification update: "
-						+ Boolean.toString(this.mShowNotification));
+				"Triggered notification update: " + Boolean.toString(update));
 
 		this.addItem("Triggered notification update: "
-				+ Boolean.toString(this.mShowNotification));
+				+ Boolean.toString(update));
 
 		if (update) {
-			this.showNotification();
+			showNotification(isNetworkADBRunning, true);
 		} else {
 			this.removeNotification();
 		}
 
+	}
+
+	public void notificationUpdate(boolean update, boolean isNetworkADBRunning) {
+
+		Log.i(LOG_TAG,
+				"Triggered notification update: " + Boolean.toString(update));
+
+		this.addItem("Triggered notification update: "
+				+ Boolean.toString(update));
+
+		if (update) {
+			showNotification(isNetworkADBRunning);
+		} else {
+			this.removeNotification();
+		}
 	}
 
 	@Override
@@ -229,11 +323,13 @@ public class ManagerService extends Service {
 		this.gsonType = new TypeToken<ArrayList<Model>>() {
 		}.getType();
 
+		this.notificationUpdate();
+
 		if (this.ADB_START_ON_KNOWN_WIFI && this.isValidConnectionToWiFi()) {
 			this.startNetworkADB();
 		}
 
-		this.notificationUpdate();
+		(new MyNetworkStatusChecker()).execute();
 
 	}
 
@@ -253,6 +349,33 @@ public class ManagerService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		String action = "No available action";
+
+		try {
+
+			action = intent.getExtras().getString(Constants.EXTRA_ACTION);
+
+			Log.d(LOG_TAG, String.format("Running action: %s", action));
+
+			if (action.equals(Constants.KEY_ACTION_ADB_STOP)) {
+				this.stopNetworkADB();
+			} else if (action.equals(Constants.KEY_ACTION_ADB_START)) {
+				this.startNetworkADB();
+			} else if (action.equals(Constants.KEY_ACTION_AUTO_WIFI)) {
+				this.autoConnectionAdb();
+			} else if (action.equals(Constants.KEY_ACTION_UPDATE_NOTIFICATION)) {
+				this.notificationUpdate();
+			} else if (action.equals(Constants.KEY_ACTION_ADB_TOGGLE)) {
+				this.toggleADB();
+			} else {
+				Log.e(LOG_TAG, String.format("Invalid action: %", action));
+			}
+
+		} catch (Exception e) {
+			// Log.w(LOG_TAG, e.getMessage(), e);
+		}
+
+		Log.i(LOG_TAG, "onStartCommand: " + action);
 		return Service.START_STICKY;
 	}
 
@@ -266,6 +389,7 @@ public class ManagerService extends Service {
 	private void removeNotification() {
 		Log.d(LOG_TAG, "Removing notification");
 		this.mNM.cancelAll();
+		triggerBoundActivityUpdate();
 	}
 
 	/**
@@ -276,7 +400,12 @@ public class ManagerService extends Service {
 		this.handler = handler;
 	}
 
-	private boolean showNotification() {
+	private void showNotification(boolean isNetworkADBRunning) {
+		showNotification(isNetworkADBRunning, false);
+	}
+
+	private void showNotification(boolean isNetworkADBRunning,
+			boolean dontTriggerHandlerUpdate) {
 
 		Log.d(LOG_TAG, "Prepearing notification bar");
 
@@ -294,7 +423,7 @@ public class ManagerService extends Service {
 
 		if (networkInfo.isConnected()) {
 
-			if (this.isNetworkADBRunning()) {
+			if (isNetworkADBRunning) {
 				stringADB = "ADB service is running";
 				stringIP = String.format(
 						getResources().getString(R.string.ip_and_port),
@@ -311,7 +440,8 @@ public class ManagerService extends Service {
 		}
 
 		builder.setSmallIcon(imageViewId);
-		builder.setContentTitle("ADB Manager");
+		builder.setContentTitle(stringADB);
+		builder.setContentText(stringIP);
 		builder.setContentIntent(PendingIntent.getActivity(
 				getApplicationContext(), 0,
 				new Intent(this, MainActivity.class), 0));
@@ -323,17 +453,6 @@ public class ManagerService extends Service {
 		remoteView.setTextViewText(R.id.notification_title, stringADB);
 		remoteView.setTextViewText(R.id.notification_text, stringIP);
 
-		// Intent imageClickIntent = new Intent(getBaseContext(),
-		// HelperIntentService.class);
-		// imageClickIntent.putExtra(Constants.EXTRA_ACTION,
-		// Constants.KEY_ACTION_ADB_TOGGLE);
-		// PendingIntent pendingIntent = PendingIntent.getActivity(
-		// getBaseContext(), 0, imageClickIntent,
-		// PendingIntent.FLAG_UPDATE_CURRENT);
-		//
-		// remoteView.setOnClickPendingIntent(R.id.notification_image,
-		// pendingIntent);
-		
 		builder.setContent(remoteView);
 
 		Notification notification = builder.build();
@@ -342,69 +461,38 @@ public class ManagerService extends Service {
 
 		this.mNM.notify(NOTIFICATION, notification);
 
-		return true;
+		if (!dontTriggerHandlerUpdate) {
+			triggerBoundActivityUpdate();
+		}
+
 	}
 
-	public AdbStateEnum startNetworkADB() {
+	public void startNetworkADB() {
 		Log.i(LOG_TAG, "Starting network ADB.");
 
 		NetworkInfo networkInfo = mConnectivityManager
 				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
-		if (!networkInfo.isConnected()) {
+		if (networkInfo.isConnected()) {
+
+			this.mADBPort = Long.parseLong(PreferenceUtil.getString(
+					getBaseContext(), Constants.KEY_ADB_PORT,
+					Constants.ADB_PORT));
+
+			(new MyRootCommandExecuter()).execute(new String[] {
+					"setprop service.adb.tcp.port "
+							+ Long.toString(this.mADBPort), "stop adbd",
+					"start adbd" });
+		} else {
 			this.addItem("No WiFi connection available");
-			return AdbStateEnum.NOT_ACTIVE;
 		}
-
-		this.mADBPort = Long.parseLong(PreferenceUtil.getString(
-				getBaseContext(), Constants.KEY_ADB_PORT, Constants.ADB_PORT));
-
-		// if (Shell.SU.available()) {
-		//
-		// try {
-		// Shell.SU.run(new String[] {
-		// "setprop service.adb.tcp.port " + this.mADBPort,
-		// "stop adb", "start adb" });
-		// this.bNetworkADBStatus = true;
-		//
-		// } catch (Exception e) {
-		// this.bNetworkADBStatus = false;
-		// Log.e(LOG_TAG, e.getMessage());
-		// }
-		//
-		// } else {
-		// this.addItem("Couldn't get SU access.");
-		// return AdbStateEnum.NOT_ACTIVE;
-		// }
-
-		this.bNetworkADBStatus = true;
-		this.notificationUpdate();
-		return this.bNetworkADBStatus ? AdbStateEnum.ACTIVE
-				: AdbStateEnum.NOT_ACTIVE;
 	}
 
-	public AdbStateEnum stopNetworkADB() {
+	public void stopNetworkADB() {
 		Log.i(LOG_TAG, "Stopping network ADB.");
+		(new MyRootCommandExecuter()).execute(new String[] {
+				"setprop service.adb.tcp.port -1", "stop adbd", "start adbd" });
 
-		// if (Shell.SU.available()) {
-		//
-		// try {
-		// Shell.SU.run(new String[] { "setprop service.adb.tcp.port -1",
-		// "stop adb", "start adb" });
-		// this.bNetworkADBStatus = false;
-		// } catch (Exception e) {
-		// Log.e(LOG_TAG, e.getMessage());
-		// }
-		//
-		// } else {
-		// this.addItem("Couldn't get SU access.");
-		// return AdbStateEnum.NOT_ACTIVE;
-		// }
-
-		this.bNetworkADBStatus = false;
-		this.notificationUpdate();
-		return this.bNetworkADBStatus ? AdbStateEnum.ACTIVE
-				: AdbStateEnum.NOT_ACTIVE;
 	}
 
 }

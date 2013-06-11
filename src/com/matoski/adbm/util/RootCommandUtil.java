@@ -11,6 +11,10 @@ public class RootCommandUtil {
 	public static String formatCommand(String command) {
 		return command + RootCommandUtil.NEWLINE;
 	}
+	
+	public static boolean execute(String[] commands) {
+		return false;
+	}
 
 	public static boolean execute(String command) {
 
