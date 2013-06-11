@@ -46,6 +46,7 @@ public class MainActivity extends Activity {
 		@Override
 		protected void onPostExecute(AdbStateEnum result) {
 			super.onPostExecute(result);
+			updateScreenDetails(false, result);
 			updateNetworkDependentScreenDetails(result);
 			service.notificationUpdateRemoteOnly(result == AdbStateEnum.ACTIVE);
 		}
@@ -346,23 +347,44 @@ public class MainActivity extends Activity {
 	private final void updateNetworkDependentScreenDetails(
 			AdbStateEnum stateEnum) {
 
-		this.addItem("Updating screen details based on state result: " + stateEnum.toString());
+		this.addItem("Updating screen details based on state result: "
+				+ stateEnum.toString());
 
-		Log.d(LOG_TAG, "Updating screen details based on state result: " + stateEnum.toString());
-		
+		Log.d(LOG_TAG, "Updating screen details based on state result: "
+				+ stateEnum.toString());
+
+		final boolean bServiceNotRunning = service == null;
+		final boolean bIsNetworkAdbActive;
+
+		final int iResourceString;
+
+		switch (stateEnum) {
+		case ACTIVE:
+			bIsNetworkAdbActive = true;
+			iResourceString = bServiceNotRunning ? R.string.stopped
+					: R.string.running;
+			break;
+
+		case NOT_ACTIVE:
+			bIsNetworkAdbActive = false;
+			iResourceString = bServiceNotRunning ? R.string.stopped
+					: R.string.stopped;
+			break;
+
+		default:
+			bIsNetworkAdbActive = false;
+			iResourceString = R.string.stopped;
+		}
+
 		// update the view status
-		viewStatus.setText(service == null ? R.string.stopped
-				: (stateEnum == AdbStateEnum.ACTIVE ? R.string.running
-						: R.string.stopped));
+		viewStatus.setText(iResourceString);
 
 		// update the toggle button
-		mSsButton.setChecked(service == null ? false
-				: stateEnum == AdbStateEnum.ACTIVE);
+		mSsButton.setChecked(bIsNetworkAdbActive);
 
 		// menu item for ADB
 		if (mMenuADB != null) {
-			mMenuADB.setChecked(service == null ? false
-					: stateEnum == AdbStateEnum.ACTIVE);
+			mMenuADB.setChecked(bIsNetworkAdbActive);
 		}
 
 	}
@@ -391,7 +413,8 @@ public class MainActivity extends Activity {
 		if (ip == null) {
 			this.viewIP.setText(R.string.no_net_connection);
 		} else {
-			this.viewIP.setText(String.format("%s:%s", ip, port));
+			this.viewIP.setText(String.format(
+					getResources().getString(R.string.ip_and_port), ip, port));
 		}
 
 		this.mSsButton.setEnabled(this.service != null);

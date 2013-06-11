@@ -134,6 +134,7 @@ public class ManagerService extends Service {
 			bNetworkADBStatus = result == AdbStateEnum.ACTIVE;
 			mAdbState = result;
 			notificationUpdateRemoteOnly(result == AdbStateEnum.ACTIVE);
+			triggerBoundActivityUpdate(result);			
 		}
 
 	}
