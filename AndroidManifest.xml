@@ -35,7 +35,7 @@
         <!-- Main activity the main screen -->
         <activity
             android:name="com.matoski.adbm.activity.MainActivity"
-            android:configChanges="orientation"
+            android:configChanges="orientation|screenSize"
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_name"
             android:launchMode="singleTop" >

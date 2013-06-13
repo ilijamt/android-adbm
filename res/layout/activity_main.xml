@@ -110,6 +110,7 @@
             android:id="@+id/btn_ss_service"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:freezesText="true"
             android:textOff="@string/start_adb_network"
             android:textOn="@string/stop_adb_network" />
         

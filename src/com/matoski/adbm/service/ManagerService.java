@@ -1,6 +1,5 @@
 package com.matoski.adbm.service;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -129,10 +128,14 @@ public class ManagerService extends Service {
 
 	private final class MyRootCommandExecuter extends RootCommandExecuter {
 
+		@Override
+		protected String getString(int resourceId) {
+			return getResources().getString(resourceId);
+		}
+
 		public MyRootCommandExecuter() {
 			this.mUseRoot = preferences.getBoolean(Constants.KEY_USE_ROOT,
 					Constants.USE_ROOT);
-			this.map = mResourcesStringMap;
 		}
 
 		@Override
@@ -150,16 +153,30 @@ public class ManagerService extends Service {
 			mAdbState = result;
 			notificationUpdateRemoteOnly(result == AdbStateEnum.ACTIVE);
 			triggerBoundActivityUpdate(result);
+			switch (result) {
+			case ACTIVE:
+				acquireWakeLock();
+				break;
+
+			case NOT_ACTIVE:
+				releaseWakeLock();
+				break;
+
+			}
 		}
 
 	}
 
 	private final class MyToggleNetworkAdb extends NetworkStatusChecker {
 
+		@Override
+		protected String getString(int resourceId) {
+			return getResources().getString(resourceId);
+		}
+
 		public MyToggleNetworkAdb() {
 			this.mUseRoot = preferences.getBoolean(Constants.KEY_USE_ROOT,
 					Constants.USE_ROOT);
-			this.map = mResourcesStringMap;
 		}
 
 		@Override
@@ -190,10 +207,14 @@ public class ManagerService extends Service {
 
 	private final class MyNetworkStatusChecker extends NetworkStatusChecker {
 
+		@Override
+		protected String getString(int resourceId) {
+			return getResources().getString(resourceId);
+		}
+
 		public MyNetworkStatusChecker() {
 			this.mUseRoot = preferences.getBoolean(Constants.KEY_USE_ROOT,
 					Constants.USE_ROOT);
-			this.map = mResourcesStringMap;
 		}
 
 		@Override
@@ -343,20 +364,20 @@ public class ManagerService extends Service {
 		// this.wakeLock = this.mPowerManager.newWakeLock(
 		// PowerManager.PARTIAL_WAKE_LOCK, LOG_TAG);
 
-		String resourceName;
-		Integer resourceId;
-
-		for (Field field : R.string.class.getFields()) {
-			try {
-				resourceId = field.getInt(R.string.class);
-				resourceName = getResources().getString(resourceId);
-				mResourcesStringMap.put(resourceId, resourceName);
-				Log.w(LOG_TAG,
-						String.format("%d = %s", resourceId, resourceName));
-			} catch (Exception e) {
-				Log.e(LOG_TAG, e.getMessage(), e);
-			}
-		}
+//		String resourceName;
+//		Integer resourceId;
+//
+//		for (Field field : R.string.class.getFields()) {
+//			try {
+//				resourceId = field.getInt(R.string.class);
+//				resourceName = getResources().getString(resourceId);
+//				mResourcesStringMap.put(resourceId, resourceName);
+//				Log.w(LOG_TAG,
+//						String.format("%d = %s", resourceId, resourceName));
+//			} catch (Exception e) {
+//				Log.e(LOG_TAG, e.getMessage(), e);
+//			}
+//		}
 
 		this.mADBPort = Long.parseLong(PreferenceUtil.getString(
 				getBaseContext(), Constants.KEY_ADB_PORT, Constants.ADB_PORT));
@@ -493,43 +514,44 @@ public class ManagerService extends Service {
 
 		String action = "No available action";
 
-		if (extras != null) {
+		if (extras == null) {
+			Log.i(LOG_TAG, "onStartCommand: " + action);
+			return Service.START_STICKY;
+		}
 
-			try {
+		try {
 
-				action = extras.getString(Constants.EXTRA_ACTION);
+			action = extras.getString(Constants.EXTRA_ACTION);
 
-				Log.d(LOG_TAG, String.format("Running action: %s", action));
+			Log.d(LOG_TAG, String.format("Running action: %s", action));
 
-				if (action.equals(Constants.KEY_ACTION_ADB_STOP)) {
-					this.stopNetworkADB();
-				} else if (action.equals(Constants.KEY_ACTION_ADB_START)) {
-					this.startNetworkADB();
-				} else if (action.equals(Constants.KEY_ACTION_AUTO_WIFI)) {
-					this.autoConnectionAdb();
-				} else if (action
-						.equals(Constants.KEY_ACTION_UPDATE_NOTIFICATION)) {
-					this.notificationUpdate();
-				} else if (action.equals(Constants.KEY_ACTION_ADB_TOGGLE)) {
-					this.toggleADB();
-				} else if (action
-						.equals(Constants.KEY_ACTION_UPDATE_NOTIFICATION_NETWORK_ADB)) {
-					this.isNetworkADBRunning();
-				} else if (action.equals(Constants.KEY_UPDATE_WIDGETS)) {
-					this.updateWidgets(extras
-							.getIntArray(AppWidgetManager.EXTRA_APPWIDGET_IDS),
-							bNetworkADBStatus);
-				} else if (action.equals(Constants.KEY_WAKELOCK_ACQUIRE)) {
-					this.acquireWakeLock();
-				} else if (action.equals(Constants.KEY_WAKELOCK_RELEASE)) {
-					this.releaseWakeLock();
-				} else {
-					Log.e(LOG_TAG, String.format("Invalid action: %", action));
-				}
-
-			} catch (Exception e) {
-				Log.e(LOG_TAG, e.getMessage(), e);
+			if (action.equals(Constants.KEY_ACTION_ADB_STOP)) {
+				this.stopNetworkADB();
+			} else if (action.equals(Constants.KEY_ACTION_ADB_START)) {
+				this.startNetworkADB();
+			} else if (action.equals(Constants.KEY_ACTION_AUTO_WIFI)) {
+				this.autoConnectionAdb();
+			} else if (action.equals(Constants.KEY_ACTION_UPDATE_NOTIFICATION)) {
+				this.notificationUpdate();
+			} else if (action.equals(Constants.KEY_ACTION_ADB_TOGGLE)) {
+				this.toggleADB();
+			} else if (action
+					.equals(Constants.KEY_ACTION_UPDATE_NOTIFICATION_NETWORK_ADB)) {
+				this.isNetworkADBRunning();
+			} else if (action.equals(Constants.KEY_UPDATE_WIDGETS)) {
+				this.updateWidgets(extras
+						.getIntArray(AppWidgetManager.EXTRA_APPWIDGET_IDS),
+						bNetworkADBStatus);
+			} else if (action.equals(Constants.KEY_WAKELOCK_ACQUIRE)) {
+				this.acquireWakeLock();
+			} else if (action.equals(Constants.KEY_WAKELOCK_RELEASE)) {
+				this.releaseWakeLock();
+			} else {
+				Log.e(LOG_TAG, String.format("Invalid action: %", action));
 			}
+
+		} catch (Exception e) {
+			Log.e(LOG_TAG, e.getMessage(), e);
 		}
 
 		Log.i(LOG_TAG, "onStartCommand: " + action);

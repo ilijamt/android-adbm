@@ -11,6 +11,7 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,9 +44,14 @@ public class MainActivity extends Activity {
 
 	private final class MyNetworkStatusChecker extends NetworkStatusChecker {
 
+		@Override
+		protected String getString(int resourceId) {
+			return getResources().getString(resourceId);
+		}
+
 		public MyNetworkStatusChecker() {
-			this.mUseRoot = prefs.getBoolean(
-					Constants.KEY_USE_ROOT, Constants.USE_ROOT);
+			this.mUseRoot = prefs.getBoolean(Constants.KEY_USE_ROOT,
+					Constants.USE_ROOT);
 		}
 
 		@Override

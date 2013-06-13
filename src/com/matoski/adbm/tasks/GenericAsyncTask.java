@@ -13,7 +13,7 @@ public abstract class GenericAsyncTask<Params, Progress, Result> extends
 
 	protected SparseArray<String> map = new SparseArray<String>();
 
-	final protected String getString(int resourceId) {
+	protected String getString(int resourceId) {
 		String data = this.map.get(resourceId);
 
 		if (data == null) {
