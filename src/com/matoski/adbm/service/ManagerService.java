@@ -3,7 +3,6 @@ package com.matoski.adbm.service;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import android.app.Notification;
 import android.app.NotificationManager;
