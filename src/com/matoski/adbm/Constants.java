@@ -33,5 +33,7 @@ public class Constants {
 	public static final String KEY_ACTION_UPDATE_NOTIFICATION = "UPDATE_NOTIFICATION";
 	public static final String KEY_ACTION_UPDATE_NOTIFICATION_NETWORK_ADB = "UPDATE_NOTIFICATION_NETWORK_ADB";
 	public static final String KEY_UPDATE_WIDGETS = "UPDATE_WIDGETS";
+	public static final Object KEY_WAKELOCK_ACQUIRE = "WAKELOCK_ACQUIRE";
+	public static final Object KEY_WAKELOCK_RELEASE = "WAKELOCK_RELEASE";
 
 }

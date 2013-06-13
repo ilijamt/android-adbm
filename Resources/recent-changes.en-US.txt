@@ -1,8 +1,5 @@
-Features:
-+ Added new icon for the states, now it has different icons for various states.
-   White overlay: No WiFi connections
-   Sky blue overlay: WiFi connection available but no connections
-   Yellow overlay: WiFi connected, and ADB is running in network state
+Features: 
++ Added a Widget
 
 Bugfixes:
-+ Sometimes the DISCONNECT event didn't update the notification bar
++ Various optimizations and bugfixes

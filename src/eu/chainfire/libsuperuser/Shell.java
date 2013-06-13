@@ -38,6 +38,7 @@ import eu.chainfire.libsuperuser.StreamGobbler.OnLineListener;
  * Class providing functionality to execute commands in a (root) shell 
  */
 @SuppressLint("DefaultLocale")
+@SuppressWarnings("unused")
 public class Shell {
 	/**
 	 * <p>Runs commands using the supplied shell, and returns the output, or null in

@@ -1,7 +1,9 @@
 package com.matoski.adbm.service;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -19,10 +21,10 @@ import android.net.wifi.WifiManager;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.util.SparseArray;
 import android.widget.RemoteViews;
 
 import com.google.gson.Gson;
@@ -37,6 +39,7 @@ import com.matoski.adbm.pojo.IP;
 import com.matoski.adbm.pojo.Model;
 import com.matoski.adbm.tasks.NetworkStatusChecker;
 import com.matoski.adbm.tasks.RootCommandExecuter;
+import com.matoski.adbm.util.ArrayUtils;
 import com.matoski.adbm.util.NetworkUtil;
 import com.matoski.adbm.util.PreferenceUtil;
 import com.matoski.adbm.widgets.ControlWidgetProvider;
@@ -90,7 +93,7 @@ public class ManagerService extends Service {
 	 */
 	private IMessageHandler handler = null;
 
-	private PowerManager mPowerManager;
+	// private PowerManager mPowerManager;
 
 	/**
 	 * Add a message to the list queue
@@ -130,6 +133,7 @@ public class ManagerService extends Service {
 		public MyRootCommandExecuter() {
 			this.mUseRoot = preferences.getBoolean(Constants.KEY_USE_ROOT,
 					Constants.USE_ROOT);
+			this.map = mResourcesStringMap;
 		}
 
 		@Override
@@ -156,6 +160,7 @@ public class ManagerService extends Service {
 		public MyToggleNetworkAdb() {
 			this.mUseRoot = preferences.getBoolean(Constants.KEY_USE_ROOT,
 					Constants.USE_ROOT);
+			this.map = mResourcesStringMap;
 		}
 
 		@Override
@@ -186,6 +191,12 @@ public class ManagerService extends Service {
 
 	private final class MyNetworkStatusChecker extends NetworkStatusChecker {
 
+		public MyNetworkStatusChecker() {
+			this.mUseRoot = preferences.getBoolean(Constants.KEY_USE_ROOT,
+					Constants.USE_ROOT);
+			this.map = mResourcesStringMap;
+		}
+
 		@Override
 		protected void onProgressUpdate(String... messages) {
 			super.onProgressUpdate(messages);
@@ -214,7 +225,8 @@ public class ManagerService extends Service {
 	 */
 	public boolean isValidConnectionToWiFi() {
 
-		this.addItem("Checking if we have a valid connection to the auto connect list for WiFi");
+		this.addItem(getResources().getString(
+				R.string.item_check_if_we_have_valid_connection));
 		Log.d(LOG_TAG, "Do we have a walid connection for WiFi?");
 
 		ArrayList<Model> objects = gson.fromJson(
@@ -222,7 +234,8 @@ public class ManagerService extends Service {
 				gsonType);
 
 		if (null == objects) {
-			this.addItem("WiFi auto connect list is empty");
+			this.addItem(getResources().getString(
+					R.string.item_wifi_auto_connect_list_empty));
 			Log.d(LOG_TAG, "The WiFi auto connect list is empty");
 			return false;
 		}
@@ -241,18 +254,21 @@ public class ManagerService extends Service {
 		}
 
 		if (SSID == null) {
-			this.addItem("Couldn't retrieve the SSID for the WiFi network.");
+			this.addItem(getResources().getString(
+					R.string.item_retrieve_ssid_failed));
 			Log.w(LOG_TAG, "Couldn't retrieve the SSID for the WiFi network");
 			return false;
 		}
 
 		if (objects.contains(new Model(SSID))) {
-			this.addItem(SSID + " WiFi network is in the auto connect list.");
+			this.addItem(getResources().getString(
+					R.string.item_wifi_network_in_list, SSID));
 			Log.d(LOG_TAG, SSID + " WiFi network is in the auto connect list.");
 			return true;
 		}
 
-		this.addItem(SSID + " WiFi network is not in the auto connect list.");
+		this.addItem(getResources().getString(
+				R.string.item_wifi_network_not_in_list, SSID));
 		Log.d(LOG_TAG, SSID + " WiFi network is not in the auto connect list.");
 
 		return false;
@@ -275,11 +291,11 @@ public class ManagerService extends Service {
 
 		boolean update = mShowNotification;
 
-		Log.i(LOG_TAG,
-				"Triggered notification update: " + Boolean.toString(update));
+		this.addItem(getResources().getString(
+				R.string.item_triggered_notification_update,
+				Boolean.toString(update)));
 
-		this.addItem("Triggered notification update: "
-				+ Boolean.toString(update));
+		updateWidgets(isNetworkADBRunning);
 
 		if (update) {
 			showNotification(isNetworkADBRunning, true);
@@ -294,8 +310,11 @@ public class ManagerService extends Service {
 		Log.i(LOG_TAG,
 				"Triggered notification update: " + Boolean.toString(update));
 
-		this.addItem("Triggered notification update: "
-				+ Boolean.toString(update));
+		this.addItem(getResources().getString(
+				R.string.item_triggered_notification_update,
+				Boolean.toString(update)));
+
+		updateWidgets(isNetworkADBRunning);
 
 		if (update) {
 			showNotification(isNetworkADBRunning);
@@ -320,9 +339,25 @@ public class ManagerService extends Service {
 		this.mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		this.preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-		this.mPowerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-		this.wakeLock = this.mPowerManager.newWakeLock(
-				PowerManager.PARTIAL_WAKE_LOCK, LOG_TAG);
+		// this.mPowerManager = (PowerManager)
+		// getSystemService(Context.POWER_SERVICE);
+		// this.wakeLock = this.mPowerManager.newWakeLock(
+		// PowerManager.PARTIAL_WAKE_LOCK, LOG_TAG);
+
+		String resourceName;
+		Integer resourceId;
+
+		for (Field field : R.string.class.getFields()) {
+			try {
+				resourceId = field.getInt(R.string.class);
+				resourceName = getResources().getString(resourceId);
+				mResourcesStringMap.put(resourceId, resourceName);
+				Log.w(LOG_TAG,
+						String.format("%d = %s", resourceId, resourceName));
+			} catch (Exception e) {
+				Log.e(LOG_TAG, e.getMessage(), e);
+			}
+		}
 
 		this.mADBPort = Long.parseLong(PreferenceUtil.getString(
 				getBaseContext(), Constants.KEY_ADB_PORT, Constants.ADB_PORT));
@@ -371,6 +406,10 @@ public class ManagerService extends Service {
 	}
 
 	public void updateWidgets() {
+		updateWidgets(bNetworkADBStatus);
+	}
+
+	public void updateWidgets(boolean isNetworkADBRunning) {
 
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this
 				.getApplicationContext());
@@ -391,6 +430,10 @@ public class ManagerService extends Service {
 		NetworkInfo networkInfo = mConnectivityManager
 				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
+		Log.d(LOG_TAG, "Updating widgets through the service");
+		Log.d(LOG_TAG, String.format("Widget has queued for been updated: %s",
+				ArrayUtils.join(allWidgetsIds, ",")));
+
 		IP ip = NetworkUtil.getLocalAddress();
 
 		String stringADB = getResources().getString(
@@ -398,7 +441,7 @@ public class ManagerService extends Service {
 		String stringIP = getResources().getString(
 				R.string.status_no_wifi_connection);
 
-		int imageViewId = R.drawable.ic_launcher;
+		int imageViewId = R.drawable.play;
 
 		if (networkInfo.isConnected()) {
 
@@ -408,35 +451,38 @@ public class ManagerService extends Service {
 				stringIP = String.format(
 						getResources().getString(R.string.ip_and_port),
 						ip.ipv4, Long.toString(this.mADBPort));
-				imageViewId = R.drawable.ic_launcher_running;
+				imageViewId = R.drawable.stop;
 			} else {
 				stringIP = getResources().getString(
 						R.string.status_wifi_connection_available);
-				imageViewId = R.drawable.ic_launcher_wifi;
 			}
 
 		}
 
 		for (int widgetId : allWidgetsIds) {
 
-			RemoteViews remoteViews = new RemoteViews(getApplicationContext()
+			RemoteViews remoteView = new RemoteViews(getApplicationContext()
 					.getPackageName(), R.layout.control_widget);
 
-			remoteViews.setTextViewText(R.id.notification_title, stringADB);
-			remoteViews.setTextViewText(R.id.notification_text, stringIP);
+			remoteView.setTextViewText(R.id.notification_title, stringADB);
+			remoteView.setTextViewText(R.id.notification_text, stringIP);
+			remoteView.setImageViewResource(R.id.notification_image,
+					imageViewId);
 
-			// // Register an onClickListener
-			// Intent intent = new Intent(getApplicationContext(),
-			// ControlWidgetProvider.class);
-			//
-			// intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-			// intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, widgetId);
-			//
-			// PendingIntent pendingIntent = PendingIntent.getBroadcast(
-			// getApplicationContext(), 0, intent,
-			// PendingIntent.FLAG_UPDATE_CURRENT);
-			// remoteViews.setOnClickPendingIntent(R.id.update, pendingIntent);
-			widgetManager.updateAppWidget(widgetId, remoteViews);
+			Intent mServiceIntent = new Intent(getApplicationContext(),
+					ManagerService.class);
+			mServiceIntent.putExtra(Constants.EXTRA_ACTION,
+					Constants.KEY_ACTION_ADB_TOGGLE);
+
+			PendingIntent pendingIntent = PendingIntent.getService(
+					getApplicationContext(), 0, mServiceIntent, 0);
+
+			remoteView.setOnClickPendingIntent(R.id.notification_image,
+					pendingIntent);
+
+			addItem(getResources().getString(R.string.item_widget_update,
+					widgetId));
+			widgetManager.updateAppWidget(widgetId, remoteView);
 
 		}
 	}
@@ -474,6 +520,10 @@ public class ManagerService extends Service {
 					this.updateWidgets(extras
 							.getIntArray(AppWidgetManager.EXTRA_APPWIDGET_IDS),
 							bNetworkADBStatus);
+				} else if (action.equals(Constants.KEY_WAKELOCK_ACQUIRE)) {
+					this.acquireWakeLock();
+				} else if (action.equals(Constants.KEY_WAKELOCK_RELEASE)) {
+					this.releaseWakeLock();
 				} else {
 					Log.e(LOG_TAG, String.format("Invalid action: %", action));
 				}
@@ -600,7 +650,9 @@ public class ManagerService extends Service {
 							+ Long.toString(this.mADBPort), "stop adbd",
 					"start adbd" });
 		} else {
-			this.addItem("No WiFi connection available");
+			this.addItem(getResources().getString(
+					R.string.item_no_wifi_connection_available));
+			this.isNetworkADBRunning();
 		}
 	}
 
@@ -611,20 +663,23 @@ public class ManagerService extends Service {
 
 	}
 
-	private PowerManager.WakeLock wakeLock;
+	final public SparseArray<String> mResourcesStringMap = new SparseArray<String>();
+
+	// private PowerManager.WakeLock wakeLock;
 
 	public void acquireWakeLock() {
 
-		if (!wakeLock.isHeld()) {
-			wakeLock.acquire();
-		}
+		// if (!wakeLock.isHeld()) {
+		// wakeLock.acquire();
+		// }
+
 	}
 
 	public void releaseWakeLock() {
 
-		if (wakeLock.isHeld()) {
-			wakeLock.release();
-		}
+		// if (wakeLock.isHeld()) {
+		// wakeLock.release();
+		// }
 
 	}
 

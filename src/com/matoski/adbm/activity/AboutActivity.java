@@ -4,6 +4,7 @@ import com.matoski.adbm.R;
 
 public class AboutActivity extends BaseHelpActivity {
 
+	@SuppressWarnings("unused")
 	private static final String LOG_TAG = AboutActivity.class.getName();
 
 	@Override

@@ -25,7 +25,7 @@
         android:layout_marginTop="5dip"
         android:layout_toRightOf="@id/notification_image"
         android:scrollHorizontally="true"
-        android:text="@string/ip_and_port" />
+        android:text="@string/status_adb_service_not_running" />
 
     <TextView
         android:id="@+id/notification_text"
@@ -35,6 +35,6 @@
         android:layout_below="@+id/notification_title"
         android:layout_toRightOf="@id/notification_image"
         android:scrollHorizontally="true"
-        android:text="@string/ip_and_port" />
+        android:text="@string/status_no_wifi_connection" />
 
 </RelativeLayout>

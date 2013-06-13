@@ -24,7 +24,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <!-- To prevent the system from going to sleep -->
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- <uses-permission android:name="android.permission.WAKE_LOCK" /> -->
 
     <application
         android:allowBackup="true"
@@ -44,12 +44,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-            <!--
-                 <meta-data
-                android:name="eu.chainfire.supersu.meta.contentlogging.problematic"
-                android:value="true" />
-            -->
         </activity>
         <activity
             android:name="com.matoski.adbm.activity.MyPreferencesActivity"
@@ -91,33 +85,16 @@
         <receiver android:name="com.matoski.adbm.receiver.MyStartServiceReceiver" />
 
         <!-- Widget -->
-
         <receiver android:name="com.matoski.adbm.widgets.ControlWidgetProvider" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/control_widget" />
         </receiver>
-        <!--
-        <receiver
-            android:name="com.matoski.adbm.widgets.ControlWidgetProvider"
-            android:icon="@drawable/ic_launcher"
-            android:label="@string/adb_widget"
-            android:logo="@drawable/ic_launcher_running" >
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="android.intent.action.USER_PRESENT"/>
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/control_widget" /> 
-        </receiver>
-        -->
-
 
         <!-- For detecting if a new package has been installed on the system -->
         <receiver android:name="com.matoski.adbm.receiver.ActionPackageAdded" >

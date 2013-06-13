@@ -7,13 +7,14 @@
     android:padding="5dip" >
 
     <ImageButton
+        android:src="@drawable/play"
         android:id="@+id/notification_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="62dip"
+        android:layout_height="62dip"
         android:layout_alignParentLeft="true"
-        android:background="@drawable/play"
         android:contentDescription="@string/adb"
         android:hapticFeedbackEnabled="true"
+        android:scaleType="fitCenter"
         android:soundEffectsEnabled="true" />
 
     <TextView
@@ -25,7 +26,7 @@
         android:layout_marginTop="5dip"
         android:layout_toRightOf="@id/notification_image"
         android:scrollHorizontally="true"
-        android:text="@string/ip_and_port"
+        android:text="@string/status_adb_service_not_running"
         android:textSize="18sp" />
 
     <TextView
@@ -36,7 +37,7 @@
         android:layout_below="@+id/notification_title"
         android:layout_toRightOf="@id/notification_image"
         android:scrollHorizontally="true"
-        android:text="@string/ip_and_port"
+        android:text="@string/status_no_wifi_connection"
         android:textSize="16sp" />
 
 </RelativeLayout>

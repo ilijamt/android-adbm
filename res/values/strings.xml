@@ -80,10 +80,24 @@
     <string name="use_root_on">Will work normally with using root.</string>
     <string name="widget">Widget</string>
     <string name="adb_widget">ADB Manager Widget</string>
-    
     <string name="status_adb_service_not_running">ADB service is not running</string>
     <string name="status_no_wifi_connection">No WiFi connection</string>
     <string name="status_adb_service_running">ADB service is running</string>
     <string name="status_wifi_connection_available">WiFi connection available</string>
+    <string name="item_widget_update">The widget with id: %s has been updated</string>
+    <string name="item_no_wifi_connection_available">No WiFi connection available</string>
+    <string name="item_check_if_we_have_valid_connection">Checking if we have a valid connection to the auto connect list for WiFi?</string>
+    <string name="item_wifi_auto_connect_list_empty">WiFi auto connect list is empty</string>
+    <string name="item_retrieve_ssid_failed">Couldn\'t retrieve the SSID for the WiFi network</string>
+    <string name="item_wifi_network_in_list">WiFi network \'%s\' is in the auto connect list</string>
+    <string name="item_wifi_network_not_in_list">WiFi network \'%s\' not in the auto connect list</string>
+    <string name="item_triggered_notification_update">Triggered notification update: %s</string>
+    <string name="item_use_root">Use root: %s</string>
+    <string name="item_no_su_access">No superuser access available</string>
+    <string name="item_executing_commands">Executing commands</string>
+    <string name="item_root_access_denied">Root access denied</string>
+    <string name="item_executing_command">Executing command: %s</string>
+    <string name="item_fail_retrieve_network_status">Couldn\'t retrieve the adb network status</string>
+    <string name="item_network_status">Network status: %s</string>
 
 </resources>

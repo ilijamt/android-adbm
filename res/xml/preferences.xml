@@ -52,8 +52,8 @@
             android:persistent="true"
             android:summaryOff="@string/use_root_off"
             android:summaryOn="@string/use_root_on"
-            android:title="@string/root" />
-    </PreferenceCategory>
+            android:title="@string/root" />    
+        </PreferenceCategory>
     <PreferenceCategory android:title="@string/action_settings" >
         <EditTextPreference
             android:defaultValue="5555"

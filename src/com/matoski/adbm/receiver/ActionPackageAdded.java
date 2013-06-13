@@ -17,7 +17,7 @@ public class ActionPackageAdded extends BroadcastReceiver {
 		Log.i(LOG_TAG, String.format("Running action: %s", action));
 
 		if (action.equals(Intent.ACTION_PACKAGE_ADDED)) {
-
+			
 		}
 
 	}
