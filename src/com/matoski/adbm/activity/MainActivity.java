@@ -43,6 +43,11 @@ public class MainActivity extends Activity {
 
 	private final class MyNetworkStatusChecker extends NetworkStatusChecker {
 
+		public MyNetworkStatusChecker() {
+			this.mUseRoot = prefs.getBoolean(
+					Constants.KEY_USE_ROOT, Constants.USE_ROOT);
+		}
+
 		@Override
 		protected void onPostExecute(AdbStateEnum result) {
 			super.onPostExecute(result);

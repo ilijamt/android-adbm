@@ -23,16 +23,15 @@
     <string name="start_service">Start service</string>
     <string name="stop_service">Stop service</string>
     <string name="start_adb_network">Start Network ADB</string>
-    <string name="stop_adb_network">Stop Network ADB</string>    
+    <string name="stop_adb_network">Stop Network ADB</string>
     <string name="adb">ADB</string>
     <string name="info">info</string>
     <string name="save">Save</string>
-    <string name="cancel">Cancel</string> 
+    <string name="cancel">Cancel</string>
     <string name="label">label</string>
     <string name="about">About</string>
     <string name="no_data">No data available</string>
     <string name="change_log">Change Log</string>
-    
 
     <!-- Service -->
     <string name="service_name">ADB Manager Service</string>
@@ -50,7 +49,7 @@
     <string name="service_hideable_notification_bar">Notification hideable</string>
     <string name="service_hideable_notification_bar_on">You can remove the notification by swyping it away.</string>
     <string name="service_hideable_notification_bar_off">Notification is permanent cannot be removed.</string>
-    
+
     <!-- Generic -->
     <string name="service_general_settings">Service</string>
     <string name="service_general_start_on_boot">Start on boot</string>
@@ -67,13 +66,24 @@
     <string name="service_settings_start_adb">ADB Auto Start</string>
     <string name="service_settings_adb_port">ADB Port</string>
     <string name="service_settings_adb_port_summary">ADB will listen on port %d for connections.</string>
-
     <string name="settings_wifi_list">WiFi Autostart List</string>
     <string name="settings_wifi_list_summary">A list of wireless connection to which we should automatically start ADB on network.</string>
-    
+
     <!-- Main -->
     <string name="main_adb_command">adb connect %1$s:%2$s</string>
     <string name="ip_and_port">%1$s:%2$s</string>
     <string name="no_net_connection">No network connection available</string>
+
+    <!-- 0.9 -->
+    <string name="root">Root</string>
+    <string name="use_root_off">Will try to work without using root.</string>
+    <string name="use_root_on">Will work normally with using root.</string>
+    <string name="widget">Widget</string>
+    <string name="adb_widget">ADB Manager Widget</string>
+    
+    <string name="status_adb_service_not_running">ADB service is not running</string>
+    <string name="status_no_wifi_connection">No WiFi connection</string>
+    <string name="status_adb_service_running">ADB service is running</string>
+    <string name="status_wifi_connection_available">WiFi connection available</string>
 
 </resources>

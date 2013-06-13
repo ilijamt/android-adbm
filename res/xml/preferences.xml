@@ -38,7 +38,6 @@
             android:summaryOff="@string/service_show_notifications_off"
             android:summaryOn="@string/service_show_notifications_on"
             android:title="@string/service_show_notifications" />
-        
         <CheckBoxPreference
             android:defaultValue="false"
             android:dependency="show_notifications"
@@ -46,8 +45,14 @@
             android:persistent="true"
             android:summaryOff="@string/service_hideable_notification_bar_off"
             android:summaryOn="@string/service_hideable_notification_bar_on"
-            android:title="@string/service_hideable_notification_bar" />        
-        
+            android:title="@string/service_hideable_notification_bar" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="use_root"
+            android:persistent="true"
+            android:summaryOff="@string/use_root_off"
+            android:summaryOn="@string/use_root_on"
+            android:title="@string/root" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/action_settings" >
         <EditTextPreference
@@ -65,10 +70,10 @@
             android:summaryOff="@string/service_settings_start_adb_off"
             android:summaryOn="@string/service_settings_start_adb_on"
             android:title="@string/service_settings_start_adb" />
-        
+
         <Preference
-            android:key="wifi_button"
             android:dependency="auto_start_on_known_wifi"
+            android:key="wifi_button"
             android:persistent="false"
             android:summary="@string/settings_wifi_list_summary"
             android:title="@string/settings_wifi_list" />

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.matoski.adbm"
-    android:versionCode="5"
-    android:versionName="0.8.4" >
+    android:versionCode="7"
+    android:versionName="0.9" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -22,6 +22,9 @@
     <!-- To be able to control the network state and check the WiFi state -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <!-- To prevent the system from going to sleep -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -70,13 +73,10 @@
             </intent-filter>
         </receiver>
 
-        <!-- Execute on boot complete -->
+        <!-- For detecting connection changes -->
         <receiver android:name="com.matoski.adbm.receiver.ConnectionDetectionReceiver" >
             <intent-filter>
-
-                <!-- <action android:name="android.net.wifi.WIFI_STATE_CHANGED" /> -->
                 <action android:name="android.net.wifi.STATE_CHANGE" />
-                <!-- <action android:name="android.net.wifi.supplicant.CONNECTION_CHANGE" /> -->
             </intent-filter>
         </receiver>
 
@@ -89,6 +89,44 @@
 
         <!-- Starts the ADB Manager Service -->
         <receiver android:name="com.matoski.adbm.receiver.MyStartServiceReceiver" />
+
+        <!-- Widget -->
+
+        <receiver android:name="com.matoski.adbm.widgets.ControlWidgetProvider" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/control_widget" />
+        </receiver>
+        <!--
+        <receiver
+            android:name="com.matoski.adbm.widgets.ControlWidgetProvider"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/adb_widget"
+            android:logo="@drawable/ic_launcher_running" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.USER_PRESENT"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/control_widget" /> 
+        </receiver>
+        -->
+
+
+        <!-- For detecting if a new package has been installed on the system -->
+        <receiver android:name="com.matoski.adbm.receiver.ActionPackageAdded" >
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

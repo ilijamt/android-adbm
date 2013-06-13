@@ -7,11 +7,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.CheckBoxPreference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
@@ -74,6 +76,10 @@ public class MyPreferencesActivity extends PreferenceActivity {
 		final SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		final Context context = this;
+
+		final CheckBoxPreference mTryWithoutRoot = (CheckBoxPreference) findPreference(Constants.KEY_USE_ROOT);
+		mTryWithoutRoot
+				.setEnabled(Build.VERSION.SDK_INT > Constants.MINIMUM_SDK_WITHOUT_ROOT);
 
 		findPreference(Constants.KEY_NOTIFICATIONS)
 				.setOnPreferenceChangeListener(

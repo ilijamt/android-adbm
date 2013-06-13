@@ -7,6 +7,8 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,7 +17,9 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -35,6 +39,7 @@ import com.matoski.adbm.tasks.NetworkStatusChecker;
 import com.matoski.adbm.tasks.RootCommandExecuter;
 import com.matoski.adbm.util.NetworkUtil;
 import com.matoski.adbm.util.PreferenceUtil;
+import com.matoski.adbm.widgets.ControlWidgetProvider;
 
 public class ManagerService extends Service {
 
@@ -85,6 +90,8 @@ public class ManagerService extends Service {
 	 */
 	private IMessageHandler handler = null;
 
+	private PowerManager mPowerManager;
+
 	/**
 	 * Add a message to the list queue
 	 * 
@@ -120,6 +127,11 @@ public class ManagerService extends Service {
 
 	private final class MyRootCommandExecuter extends RootCommandExecuter {
 
+		public MyRootCommandExecuter() {
+			this.mUseRoot = preferences.getBoolean(Constants.KEY_USE_ROOT,
+					Constants.USE_ROOT);
+		}
+
 		@Override
 		protected void onProgressUpdate(String... messages) {
 			super.onProgressUpdate(messages);
@@ -134,12 +146,17 @@ public class ManagerService extends Service {
 			bNetworkADBStatus = result == AdbStateEnum.ACTIVE;
 			mAdbState = result;
 			notificationUpdateRemoteOnly(result == AdbStateEnum.ACTIVE);
-			triggerBoundActivityUpdate(result);			
+			triggerBoundActivityUpdate(result);
 		}
 
 	}
 
 	private final class MyToggleNetworkAdb extends NetworkStatusChecker {
+
+		public MyToggleNetworkAdb() {
+			this.mUseRoot = preferences.getBoolean(Constants.KEY_USE_ROOT,
+					Constants.USE_ROOT);
+		}
 
 		@Override
 		protected void onProgressUpdate(String... messages) {
@@ -303,6 +320,10 @@ public class ManagerService extends Service {
 		this.mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		this.preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+		this.mPowerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		this.wakeLock = this.mPowerManager.newWakeLock(
+				PowerManager.PARTIAL_WAKE_LOCK, LOG_TAG);
+
 		this.mADBPort = Long.parseLong(PreferenceUtil.getString(
 				getBaseContext(), Constants.KEY_ADB_PORT, Constants.ADB_PORT));
 
@@ -349,35 +370,117 @@ public class ManagerService extends Service {
 		super.onRebind(intent);
 	}
 
-	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
-		String action = "No available action";
+	public void updateWidgets() {
 
-		try {
+		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this
+				.getApplicationContext());
 
-			action = intent.getExtras().getString(Constants.EXTRA_ACTION);
+		ComponentName thisWidget = new ComponentName(getApplicationContext(),
+				ControlWidgetProvider.class);
+		int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
 
-			Log.d(LOG_TAG, String.format("Running action: %s", action));
+		updateWidgets(allWidgetIds, bNetworkADBStatus);
 
-			if (action.equals(Constants.KEY_ACTION_ADB_STOP)) {
-				this.stopNetworkADB();
-			} else if (action.equals(Constants.KEY_ACTION_ADB_START)) {
-				this.startNetworkADB();
-			} else if (action.equals(Constants.KEY_ACTION_AUTO_WIFI)) {
-				this.autoConnectionAdb();
-			} else if (action.equals(Constants.KEY_ACTION_UPDATE_NOTIFICATION)) {
-				this.notificationUpdate();
-			} else if (action.equals(Constants.KEY_ACTION_ADB_TOGGLE)) {
-				this.toggleADB();
-			} else if (action
-					.equals(Constants.KEY_ACTION_UPDATE_NOTIFICATION_NETWORK_ADB)) {
-				this.isNetworkADBRunning();
+	}
+
+	public void updateWidgets(int[] allWidgetsIds, boolean isNetworkADBRunning) {
+
+		AppWidgetManager widgetManager = AppWidgetManager.getInstance(this
+				.getApplicationContext());
+
+		NetworkInfo networkInfo = mConnectivityManager
+				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+		IP ip = NetworkUtil.getLocalAddress();
+
+		String stringADB = getResources().getString(
+				R.string.status_adb_service_not_running);
+		String stringIP = getResources().getString(
+				R.string.status_no_wifi_connection);
+
+		int imageViewId = R.drawable.ic_launcher;
+
+		if (networkInfo.isConnected()) {
+
+			if (isNetworkADBRunning) {
+				stringADB = getResources().getString(
+						R.string.status_adb_service_running);
+				stringIP = String.format(
+						getResources().getString(R.string.ip_and_port),
+						ip.ipv4, Long.toString(this.mADBPort));
+				imageViewId = R.drawable.ic_launcher_running;
 			} else {
-				Log.e(LOG_TAG, String.format("Invalid action: %", action));
+				stringIP = getResources().getString(
+						R.string.status_wifi_connection_available);
+				imageViewId = R.drawable.ic_launcher_wifi;
 			}
 
-		} catch (Exception e) {
-			// Log.w(LOG_TAG, e.getMessage(), e);
+		}
+
+		for (int widgetId : allWidgetsIds) {
+
+			RemoteViews remoteViews = new RemoteViews(getApplicationContext()
+					.getPackageName(), R.layout.control_widget);
+
+			remoteViews.setTextViewText(R.id.notification_title, stringADB);
+			remoteViews.setTextViewText(R.id.notification_text, stringIP);
+
+			// // Register an onClickListener
+			// Intent intent = new Intent(getApplicationContext(),
+			// ControlWidgetProvider.class);
+			//
+			// intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+			// intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, widgetId);
+			//
+			// PendingIntent pendingIntent = PendingIntent.getBroadcast(
+			// getApplicationContext(), 0, intent,
+			// PendingIntent.FLAG_UPDATE_CURRENT);
+			// remoteViews.setOnClickPendingIntent(R.id.update, pendingIntent);
+			widgetManager.updateAppWidget(widgetId, remoteViews);
+
+		}
+	}
+
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
+
+		final Bundle extras = intent.getExtras();
+
+		String action = "No available action";
+
+		if (extras != null) {
+
+			try {
+
+				action = extras.getString(Constants.EXTRA_ACTION);
+
+				Log.d(LOG_TAG, String.format("Running action: %s", action));
+
+				if (action.equals(Constants.KEY_ACTION_ADB_STOP)) {
+					this.stopNetworkADB();
+				} else if (action.equals(Constants.KEY_ACTION_ADB_START)) {
+					this.startNetworkADB();
+				} else if (action.equals(Constants.KEY_ACTION_AUTO_WIFI)) {
+					this.autoConnectionAdb();
+				} else if (action
+						.equals(Constants.KEY_ACTION_UPDATE_NOTIFICATION)) {
+					this.notificationUpdate();
+				} else if (action.equals(Constants.KEY_ACTION_ADB_TOGGLE)) {
+					this.toggleADB();
+				} else if (action
+						.equals(Constants.KEY_ACTION_UPDATE_NOTIFICATION_NETWORK_ADB)) {
+					this.isNetworkADBRunning();
+				} else if (action.equals(Constants.KEY_UPDATE_WIDGETS)) {
+					this.updateWidgets(extras
+							.getIntArray(AppWidgetManager.EXTRA_APPWIDGET_IDS),
+							bNetworkADBStatus);
+				} else {
+					Log.e(LOG_TAG, String.format("Invalid action: %", action));
+				}
+
+			} catch (Exception e) {
+				Log.e(LOG_TAG, e.getMessage(), e);
+			}
 		}
 
 		Log.i(LOG_TAG, "onStartCommand: " + action);
@@ -422,27 +525,28 @@ public class ManagerService extends Service {
 
 		IP ip = NetworkUtil.getLocalAddress();
 
-		String stringADB;
-		String stringIP;
+		String stringADB = getResources().getString(
+				R.string.status_adb_service_not_running);
+		String stringIP = getResources().getString(
+				R.string.status_no_wifi_connection);
+
 		int imageViewId = R.drawable.ic_launcher;
 
 		if (networkInfo.isConnected()) {
 
 			if (isNetworkADBRunning) {
-				stringADB = "ADB service is running";
+				stringADB = getResources().getString(
+						R.string.status_adb_service_running);
 				stringIP = String.format(
 						getResources().getString(R.string.ip_and_port),
 						ip.ipv4, Long.toString(this.mADBPort));
 				imageViewId = R.drawable.ic_launcher_running;
 			} else {
-				stringADB = "ADB service is not running";
-				stringIP = "WiFi connection available";
+				stringIP = getResources().getString(
+						R.string.status_wifi_connection_available);
 				imageViewId = R.drawable.ic_launcher_wifi;
 			}
 
-		} else {
-			stringADB = "ADB service is not running";
-			stringIP = "No WiFi connection";
 		}
 
 		builder.setSmallIcon(imageViewId);
@@ -504,6 +608,23 @@ public class ManagerService extends Service {
 		Log.i(LOG_TAG, "Stopping network ADB.");
 		(new MyRootCommandExecuter()).execute(new String[] {
 				"setprop service.adb.tcp.port -1", "stop adbd", "start adbd" });
+
+	}
+
+	private PowerManager.WakeLock wakeLock;
+
+	public void acquireWakeLock() {
+
+		if (!wakeLock.isHeld()) {
+			wakeLock.acquire();
+		}
+	}
+
+	public void releaseWakeLock() {
+
+		if (wakeLock.isHeld()) {
+			wakeLock.release();
+		}
 
 	}
 
