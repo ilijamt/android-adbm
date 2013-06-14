@@ -3,6 +3,7 @@ package com.matoski.adbm.service;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import android.app.KeyguardManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -19,6 +20,7 @@ import android.net.wifi.WifiManager;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -44,6 +46,99 @@ import com.matoski.adbm.widgets.ControlWidgetProvider;
 
 public class ManagerService extends Service {
 
+	private final class MyNetworkStatusChecker extends NetworkStatusChecker {
+
+		public MyNetworkStatusChecker() {
+			this.mUseRoot = preferences.getBoolean(Constants.KEY_USE_ROOT,
+					Constants.USE_ROOT);
+		}
+
+		@Override
+		protected String getString(int resourceId) {
+			return getResources().getString(resourceId);
+		}
+
+		@Override
+		protected void onPostExecute(AdbStateEnum result) {
+			super.onPostExecute(result);
+			bNetworkADBStatus = result == AdbStateEnum.ACTIVE;
+			mAdbState = result;
+			notificationUpdate();
+			determineIfWeNeedWakeLock(result);
+		}
+
+		@Override
+		protected void onProgressUpdate(String... messages) {
+			super.onProgressUpdate(messages);
+			for (String message : messages) {
+				addItem(message);
+			}
+		}
+	}
+
+	private final class MyRootCommandExecuter extends RootCommandExecuter {
+
+		public MyRootCommandExecuter() {
+			this.mUseRoot = preferences.getBoolean(Constants.KEY_USE_ROOT,
+					Constants.USE_ROOT);
+		}
+
+		@Override
+		protected String getString(int resourceId) {
+			return getResources().getString(resourceId);
+		}
+
+		@Override
+		protected void onPostExecute(AdbStateEnum result) {
+			super.onPostExecute(result);
+			bNetworkADBStatus = result == AdbStateEnum.ACTIVE;
+			mAdbState = result;
+			notificationUpdateRemoteOnly(result == AdbStateEnum.ACTIVE);
+			triggerBoundActivityUpdate(result);
+			determineIfWeNeedWakeLock(result);
+		}
+
+		@Override
+		protected void onProgressUpdate(String... messages) {
+			super.onProgressUpdate(messages);
+			for (String message : messages) {
+				addItem(message);
+			}
+		}
+
+	}
+
+	private final class MyToggleNetworkAdb extends NetworkStatusChecker {
+
+		public MyToggleNetworkAdb() {
+			this.mUseRoot = preferences.getBoolean(Constants.KEY_USE_ROOT,
+					Constants.USE_ROOT);
+		}
+
+		@Override
+		protected String getString(int resourceId) {
+			return getResources().getString(resourceId);
+		}
+
+		@Override
+		protected void onPostExecute(AdbStateEnum result) {
+			super.onPostExecute(result);
+			Log.i(LOG_TAG, "Toggling the ADB state: " + result.toString());
+			bNetworkADBStatus = result == AdbStateEnum.ACTIVE;
+			mAdbState = result;
+			determineIfWeNeedWakeLock(result);
+		}
+
+		@Override
+		protected void onProgressUpdate(String... messages) {
+			super.onProgressUpdate(messages);
+			for (String message : messages) {
+				addItem(message);
+			}
+		}
+
+	}
+
 	/**
 	 * Service binder for the Service
 	 * 
@@ -64,34 +159,61 @@ public class ManagerService extends Service {
 
 	private static String LOG_TAG = ManagerService.class.getName();
 
-	private NotificationManager mNM;
-	private final IBinder mBinder = new ServiceBinder();
-	private int NOTIFICATION = R.string.service_name;
-
-	private boolean bNotificationHideable = Constants.SHOW_HIDEABLE_NOTIFICATIONS;
+	private boolean ADB_START_ON_KNOWN_WIFI;
 	private boolean bNetworkADBStatus = false;
-	private AdbStateEnum mAdbState = AdbStateEnum.NOT_ACTIVE;
-
-	private long mADBPort = Constants.ADB_PORT;
-	private boolean mShowNotification = Constants.SHOW_NOTIFICATIONS;
-
-	private SharedPreferences preferences;
+	private boolean bNotificationHideable = Constants.SHOW_HIDEABLE_NOTIFICATIONS;
 
 	private Gson gson;
 	private Type gsonType;
-
-	private ConnectivityManager mConnectivityManager;
-
-	private WifiManager mWifiManager;
-
-	private boolean ADB_START_ON_KNOWN_WIFI;
 
 	/**
 	 * The handler for messaging
 	 */
 	private IMessageHandler handler = null;
 
-	// private PowerManager mPowerManager;
+	private long mADBPort = Constants.ADB_PORT;
+	private AdbStateEnum mAdbState = AdbStateEnum.NOT_ACTIVE;
+
+	private final IBinder mBinder = new ServiceBinder();
+
+	private ConnectivityManager mConnectivityManager;
+
+	private NotificationManager mNM;
+
+	private PowerManager mPowerManager;
+
+	final public SparseArray<String> mResourcesStringMap = new SparseArray<String>();
+
+	private boolean mShowNotification = Constants.SHOW_NOTIFICATIONS;
+
+	private WifiManager mWifiManager;
+
+	private int NOTIFICATION = R.string.service_name;
+
+	private SharedPreferences preferences;
+
+	private PowerManager.WakeLock wakeLock;
+
+	public void acquireWakeLock() {
+
+		final Boolean bKeepScreenOn = preferences.getBoolean(
+				Constants.KEY_KEEP_SCREEN_ON, Constants.KEEP_SCREEN_ON);
+
+		Log.d(LOG_TAG, "Trying to acquire a wake lock.");
+
+		if (!bKeepScreenOn) {
+			addItem(getResources().getString(
+					R.string.item_no_need_for_wake_lock));
+			return;
+		}
+
+		if (!wakeLock.isHeld()) {
+			wakeLock.acquire();
+			addItem(getResources().getString(R.string.item_acquired_wake_lock,
+					Boolean.toString(wakeLock.isHeld())));
+		}
+
+	}
 
 	/**
 	 * Add a message to the list queue
@@ -104,20 +226,6 @@ public class ManagerService extends Service {
 		}
 	}
 
-	private void triggerBoundActivityUpdate() {
-		triggerBoundActivityUpdate(mAdbState);
-	}
-
-	private void triggerBoundActivityUpdate(AdbStateEnum state) {
-		if (handler != null) {
-			handler.update(state);
-		}
-	}
-
-	public void toggleADB() {
-		(new MyToggleNetworkAdb()).execute();
-	}
-
 	public void autoConnectionAdb() {
 
 		if (this.isValidConnectionToWiFi()) {
@@ -126,112 +234,19 @@ public class ManagerService extends Service {
 
 	}
 
-	private final class MyRootCommandExecuter extends RootCommandExecuter {
+	public void determineIfWeNeedWakeLock(AdbStateEnum state) {
 
-		@Override
-		protected String getString(int resourceId) {
-			return getResources().getString(resourceId);
+		switch (state) {
+		case ACTIVE:
+			this.acquireWakeLock();
+			break;
+
+		case NOT_ACTIVE:
+			this.releaseWakeLock();
+			break;
+
 		}
 
-		public MyRootCommandExecuter() {
-			this.mUseRoot = preferences.getBoolean(Constants.KEY_USE_ROOT,
-					Constants.USE_ROOT);
-		}
-
-		@Override
-		protected void onProgressUpdate(String... messages) {
-			super.onProgressUpdate(messages);
-			for (String message : messages) {
-				addItem(message);
-			}
-		}
-
-		@Override
-		protected void onPostExecute(AdbStateEnum result) {
-			super.onPostExecute(result);
-			bNetworkADBStatus = result == AdbStateEnum.ACTIVE;
-			mAdbState = result;
-			notificationUpdateRemoteOnly(result == AdbStateEnum.ACTIVE);
-			triggerBoundActivityUpdate(result);
-			switch (result) {
-			case ACTIVE:
-				acquireWakeLock();
-				break;
-
-			case NOT_ACTIVE:
-				releaseWakeLock();
-				break;
-
-			}
-		}
-
-	}
-
-	private final class MyToggleNetworkAdb extends NetworkStatusChecker {
-
-		@Override
-		protected String getString(int resourceId) {
-			return getResources().getString(resourceId);
-		}
-
-		public MyToggleNetworkAdb() {
-			this.mUseRoot = preferences.getBoolean(Constants.KEY_USE_ROOT,
-					Constants.USE_ROOT);
-		}
-
-		@Override
-		protected void onProgressUpdate(String... messages) {
-			super.onProgressUpdate(messages);
-			for (String message : messages) {
-				addItem(message);
-			}
-		}
-
-		@Override
-		protected void onPostExecute(AdbStateEnum result) {
-			super.onPostExecute(result);
-			Log.i(LOG_TAG, "Toggling the ADB state: " + result.toString());
-			bNetworkADBStatus = result == AdbStateEnum.ACTIVE;
-			mAdbState = result;
-			switch (result) {
-			case ACTIVE:
-				stopNetworkADB();
-				break;
-
-			case NOT_ACTIVE:
-				startNetworkADB();
-			}
-		}
-
-	}
-
-	private final class MyNetworkStatusChecker extends NetworkStatusChecker {
-
-		@Override
-		protected String getString(int resourceId) {
-			return getResources().getString(resourceId);
-		}
-
-		public MyNetworkStatusChecker() {
-			this.mUseRoot = preferences.getBoolean(Constants.KEY_USE_ROOT,
-					Constants.USE_ROOT);
-		}
-
-		@Override
-		protected void onProgressUpdate(String... messages) {
-			super.onProgressUpdate(messages);
-			for (String message : messages) {
-				addItem(message);
-			}
-		}
-
-		@Override
-		protected void onPostExecute(AdbStateEnum result) {
-			super.onPostExecute(result);
-			bNetworkADBStatus = result == AdbStateEnum.ACTIVE;
-			mAdbState = result;
-			notificationUpdate();
-		}
 	}
 
 	public void isNetworkADBRunning() {
@@ -304,6 +319,24 @@ public class ManagerService extends Service {
 		notificationUpdate(update, bNetworkADBStatus);
 	}
 
+	public void notificationUpdate(boolean update, boolean isNetworkADBRunning) {
+
+		Log.i(LOG_TAG,
+				"Triggered notification update: " + Boolean.toString(update));
+
+		this.addItem(getResources().getString(
+				R.string.item_triggered_notification_update,
+				Boolean.toString(update)));
+
+		updateWidgets(isNetworkADBRunning);
+
+		if (update) {
+			showNotification(isNetworkADBRunning);
+		} else {
+			this.removeNotification();
+		}
+	}
+
 	public void notificationUpdateRemoteOnly(boolean isNetworkADBRunning) {
 
 		this.mShowNotification = this.preferences.getBoolean(
@@ -325,24 +358,6 @@ public class ManagerService extends Service {
 
 	}
 
-	public void notificationUpdate(boolean update, boolean isNetworkADBRunning) {
-
-		Log.i(LOG_TAG,
-				"Triggered notification update: " + Boolean.toString(update));
-
-		this.addItem(getResources().getString(
-				R.string.item_triggered_notification_update,
-				Boolean.toString(update)));
-
-		updateWidgets(isNetworkADBRunning);
-
-		if (update) {
-			showNotification(isNetworkADBRunning);
-		} else {
-			this.removeNotification();
-		}
-	}
-
 	@Override
 	public IBinder onBind(Intent intent) {
 		Log.d(LOG_TAG, "Service bound to "
@@ -359,25 +374,9 @@ public class ManagerService extends Service {
 		this.mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		this.preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-		// this.mPowerManager = (PowerManager)
-		// getSystemService(Context.POWER_SERVICE);
-		// this.wakeLock = this.mPowerManager.newWakeLock(
-		// PowerManager.PARTIAL_WAKE_LOCK, LOG_TAG);
-
-		// String resourceName;
-		// Integer resourceId;
-		//
-		// for (Field field : R.string.class.getFields()) {
-		// try {
-		// resourceId = field.getInt(R.string.class);
-		// resourceName = getResources().getString(resourceId);
-		// mResourcesStringMap.put(resourceId, resourceName);
-		// Log.w(LOG_TAG,
-		// String.format("%d = %s", resourceId, resourceName));
-		// } catch (Exception e) {
-		// Log.e(LOG_TAG, e.getMessage(), e);
-		// }
-		// }
+		this.mPowerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		this.wakeLock = this.mPowerManager.newWakeLock(
+				PowerManager.FULL_WAKE_LOCK, LOG_TAG);
 
 		this.mADBPort = Long.parseLong(PreferenceUtil.getString(
 				getBaseContext(), Constants.KEY_ADB_PORT, Constants.ADB_PORT));
@@ -423,88 +422,6 @@ public class ManagerService extends Service {
 		Log.d(LOG_TAG, "Service rebound to "
 				+ intent.getComponent().getClassName());
 		super.onRebind(intent);
-	}
-
-	public void updateWidgets() {
-		updateWidgets(bNetworkADBStatus);
-	}
-
-	public void updateWidgets(boolean isNetworkADBRunning) {
-
-		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this
-				.getApplicationContext());
-
-		ComponentName thisWidget = new ComponentName(getApplicationContext(),
-				ControlWidgetProvider.class);
-		int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
-
-		updateWidgets(allWidgetIds, bNetworkADBStatus);
-
-	}
-
-	public void updateWidgets(int[] allWidgetsIds, boolean isNetworkADBRunning) {
-
-		AppWidgetManager widgetManager = AppWidgetManager.getInstance(this
-				.getApplicationContext());
-
-		NetworkInfo networkInfo = mConnectivityManager
-				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-
-		Log.d(LOG_TAG, "Updating widgets through the service");
-		Log.d(LOG_TAG, String.format("Widget has queued for been updated: %s",
-				ArrayUtils.join(allWidgetsIds, ",")));
-
-		IP ip = NetworkUtil.getLocalAddress();
-
-		String stringADB = getResources().getString(
-				R.string.status_adb_service_not_running);
-		String stringIP = getResources().getString(
-				R.string.status_no_wifi_connection);
-
-		int imageViewId = R.drawable.play;
-
-		if (networkInfo.isConnected()) {
-
-			if (isNetworkADBRunning) {
-				stringADB = getResources().getString(
-						R.string.status_adb_service_running);
-				stringIP = String.format(
-						getResources().getString(R.string.ip_and_port),
-						ip.ipv4, Long.toString(this.mADBPort));
-				imageViewId = R.drawable.stop;
-			} else {
-				stringIP = getResources().getString(
-						R.string.status_wifi_connection_available);
-			}
-
-		}
-
-		for (int widgetId : allWidgetsIds) {
-
-			RemoteViews remoteView = new RemoteViews(getApplicationContext()
-					.getPackageName(), R.layout.control_widget);
-
-			remoteView.setTextViewText(R.id.notification_title, stringADB);
-			remoteView.setTextViewText(R.id.notification_text, stringIP);
-			remoteView.setImageViewResource(R.id.notification_image,
-					imageViewId);
-
-			Intent mServiceIntent = new Intent(getApplicationContext(),
-					ManagerService.class);
-			mServiceIntent.putExtra(Constants.EXTRA_ACTION,
-					Constants.KEY_ACTION_ADB_TOGGLE);
-
-			PendingIntent pendingIntent = PendingIntent.getService(
-					getApplicationContext(), 0, mServiceIntent, 0);
-
-			remoteView.setOnClickPendingIntent(R.id.notification_image,
-					pendingIntent);
-
-			addItem(getResources().getString(R.string.item_widget_update,
-					widgetId));
-			widgetManager.updateAppWidget(widgetId, remoteView);
-
-		}
 	}
 
 	@Override
@@ -555,6 +472,8 @@ public class ManagerService extends Service {
 				this.acquireWakeLock();
 			} else if (action.equals(Constants.KEY_WAKELOCK_RELEASE)) {
 				this.releaseWakeLock();
+			} else if (action.equals(Constants.KEY_PACKAGE_ADD)) {
+				this.wakeUpPhone();
 			} else {
 				Log.e(LOG_TAG, String.format("Invalid action: %", action));
 			}
@@ -572,6 +491,18 @@ public class ManagerService extends Service {
 		Log.d(LOG_TAG, "Service unbound from "
 				+ intent.getComponent().getClassName());
 		return super.onUnbind(intent);
+	}
+
+	public void releaseWakeLock() {
+
+		Log.d(LOG_TAG, "Trying to release a wake lock.");
+
+		if (wakeLock.isHeld()) {
+			wakeLock.release();
+			addItem(getResources().getString(R.string.item_released_wake_lock,
+					Boolean.toString(!wakeLock.isHeld())));
+		}
+
 	}
 
 	private void removeNotification() {
@@ -693,23 +624,125 @@ public class ManagerService extends Service {
 
 	}
 
-	final public SparseArray<String> mResourcesStringMap = new SparseArray<String>();
+	public void toggleADB() {
+		(new MyToggleNetworkAdb()).execute();
+	}
 
-	// private PowerManager.WakeLock wakeLock;
+	private void triggerBoundActivityUpdate() {
+		triggerBoundActivityUpdate(mAdbState);
+	}
 
-	public void acquireWakeLock() {
+	private void triggerBoundActivityUpdate(AdbStateEnum state) {
+		if (handler != null) {
+			handler.update(state);
+		}
+	}
 
-		// if (!wakeLock.isHeld()) {
-		// wakeLock.acquire();
-		// }
+	public void updateWidgets() {
+		updateWidgets(bNetworkADBStatus);
+	}
+
+	public void updateWidgets(boolean isNetworkADBRunning) {
+
+		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this
+				.getApplicationContext());
+
+		ComponentName thisWidget = new ComponentName(getApplicationContext(),
+				ControlWidgetProvider.class);
+		int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
+
+		updateWidgets(allWidgetIds, bNetworkADBStatus);
 
 	}
 
-	public void releaseWakeLock() {
+	public void updateWidgets(int[] allWidgetsIds, boolean isNetworkADBRunning) {
 
-		// if (wakeLock.isHeld()) {
-		// wakeLock.release();
-		// }
+		AppWidgetManager widgetManager = AppWidgetManager.getInstance(this
+				.getApplicationContext());
+
+		NetworkInfo networkInfo = mConnectivityManager
+				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+		Log.d(LOG_TAG, "Updating widgets through the service");
+		Log.d(LOG_TAG, String.format("Widget has queued for been updated: %s",
+				ArrayUtils.join(allWidgetsIds, ",")));
+
+		IP ip = NetworkUtil.getLocalAddress();
+
+		String stringADB = getResources().getString(
+				R.string.status_adb_service_not_running);
+		String stringIP = getResources().getString(
+				R.string.status_no_wifi_connection);
+
+		int imageViewId = R.drawable.play;
+
+		if (networkInfo.isConnected()) {
+
+			if (isNetworkADBRunning) {
+				stringADB = getResources().getString(
+						R.string.status_adb_service_running);
+				stringIP = String.format(
+						getResources().getString(R.string.ip_and_port),
+						ip.ipv4, Long.toString(this.mADBPort));
+				imageViewId = R.drawable.stop;
+			} else {
+				stringIP = getResources().getString(
+						R.string.status_wifi_connection_available);
+			}
+
+		}
+
+		for (int widgetId : allWidgetsIds) {
+
+			RemoteViews remoteView = new RemoteViews(getApplicationContext()
+					.getPackageName(), R.layout.control_widget);
+
+			remoteView.setTextViewText(R.id.notification_title, stringADB);
+			remoteView.setTextViewText(R.id.notification_text, stringIP);
+			remoteView.setImageViewResource(R.id.notification_image,
+					imageViewId);
+
+			Intent mServiceIntent = new Intent(getApplicationContext(),
+					ManagerService.class);
+			mServiceIntent.putExtra(Constants.EXTRA_ACTION,
+					Constants.KEY_ACTION_ADB_TOGGLE);
+
+			PendingIntent pendingIntent = PendingIntent.getService(
+					getApplicationContext(), 0, mServiceIntent, 0);
+
+			remoteView.setOnClickPendingIntent(R.id.notification_image,
+					pendingIntent);
+
+			addItem(getResources().getString(R.string.item_widget_update,
+					widgetId));
+			widgetManager.updateAppWidget(widgetId, remoteView);
+
+		}
+	}
+
+	public void wakeUpPhone() {
+
+		final Boolean bWakeUpPhone = preferences.getBoolean(
+				Constants.KEY_WAKE_ON_NEW_PACKAGE,
+				Constants.WAKE_ON_NEW_PACKAGE);
+
+		Log.d(LOG_TAG,
+				"Trying to wake up phone: "
+						+ Boolean
+								.toString(!(!this.bNetworkADBStatus || !bWakeUpPhone)));
+
+		if (!this.bNetworkADBStatus || !bWakeUpPhone) {
+			return;
+		}
+
+		final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+
+		final PowerManager.WakeLock wl = pm.newWakeLock(
+				PowerManager.FULL_WAKE_LOCK
+						| PowerManager.ACQUIRE_CAUSES_WAKEUP
+						| PowerManager.ON_AFTER_RELEASE, LOG_TAG);
+
+		wl.acquire(10000);
 
 	}
 

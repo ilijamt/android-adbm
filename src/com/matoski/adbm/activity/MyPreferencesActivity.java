@@ -81,6 +81,23 @@ public class MyPreferencesActivity extends PreferenceActivity {
 		mTryWithoutRoot
 				.setEnabled(Build.VERSION.SDK_INT > Constants.MINIMUM_SDK_WITHOUT_ROOT);
 
+		final CheckBoxPreference mKeepScreenOn = (CheckBoxPreference) findPreference(Constants.KEY_KEEP_SCREEN_ON);
+		final CheckBoxPreference mWakeOnNewPackage = (CheckBoxPreference) findPreference(Constants.KEY_WAKE_ON_NEW_PACKAGE);
+
+		mKeepScreenOn
+				.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+					@Override
+					public boolean onPreferenceChange(Preference preference,
+							Object newValue) {
+
+						if ((Boolean) newValue) {
+							mWakeOnNewPackage.setChecked(false);
+						}
+						
+						return true;
+					}
+				});
+
 		findPreference(Constants.KEY_NOTIFICATIONS)
 				.setOnPreferenceChangeListener(
 						new OnPreferenceChangeListener() {

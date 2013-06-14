@@ -1,5 +1,7 @@
-Features: 
-+ Added a Widget
+Features:
++ Added an option to keep screen on while the service is running
++ Added an option to wake the screen when new package is installed if the keep screen functionality is not on
 
-Bugfixes:
-+ Various optimizations and bugfixes
+Permission:
++ android.permission.WAKE_LOCK
+  Used to wake up the screen on new package install, or to keep the screen on while the ADB service is on

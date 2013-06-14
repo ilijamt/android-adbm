@@ -80,6 +80,12 @@
     <string name="use_root_on">Will work normally with using root.</string>
     <string name="widget">Widget</string>
     <string name="adb_widget">ADB Manager Widget</string>
+    <string name="keep_screen_on">Keep screen on</string>
+    <string name="keep_screen_on_on">Keep screen on while the ADB service is running</string>
+    <string name="keep_screen_on_off">Will not keep the screen on while the ADB service is running</string>
+    <string name="wake_on_new_package">Wake up on install</string>
+    <string name="wake_on_new_package_on">Wakes up the screen when a new package has been added to the device</string>
+    <string name="wake_on_new_package_off">Does not wake up the screen when a new package has been added to the device</string>
     <string name="status_adb_service_not_running">ADB service is not running</string>
     <string name="status_no_wifi_connection">No WiFi connection</string>
     <string name="status_adb_service_running">ADB service is running</string>
@@ -99,5 +105,9 @@
     <string name="item_executing_command">Executing command: %s</string>
     <string name="item_fail_retrieve_network_status">Couldn\'t retrieve the adb network status</string>
     <string name="item_network_status">Network status: %s</string>
+    <string name="item_acquired_wake_lock">Wake lock acquired: %s</string>
+    <string name="item_released_wake_lock">Wake lock released: %s</string>
+    <string name="item_no_need_for_wake_lock">There is no need to acquire wake lock</string>
+    <string name="item_try_to_wake_phone">Trying to wake up the phone screen</string>
 
 </resources>

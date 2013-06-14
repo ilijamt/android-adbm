@@ -24,10 +24,17 @@ BODY, HTML {background: transparent, word-wrap: break-word;}
 <li><strong>RECEIVE_BOOT_COMPLETED</strong>: Used to automatically start the service on the boot of the device, how long should it wait before starting and how often should the AlarmManager check to see if the service is running is configurable from the Preferences menu.</li> 
 <li><strong>ACCESS_NETWORK_STATE, ACCESS_WIFI_STATE</strong>: Used to automate the switching between the the ADB states</li>
 <li><strong>INTERNET</strong>: Used to retrieve the IP, as it crashes when checking for the IP address without this permission.</li>
+<li><strong>WAKE_LOCK</strong>: Used to wake up the screen on new package install, or to keep the screen on while the ADB service is on.</li>
 </ul>
 <h2>Known issues</h2>
 <ul>
 <li>On API 8, the menu icons look a little weird on LDPI devices.</li>
+</li>
+</ul>
+
+<h2>Generic Issues</h2>
+<ul>
+<li>Failed to install apk on device 'ip:port': timeout<br/>Launch canceled!<br/><strong>Eclipse</strong> | Window > Preferences > Android > DDMS > ADB connection timeout (ms) <strong>Increase the value</strong>
 </ul>
 
 <h2>Tested on</h2>
@@ -40,5 +47,6 @@ BODY, HTML {background: transparent, word-wrap: break-word;}
 </ul>
 
 <p>For any questions, suggestions or bug reports please email <strong><em>android@matoski.com</em></strong></p>
+
 </body>
 </html>
