@@ -364,20 +364,20 @@ public class ManagerService extends Service {
 		// this.wakeLock = this.mPowerManager.newWakeLock(
 		// PowerManager.PARTIAL_WAKE_LOCK, LOG_TAG);
 
-//		String resourceName;
-//		Integer resourceId;
-//
-//		for (Field field : R.string.class.getFields()) {
-//			try {
-//				resourceId = field.getInt(R.string.class);
-//				resourceName = getResources().getString(resourceId);
-//				mResourcesStringMap.put(resourceId, resourceName);
-//				Log.w(LOG_TAG,
-//						String.format("%d = %s", resourceId, resourceName));
-//			} catch (Exception e) {
-//				Log.e(LOG_TAG, e.getMessage(), e);
-//			}
-//		}
+		// String resourceName;
+		// Integer resourceId;
+		//
+		// for (Field field : R.string.class.getFields()) {
+		// try {
+		// resourceId = field.getInt(R.string.class);
+		// resourceName = getResources().getString(resourceId);
+		// mResourcesStringMap.put(resourceId, resourceName);
+		// Log.w(LOG_TAG,
+		// String.format("%d = %s", resourceId, resourceName));
+		// } catch (Exception e) {
+		// Log.e(LOG_TAG, e.getMessage(), e);
+		// }
+		// }
 
 		this.mADBPort = Long.parseLong(PreferenceUtil.getString(
 				getBaseContext(), Constants.KEY_ADB_PORT, Constants.ADB_PORT));
@@ -510,22 +510,31 @@ public class ManagerService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 
-		final Bundle extras = intent.getExtras();
-
 		String action = "No available action";
 
-		if (extras == null) {
-			Log.i(LOG_TAG, "onStartCommand: " + action);
+		if (intent == null) {
+			Log.d(LOG_TAG, "onStartCommand: " + action);
 			return Service.START_STICKY;
 		}
 
 		try {
 
+			final Bundle extras = intent.getExtras();
+
+			if (extras == null) {
+				Log.d(LOG_TAG, "onStartCommand: " + action);
+				return Service.START_STICKY;
+			}
+
 			action = extras.getString(Constants.EXTRA_ACTION);
 
 			Log.d(LOG_TAG, String.format("Running action: %s", action));
 
-			if (action.equals(Constants.KEY_ACTION_ADB_STOP)) {
+			if (action.equals(Constants.KEY_SERVICE_START)) {
+				Log.d(LOG_TAG, "Initial startup for the Service.");
+			} else if (action.equals(Constants.KEY_SERVICE_BIND)) {
+				Log.d(LOG_TAG, "Binding for the Service.");
+			} else if (action.equals(Constants.KEY_ACTION_ADB_STOP)) {
 				this.stopNetworkADB();
 			} else if (action.equals(Constants.KEY_ACTION_ADB_START)) {
 				this.startNetworkADB();
@@ -554,7 +563,7 @@ public class ManagerService extends Service {
 			Log.e(LOG_TAG, e.getMessage(), e);
 		}
 
-		Log.i(LOG_TAG, "onStartCommand: " + action);
+		Log.d(LOG_TAG, "onStartCommand: " + action);
 		return Service.START_STICKY;
 	}
 

@@ -26,6 +26,8 @@ public class Constants {
 	public final static String KEY_HIDEABLE_NOTIFICATION_BAR = "hideable_notification_bar";
 	public static final String EXTRA_ACTION = "action";
 
+	public static final String KEY_SERVICE_START = "SERVICE_START";
+	public static final String KEY_SERVICE_BIND = "SERVICE_BIND";
 	public static final String KEY_ACTION_AUTO_WIFI = "AUTO_WIFI_CONNECT";
 	public static final String KEY_ACTION_ADB_STOP = "ADB_STOP";
 	public static final String KEY_ACTION_ADB_START = "ADB_START";
@@ -35,5 +37,6 @@ public class Constants {
 	public static final String KEY_UPDATE_WIDGETS = "UPDATE_WIDGETS";
 	public static final Object KEY_WAKELOCK_ACQUIRE = "WAKELOCK_ACQUIRE";
 	public static final Object KEY_WAKELOCK_RELEASE = "WAKELOCK_RELEASE";
+	
 
 }

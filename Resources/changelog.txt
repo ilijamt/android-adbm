@@ -1,3 +1,7 @@
+0.9.1
+-----
+Bugfixes:
++ Fixed a crash that occurs sometimes when starting the service
 
 0.9
 -----

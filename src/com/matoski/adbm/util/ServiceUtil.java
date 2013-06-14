@@ -22,8 +22,10 @@ public class ServiceUtil {
 	private static String LOG_TAG = ServiceUtil.class.getName();
 
 	public static boolean bind(Context context, ServiceConnection mConnection) {
-		return context.bindService(new Intent(context, ManagerService.class),
-				mConnection, Context.BIND_AUTO_CREATE);
+		final Intent intent = new Intent(context, ManagerService.class);
+		intent.setAction(Constants.KEY_SERVICE_BIND);
+		return context.bindService(intent, mConnection,
+				Context.BIND_AUTO_CREATE);
 	}
 
 	public static boolean unbind(Context context, ServiceConnection mConnection) {
@@ -62,8 +64,8 @@ public class ServiceUtil {
 	}
 
 	public static boolean isServiceRunning(Context context) {
-		return ServiceUtil
-				.isServiceRunning(context, ManagerService.class.getName());
+		return ServiceUtil.isServiceRunning(context,
+				ManagerService.class.getName());
 	}
 
 	public static boolean isServiceRunning(Context context,
@@ -85,21 +87,20 @@ public class ServiceUtil {
 		Log.i(LOG_TAG, "Service is not running");
 		return false;
 	}
-	
+
 	public static void runServiceAction(Context context, String action) {
 		ServiceUtil.runServiceAction(context, action, null);
 	}
-	
-	public static void runServiceAction(Context context, String action, Bundle bundle) {
+
+	public static void runServiceAction(Context context, String action,
+			Bundle bundle) {
 		Intent mServiceIntent = new Intent(context, ManagerService.class);
 		mServiceIntent.putExtra(Constants.EXTRA_ACTION, action);
-		if ( bundle != null ) { 
+		if (bundle != null) {
 			mServiceIntent.putExtras(bundle);
 		}
 		Log.d(LOG_TAG, String.format("Running action: %s", action));
 		context.startService(mServiceIntent);
 	}
 
-
-	
 }
