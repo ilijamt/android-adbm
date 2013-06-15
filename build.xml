@@ -9,6 +9,43 @@
 
     <property environment="env" />
 
+    <property
+        name="doc.dir"
+        location="javadoc" />
+
+    <property
+        name="source.dir"
+        location="src" />
+
+    <property
+        name="gen.dir"
+        location="gen" />
+
+    <target
+        name="cleanup_javadoc"
+        description="setup project directories" >
+
+        <delete dir="${doc.dir}" />
+        <mkdir dir="${doc.dir}" />
+    </target>
+
+    <target
+        name="javadoc"
+        depends="cleanup_javadoc"
+        description="generate documentation" >
+
+        <javadoc
+            access="private"
+            author="true"
+            classpath="./libs/gson-2.2.4.jar;${sdk.dir}/platforms/${target}/android.jar;./libs/android-support-v4.jar"
+            destdir="${doc.dir}"
+            linkoffline="http://d.android.com/reference ${sdk.dir}/docs/reference"
+            linksource="true"
+            sourcepath="${source.dir};${gen.dir}"
+            use="true"
+            version="true" />
+    </target>
+
     <condition
         property="sdk.dir"
         value="${env.ANDROID_HOME}" >

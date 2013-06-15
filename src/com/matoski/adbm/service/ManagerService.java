@@ -321,7 +321,6 @@ public class ManagerService extends Service {
 	/**
 	 * Enables us to acquire a {@link WakeLock} that will enable us to keep the screen on for the duration of the lock
 	 */
-	@SuppressWarnings("deprecation")
 	public void acquireWakeLock() {
 
 		final Boolean bKeepScreenOn = preferences.getBoolean(
@@ -992,7 +991,6 @@ public class ManagerService extends Service {
 	 * Wakes up the phone based on {@link SharedPreferences} property {@link Constants#KEY_WAKE_ON_NEW_PACKAGE}, it will
 	 * not trigger a screen update depending on {@link #bNetworkADBStatus}
 	 */
-	@SuppressWarnings("deprecation")
 	public void wakeUpPhone() {
 
 		final Boolean bWakeUpPhone = preferences.getBoolean(
