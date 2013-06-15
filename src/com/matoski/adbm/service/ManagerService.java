@@ -3,7 +3,6 @@ package com.matoski.adbm.service;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-import android.app.KeyguardManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -180,8 +179,6 @@ public class ManagerService extends Service {
 
 	private NotificationManager mNM;
 
-	private PowerManager mPowerManager;
-
 	final public SparseArray<String> mResourcesStringMap = new SparseArray<String>();
 
 	private boolean mShowNotification = Constants.SHOW_NOTIFICATIONS;
@@ -194,6 +191,7 @@ public class ManagerService extends Service {
 
 	private PowerManager.WakeLock wakeLock;
 
+	@SuppressWarnings("deprecation")
 	public void acquireWakeLock() {
 
 		final Boolean bKeepScreenOn = preferences.getBoolean(
@@ -205,6 +203,13 @@ public class ManagerService extends Service {
 			addItem(getResources().getString(
 					R.string.item_no_need_for_wake_lock));
 			return;
+		}
+
+		final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+
+		if (this.wakeLock == null) {
+			this.wakeLock = pm
+					.newWakeLock(PowerManager.FULL_WAKE_LOCK, LOG_TAG);
 		}
 
 		if (!wakeLock.isHeld()) {
@@ -374,10 +379,6 @@ public class ManagerService extends Service {
 		this.mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		this.preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-		this.mPowerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-		this.wakeLock = this.mPowerManager.newWakeLock(
-				PowerManager.FULL_WAKE_LOCK, LOG_TAG);
-
 		this.mADBPort = Long.parseLong(PreferenceUtil.getString(
 				getBaseContext(), Constants.KEY_ADB_PORT, Constants.ADB_PORT));
 
@@ -497,11 +498,18 @@ public class ManagerService extends Service {
 
 		Log.d(LOG_TAG, "Trying to release a wake lock.");
 
+		if (this.wakeLock == null) {
+			// we don't have a wake lock
+			return;
+		}
+
 		if (wakeLock.isHeld()) {
 			wakeLock.release();
 			addItem(getResources().getString(R.string.item_released_wake_lock,
 					Boolean.toString(!wakeLock.isHeld())));
 		}
+
+		wakeLock = null;
 
 	}
 
@@ -720,6 +728,7 @@ public class ManagerService extends Service {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public void wakeUpPhone() {
 
 		final Boolean bWakeUpPhone = preferences.getBoolean(
@@ -736,7 +745,6 @@ public class ManagerService extends Service {
 		}
 
 		final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-
 		final PowerManager.WakeLock wl = pm.newWakeLock(
 				PowerManager.FULL_WAKE_LOCK
 						| PowerManager.ACQUIRE_CAUSES_WAKEUP
