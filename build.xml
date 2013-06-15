@@ -3,6 +3,11 @@
     name="adbm"
     default="help" >
 
+    <xmlproperty
+        collapseAttributes="true"
+        file="AndroidManifest.xml"
+        prefix="mymm" />
+
     <property file="local.properties" />
 
     <property file="ant.properties" />
@@ -10,8 +15,12 @@
     <property environment="env" />
 
     <property
-        name="doc.dir"
+        name="docs.dir"
         location="javadoc" />
+
+    <property
+        name="bin.dir"
+        location="bin" />
 
     <property
         name="source.dir"
@@ -22,28 +31,26 @@
         location="gen" />
 
     <target
-        name="cleanup_javadoc"
-        description="setup project directories" >
-
-        <delete dir="${doc.dir}" />
-        <mkdir dir="${doc.dir}" />
-    </target>
-
-    <target
         name="javadoc"
-        depends="cleanup_javadoc"
-        description="generate documentation" >
+        description="Generate JavaDoc documentation" >
+
+        <mkdir dir="${docs.dir}" />
 
         <javadoc
             access="private"
             author="true"
             classpath="./libs/gson-2.2.4.jar;${sdk.dir}/platforms/${target}/android.jar;./libs/android-support-v4.jar"
-            destdir="${doc.dir}"
+            destdir="${docs.dir}"
             linkoffline="http://d.android.com/reference ${sdk.dir}/docs/reference"
             linksource="true"
             sourcepath="${source.dir};${gen.dir}"
             use="true"
             version="true" />
+
+        <jar
+            basedir="${docs.dir}"
+            compress="${jar.compress}"
+            jarfile="${bin.dir}/${mymm.manifest.package}_${mymm.manifest.android:versionName}_javadoc.jar" />
     </target>
 
     <condition
@@ -62,6 +69,43 @@
     <import
         file="custom_rules.xml"
         optional="true" />
+
+    <target name="custom-set-release-mode" >
+
+        <property
+            name="out.packaged.file"
+            location="${out.absolute.dir}/${ant.project.name}-${mymm.manifest.android:versionName}-release-unsigned.apk" />
+
+        <property
+            name="out.final.file"
+            location="${out.absolute.dir}/${ant.project.name}-${mymm.manifest.android:versionName}-release.apk" />
+    </target>
+
+    <target name="custom-set-debug-files" >
+
+        <property
+            name="out.packaged.file"
+            location="${out.absolute.dir}/${ant.project.name}-${mymm.manifest.android:versionName}-debug-unaligned.apk" />
+
+        <property
+            name="out.final.file"
+            location="${out.absolute.dir}/${ant.project.name}-${mymm.manifest.android:versionName}-debug.apk" />
+    </target>
+
+    <target
+        name="clean"
+        depends="android_rules.clean" >
+
+        <delete dir="${docs.dir}" />
+    </target>
+
+    <target
+        name="debug"
+        depends="custom-set-debug-files, android_rules.debug" />
+
+    <target
+        name="release"
+        depends="custom-set-release-mode, android_rules.release" />
 
     <import file="${sdk.dir}/tools/ant/build.xml" />
 
