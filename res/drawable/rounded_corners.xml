@@ -12,7 +12,5 @@
         android:startColor="#DD000000" />
 
     <corners android:radius="7dp" />
-    
-    
 
 </shape>

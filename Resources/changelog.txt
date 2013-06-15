@@ -1,3 +1,8 @@
+0.9.6
+-----
+Features:
++ You can toggle the ADB state by touching the image in the notification bar
+
 0.9.5
 -----
 Bugfixes:

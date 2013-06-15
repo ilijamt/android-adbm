@@ -1,2 +1,5 @@
+Features:
++ You can toggle the ADB state by touching the image in the notification bar
+
 Bugfixes:
 + Doesn't release wakelock always

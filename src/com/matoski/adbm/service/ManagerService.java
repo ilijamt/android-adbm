@@ -197,6 +197,15 @@ public class ManagerService extends Service {
 			bNetworkADBStatus = result == AdbStateEnum.ACTIVE;
 			mAdbState = result;
 			determineIfWeNeedWakeLock(result);
+			switch (result) {
+				case ACTIVE:
+					stopNetworkADB();
+					break;
+
+				case NOT_ACTIVE:
+					startNetworkADB();
+					break;
+			}
 		}
 
 		/*
@@ -799,6 +808,14 @@ public class ManagerService extends Service {
 		remoteView.setImageViewResource(R.id.notification_image, imageViewId);
 		remoteView.setTextViewText(R.id.notification_title, stringADB);
 		remoteView.setTextViewText(R.id.notification_text, stringIP);
+
+		final Intent mToggleIntent = new Intent(this, ManagerService.class);
+		mToggleIntent.putExtra(Constants.EXTRA_ACTION,
+				Constants.ACTION_SERVICE_ADB_TOGGLE);
+
+		remoteView.setOnClickPendingIntent(R.id.notification_image,
+				PendingIntent.getService(getApplicationContext(), 0,
+						mToggleIntent, 0));
 
 		builder.setContent(remoteView);
 

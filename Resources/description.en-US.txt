@@ -13,6 +13,7 @@ Features:
 + Different color coded icons depending on the state of the ADB 
 + Keep screen on while the service is running
 + Wake the screen when new package is installed
++ You can toggle the ADB state by touching the image in the notification bar
 
 It's really more simple to use than others, is always visible in notification bar. It supports advanced features like fully automate adb state control based on the WiFi network, and the state of the network.
 
