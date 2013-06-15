@@ -10,12 +10,26 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.matoski.adbm.Constants;
+import com.matoski.adbm.service.ManagerService;
 import com.matoski.adbm.util.ServiceUtil;
 
+/**
+ * A {@link BroadcastReceiver} that triggers when we get {@link WifiManager#NETWORK_STATE_CHANGED_ACTION}. Used to
+ * trigger actions in {@link ManagerService} to start or stop the ADB service.
+ * 
+ * @author Ilija Matoski (ilijamt@gmail.com)
+ */
 public class ConnectionDetectionReceiver extends BroadcastReceiver {
 
+	/**
+	 * The tag used when logging with {@link Log}
+	 */
 	private static String LOG_TAG = ConnectionDetectionReceiver.class.getName();
 
+	/*
+	 * (non-Javadoc)
+	 * @see android.content.BroadcastReceiver#onReceive(android.content.Context, android.content.Intent)
+	 */
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
@@ -37,42 +51,43 @@ public class ConnectionDetectionReceiver extends BroadcastReceiver {
 						networkInfo.getDetailedState().toString()));
 
 				switch (networkInfo.getDetailedState()) {
-				case CONNECTED:
+					case CONNECTED:
 
-					Log.d(LOG_TAG, String.format("Auto connecting to WiFi: %s",
-							Boolean.toString(bAutoWiFiConnect)));
+						Log.d(LOG_TAG, String.format(
+								"Auto connecting to WiFi: %s",
+								Boolean.toString(bAutoWiFiConnect)));
 
-					if (bAutoWiFiConnect) {
+						if (bAutoWiFiConnect) {
+							ServiceUtil.runServiceAction(context,
+									Constants.ACTION_SERVICE_AUTO_WIFI);
+						} else {
+							ServiceUtil
+									.runServiceAction(
+											context,
+											Constants.ACTION_SERVICE_UPDATE_NOTIFICATION_NETWORK_ADB);
+						}
+
+						break;
+
+					case DISCONNECTED:
 						ServiceUtil.runServiceAction(context,
-								Constants.KEY_ACTION_AUTO_WIFI);
-					} else {
-						ServiceUtil
-								.runServiceAction(
-										context,
-										Constants.KEY_ACTION_UPDATE_NOTIFICATION_NETWORK_ADB);
-					}
+								Constants.ACTION_SERVICE_ADB_STOP);
 
-					break;
+						break;
 
-				case DISCONNECTED:
-					ServiceUtil.runServiceAction(context,
-							Constants.KEY_ACTION_ADB_STOP);
-
-					break;
-
-				case AUTHENTICATING:
-				case BLOCKED:
-				case CAPTIVE_PORTAL_CHECK:
-				case CONNECTING:
-				case DISCONNECTING:
-				case FAILED:
-				case IDLE:
-				case OBTAINING_IPADDR:
-				case SCANNING:
-				case SUSPENDED:
-				case VERIFYING_POOR_LINK:
-				default:
-					break;
+					case AUTHENTICATING:
+					case BLOCKED:
+					case CAPTIVE_PORTAL_CHECK:
+					case CONNECTING:
+					case DISCONNECTING:
+					case FAILED:
+					case IDLE:
+					case OBTAINING_IPADDR:
+					case SCANNING:
+					case SUSPENDED:
+					case VERIFYING_POOR_LINK:
+					default:
+						break;
 
 				}
 

@@ -13,12 +13,35 @@ import android.widget.TextView;
 import com.matoski.adbm.R;
 import com.matoski.adbm.util.FileUtil;
 
+/**
+ * Base {@link Activity} used to display simple layouts with version, and text
+ * 
+ * @author Ilija Matoski (ilijamt@gmail.com)
+ */
 public abstract class BaseHelpActivity extends Activity {
 
+	/**
+	 * The tag used when logging with {@link Log}
+	 */
 	private static final String LOG_TAG = BaseHelpActivity.class.getName();
 
+	/**
+	 * This method needs to be overridden
+	 * 
+	 * <pre>
+	 * int getResourceId() {
+	 *    return R.raw.file;
+	 * }
+	 * </pre>
+	 * 
+	 * @return the resource id
+	 */
 	protected abstract int getResourceId();
 
+	/*
+	 * (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.base_help);
@@ -26,7 +49,7 @@ public abstract class BaseHelpActivity extends Activity {
 		TextView versionView = (TextView) findViewById(R.id.help_about_version);
 		versionView.setText(getVersion());
 
-		String html = FileUtil.readRawTextFile(getApplicationContext(),
+		String html = FileUtil.readRawFile(getApplicationContext(),
 				getResourceId());
 
 		if (html == null) {
@@ -45,7 +68,7 @@ public abstract class BaseHelpActivity extends Activity {
 	 * 
 	 * @return The current version.
 	 */
-	private String getVersion() {
+	protected String getVersion() {
 		String result = "";
 		try {
 			PackageManager manager = getPackageManager();

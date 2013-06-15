@@ -10,11 +10,23 @@ import com.matoski.adbm.enums.AdbStateEnum;
 
 import eu.chainfire.libsuperuser.Shell;
 
+/**
+ * A task that implements {@link GenericAsyncTask} to have the ability to run commands to enable/disable the ADB status
+ * 
+ * @author Ilija Matoski (ilijamt@gmail.com)
+ */
 public class RootCommandExecuter extends
 		GenericAsyncTask<String, String, AdbStateEnum> {
 
+	/**
+	 * The tag used when logging with {@link Log}
+	 */
 	private static final String LOG_TAG = RootCommandExecuter.class.getName();
 
+	/*
+	 * (non-Javadoc)
+	 * @see android.os.AsyncTask#doInBackground(Params[])
+	 */
 	@Override
 	protected AdbStateEnum doInBackground(String... commands) {
 

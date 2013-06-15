@@ -3,11 +3,14 @@ package com.matoski.adbm.service;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import android.app.Activity;
+import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -20,10 +23,10 @@ import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.util.SparseArray;
 import android.widget.RemoteViews;
 
 import com.google.gson.Gson;
@@ -43,20 +46,44 @@ import com.matoski.adbm.util.NetworkUtil;
 import com.matoski.adbm.util.PreferenceUtil;
 import com.matoski.adbm.widgets.ControlWidgetProvider;
 
+/**
+ * The main component to this application, contains all the functionality to successfully interact with the ADB,
+ * toggling the ADB service on or off, update available widgets that extend {@link AppWidgetProvider}, provide a way to
+ * interact with {@link WakeLock} to enable us to keep screen on or off
+ * 
+ * @author Ilija Matoski (ilijamt@gmail.com)
+ */
 public class ManagerService extends Service {
 
+	/**
+	 * A task that implements {@link NetworkStatusChecker} so we can use it to update the UI thread on the
+	 * {@link MyNetworkStatusChecker#onPostExecute(AdbStateEnum)} and also update the available widgets
+	 * 
+	 * @author Ilija Matoski (ilijamt@gmail.com)
+	 */
 	private final class MyNetworkStatusChecker extends NetworkStatusChecker {
 
+		/**
+		 * Instantiates a new my network status checker.
+		 */
 		public MyNetworkStatusChecker() {
 			this.mUseRoot = preferences.getBoolean(Constants.KEY_USE_ROOT,
 					Constants.USE_ROOT);
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * @see com.matoski.adbm.tasks.GenericAsyncTask#getString(int)
+		 */
 		@Override
 		protected String getString(int resourceId) {
 			return getResources().getString(resourceId);
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+		 */
 		@Override
 		protected void onPostExecute(AdbStateEnum result) {
 			super.onPostExecute(result);
@@ -66,6 +93,10 @@ public class ManagerService extends Service {
 			determineIfWeNeedWakeLock(result);
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * @see android.os.AsyncTask#onProgressUpdate(Progress[])
+		 */
 		@Override
 		protected void onProgressUpdate(String... messages) {
 			super.onProgressUpdate(messages);
@@ -75,18 +106,35 @@ public class ManagerService extends Service {
 		}
 	}
 
+	/**
+	 * A task that implements {@link RootCommandExecuter} so we can use it to update the UI thread on the
+	 * {@link MyRootCommandExecuter#onPostExecute(AdbStateEnum)} and also update the available widgets
+	 * 
+	 * @author Ilija Matoski (ilijamt@gmail.com)
+	 */
 	private final class MyRootCommandExecuter extends RootCommandExecuter {
 
+		/**
+		 * Instantiates a new my root command executer
+		 */
 		public MyRootCommandExecuter() {
 			this.mUseRoot = preferences.getBoolean(Constants.KEY_USE_ROOT,
 					Constants.USE_ROOT);
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * @see com.matoski.adbm.tasks.GenericAsyncTask#getString(int)
+		 */
 		@Override
 		protected String getString(int resourceId) {
 			return getResources().getString(resourceId);
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+		 */
 		@Override
 		protected void onPostExecute(AdbStateEnum result) {
 			super.onPostExecute(result);
@@ -97,37 +145,10 @@ public class ManagerService extends Service {
 			determineIfWeNeedWakeLock(result);
 		}
 
-		@Override
-		protected void onProgressUpdate(String... messages) {
-			super.onProgressUpdate(messages);
-			for (String message : messages) {
-				addItem(message);
-			}
-		}
-
-	}
-
-	private final class MyToggleNetworkAdb extends NetworkStatusChecker {
-
-		public MyToggleNetworkAdb() {
-			this.mUseRoot = preferences.getBoolean(Constants.KEY_USE_ROOT,
-					Constants.USE_ROOT);
-		}
-
-		@Override
-		protected String getString(int resourceId) {
-			return getResources().getString(resourceId);
-		}
-
-		@Override
-		protected void onPostExecute(AdbStateEnum result) {
-			super.onPostExecute(result);
-			Log.i(LOG_TAG, "Toggling the ADB state: " + result.toString());
-			bNetworkADBStatus = result == AdbStateEnum.ACTIVE;
-			mAdbState = result;
-			determineIfWeNeedWakeLock(result);
-		}
-
+		/*
+		 * (non-Javadoc)
+		 * @see android.os.AsyncTask#onProgressUpdate(Progress[])
+		 */
 		@Override
 		protected void onProgressUpdate(String... messages) {
 			super.onProgressUpdate(messages);
@@ -139,7 +160,62 @@ public class ManagerService extends Service {
 	}
 
 	/**
-	 * Service binder for the Service
+	 * This provides a way to toggle ADB service on or off.
+	 * 
+	 * A task that implements {@link NetworkStatusChecker} so we can use it to update the UI thread on the
+	 * {@link MyNetworkStatusChecker#onPostExecute(AdbStateEnum)}.
+	 * 
+	 * @author Ilija Matoski (ilijamt@gmail.com)
+	 */
+	private final class MyToggleNetworkAdb extends NetworkStatusChecker {
+
+		/**
+		 * Instantiates a new task
+		 */
+		public MyToggleNetworkAdb() {
+			this.mUseRoot = preferences.getBoolean(Constants.KEY_USE_ROOT,
+					Constants.USE_ROOT);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see com.matoski.adbm.tasks.GenericAsyncTask#getString(int)
+		 */
+		@Override
+		protected String getString(int resourceId) {
+			return getResources().getString(resourceId);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+		 */
+		@Override
+		protected void onPostExecute(AdbStateEnum result) {
+			super.onPostExecute(result);
+			Log.i(LOG_TAG, "Toggling the ADB state: " + result.toString());
+			bNetworkADBStatus = result == AdbStateEnum.ACTIVE;
+			mAdbState = result;
+			determineIfWeNeedWakeLock(result);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see android.os.AsyncTask#onProgressUpdate(Progress[])
+		 */
+		@Override
+		protected void onProgressUpdate(String... messages) {
+			super.onProgressUpdate(messages);
+			for (String message : messages) {
+				addItem(message);
+			}
+		}
+
+	}
+
+	/**
+	 * Service binder for {@link ManagerService}, this is used to bind other parts of the application to
+	 * {@link ManagerService}
 	 * 
 	 * @author Ilija Matoski (ilijamt@gmail.com)
 	 */
@@ -156,41 +232,95 @@ public class ManagerService extends Service {
 
 	}
 
+	/**
+	 * The tag used when logging with {@link Log}
+	 */
 	private static String LOG_TAG = ManagerService.class.getName();
 
+	/**
+	 * Should we start ADB on known WiFi networks
+	 */
 	private boolean ADB_START_ON_KNOWN_WIFI;
+
+	/**
+	 * The current network status, updated by various methods in {@link ManagerService}
+	 */
 	private boolean bNetworkADBStatus = false;
+
+	/**
+	 * Should the notification be hideable?
+	 */
 	private boolean bNotificationHideable = Constants.SHOW_HIDEABLE_NOTIFICATIONS;
 
+	/**
+	 * {@link Gson} object for building JSON strings
+	 */
 	private Gson gson;
+
+	/**
+	 * The type of the {@link Model} used to convert to JSON or convert from JSON to {@link Model}
+	 */
 	private Type gsonType;
 
 	/**
-	 * The handler for messaging
+	 * Handler that other applications bind to so we can send them updates to the binded components
 	 */
 	private IMessageHandler handler = null;
 
+	/**
+	 * The default port on which the ADB service starts
+	 */
 	private long mADBPort = Constants.ADB_PORT;
+
+	/**
+	 * The current state of the ADB, updated by various methods in {@link ManagerService}
+	 */
 	private AdbStateEnum mAdbState = AdbStateEnum.NOT_ACTIVE;
 
+	/**
+	 * The binder used to retrieve the running service
+	 */
 	private final IBinder mBinder = new ServiceBinder();
 
+	/**
+	 * Android {@link ConnectivityManager} used to check the network state
+	 */
 	private ConnectivityManager mConnectivityManager;
 
+	/**
+	 * For creating and updating notifications running on the system
+	 */
 	private NotificationManager mNM;
 
-	final public SparseArray<String> mResourcesStringMap = new SparseArray<String>();
-
+	/**
+	 * Should we show the notifications?
+	 */
 	private boolean mShowNotification = Constants.SHOW_NOTIFICATIONS;
 
+	/**
+	 * The WiFi manager used to determine the WiFi state
+	 */
 	private WifiManager mWifiManager;
 
+	/**
+	 * Notification ID which is used to create/update for the application
+	 */
 	private int NOTIFICATION = R.string.service_name;
 
+	/**
+	 * The preferences for the {@link Application}
+	 */
 	private SharedPreferences preferences;
 
+	/**
+	 * {@link WakeLock} definition used to get or release a lock on the system, used in {@link #acquireWakeLock()} or
+	 * {@link #releaseWakeLock()}
+	 */
 	private PowerManager.WakeLock wakeLock;
 
+	/**
+	 * Enables us to acquire a {@link WakeLock} that will enable us to keep the screen on for the duration of the lock
+	 */
 	@SuppressWarnings("deprecation")
 	public void acquireWakeLock() {
 
@@ -221,9 +351,11 @@ public class ManagerService extends Service {
 	}
 
 	/**
-	 * Add a message to the list queue
+	 * Add a message to the list queue, and it's sent to the binded {@link #handler} to update the UI
+	 * thread with the data sent through this interface
 	 * 
 	 * @param message
+	 *            Message to send through the handler
 	 */
 	private void addItem(String message) {
 		if (handler != null) {
@@ -231,6 +363,11 @@ public class ManagerService extends Service {
 		}
 	}
 
+	/**
+	 * Initiate the auto connection for ADB, it will start the ADB service if we are in the known list of configured
+	 * WiFi networks.
+	 * Triggers {@link #startNetworkADB()} if {@link #isValidConnectionToWiFi()} return true
+	 */
 	public void autoConnectionAdb() {
 
 		if (this.isValidConnectionToWiFi()) {
@@ -239,27 +376,38 @@ public class ManagerService extends Service {
 
 	}
 
+	/**
+	 * Determine if we need wake lock based on the {@link AdbStateEnum} state of the system
+	 * 
+	 * @param state
+	 *            The state of the system
+	 */
 	public void determineIfWeNeedWakeLock(AdbStateEnum state) {
 
 		switch (state) {
-		case ACTIVE:
-			this.acquireWakeLock();
-			break;
+			case ACTIVE:
+				this.acquireWakeLock();
+				break;
 
-		case NOT_ACTIVE:
-			this.releaseWakeLock();
-			break;
+			case NOT_ACTIVE:
+				this.releaseWakeLock();
+				break;
 
 		}
 
 	}
 
+	/**
+	 * Checks if the ADB service is running in network mode.
+	 * It's accomplished by running {@link MyNetworkStatusChecker}, and updates {@link #bNetworkADBStatus} and
+	 * {@link #mAdbState} through the callback in {@link MyNetworkStatusChecker#onPostExecute(AdbStateEnum)}
+	 */
 	public void isNetworkADBRunning() {
 		(new MyNetworkStatusChecker()).execute();
 	}
 
 	/**
-	 * Checks if the connection is valid, to be used for auto ADB initialization
+	 * Checks if the connection is valid, to be used for auto ADB initialization.
 	 * 
 	 * @return {@link Boolean}
 	 */
@@ -314,16 +462,34 @@ public class ManagerService extends Service {
 		return false;
 	}
 
+	/**
+	 * Trigger a notification update for the system based on {@link #mShowNotification}
+	 */
 	public void notificationUpdate() {
 		this.mShowNotification = this.preferences.getBoolean(
 				Constants.KEY_NOTIFICATIONS, Constants.SHOW_NOTIFICATIONS);
 		this.notificationUpdate(this.mShowNotification);
 	}
 
+	/**
+	 * Trigger a notification based on the update flag
+	 * 
+	 * @param update
+	 *            Should we show the notification or not?
+	 */
 	public void notificationUpdate(boolean update) {
 		notificationUpdate(update, bNetworkADBStatus);
 	}
 
+	/**
+	 * Trigger a notification based on the update flag and {@link #bNetworkADBStatus}
+	 * 
+	 * @param update
+	 *            Should we show the notification or not?
+	 * 
+	 * @param isNetworkADBRunning
+	 *            Is network ADB running or not?
+	 */
 	public void notificationUpdate(boolean update, boolean isNetworkADBRunning) {
 
 		Log.i(LOG_TAG,
@@ -342,6 +508,12 @@ public class ManagerService extends Service {
 		}
 	}
 
+	/**
+	 * Update the notifications without triggering the binded {@link Activity} through {@link #handler}
+	 * 
+	 * @param isNetworkADBRunning
+	 *            Is the network ADB running
+	 */
 	public void notificationUpdateRemoteOnly(boolean isNetworkADBRunning) {
 
 		this.mShowNotification = this.preferences.getBoolean(
@@ -363,6 +535,10 @@ public class ManagerService extends Service {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see android.app.Service#onBind(android.content.Intent)
+	 */
 	@Override
 	public IBinder onBind(Intent intent) {
 		Log.d(LOG_TAG, "Service bound to "
@@ -370,6 +546,10 @@ public class ManagerService extends Service {
 		return this.mBinder;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see android.app.Service#onCreate()
+	 */
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -411,6 +591,10 @@ public class ManagerService extends Service {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see android.app.Service#onDestroy()
+	 */
 	@Override
 	public void onDestroy() {
 		Log.d(LOG_TAG, "Destroying Manager Service");
@@ -418,6 +602,10 @@ public class ManagerService extends Service {
 		this.mNM.cancelAll();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see android.app.Service#onRebind(android.content.Intent)
+	 */
 	@Override
 	public void onRebind(Intent intent) {
 		Log.d(LOG_TAG, "Service rebound to "
@@ -425,6 +613,10 @@ public class ManagerService extends Service {
 		super.onRebind(intent);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see android.app.Service#onStartCommand(android.content.Intent, int, int)
+	 */
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -448,32 +640,33 @@ public class ManagerService extends Service {
 
 			Log.d(LOG_TAG, String.format("Running action: %s", action));
 
-			if (action.equals(Constants.KEY_SERVICE_START)) {
+			if (action.equals(Constants.ACTION_SERVICE_START)) {
 				Log.d(LOG_TAG, "Initial startup for the Service.");
-			} else if (action.equals(Constants.KEY_SERVICE_BIND)) {
+			} else if (action.equals(Constants.ACTION_SERVICE_BIND)) {
 				Log.d(LOG_TAG, "Binding for the Service.");
-			} else if (action.equals(Constants.KEY_ACTION_ADB_STOP)) {
+			} else if (action.equals(Constants.ACTION_SERVICE_ADB_STOP)) {
 				this.stopNetworkADB();
-			} else if (action.equals(Constants.KEY_ACTION_ADB_START)) {
+			} else if (action.equals(Constants.ACTION_SERVICE_ADB_START)) {
 				this.startNetworkADB();
-			} else if (action.equals(Constants.KEY_ACTION_AUTO_WIFI)) {
+			} else if (action.equals(Constants.ACTION_SERVICE_AUTO_WIFI)) {
 				this.autoConnectionAdb();
-			} else if (action.equals(Constants.KEY_ACTION_UPDATE_NOTIFICATION)) {
+			} else if (action
+					.equals(Constants.ACTION_SERVICE_UPDATE_NOTIFICATION)) {
 				this.notificationUpdate();
-			} else if (action.equals(Constants.KEY_ACTION_ADB_TOGGLE)) {
+			} else if (action.equals(Constants.ACTION_SERVICE_ADB_TOGGLE)) {
 				this.toggleADB();
 			} else if (action
-					.equals(Constants.KEY_ACTION_UPDATE_NOTIFICATION_NETWORK_ADB)) {
+					.equals(Constants.ACTION_SERVICE_UPDATE_NOTIFICATION_NETWORK_ADB)) {
 				this.isNetworkADBRunning();
-			} else if (action.equals(Constants.KEY_UPDATE_WIDGETS)) {
+			} else if (action.equals(Constants.ACTION_SERVICE_UPDATE_WIDGETS)) {
 				this.updateWidgets(extras
 						.getIntArray(AppWidgetManager.EXTRA_APPWIDGET_IDS),
 						bNetworkADBStatus);
-			} else if (action.equals(Constants.KEY_WAKELOCK_ACQUIRE)) {
+			} else if (action.equals(Constants.SERVICE_ACTION_WAKELOCK_ACQUIRE)) {
 				this.acquireWakeLock();
-			} else if (action.equals(Constants.KEY_WAKELOCK_RELEASE)) {
+			} else if (action.equals(Constants.SERVICE_ACTION_WAKELOCK_RELEASE)) {
 				this.releaseWakeLock();
-			} else if (action.equals(Constants.KEY_PACKAGE_ADD)) {
+			} else if (action.equals(Constants.SERVICE_ACTION_PACKAGE_ADD)) {
 				this.wakeUpPhone();
 			} else {
 				Log.e(LOG_TAG, String.format("Invalid action: %", action));
@@ -487,6 +680,10 @@ public class ManagerService extends Service {
 		return Service.START_STICKY;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see android.app.Service#onUnbind(android.content.Intent)
+	 */
 	@Override
 	public boolean onUnbind(Intent intent) {
 		Log.d(LOG_TAG, "Service unbound from "
@@ -494,6 +691,9 @@ public class ManagerService extends Service {
 		return super.onUnbind(intent);
 	}
 
+	/**
+	 * Enables us to release an acquired {@link WakeLock}
+	 */
 	public void releaseWakeLock() {
 
 		Log.d(LOG_TAG, "Trying to release a wake lock.");
@@ -513,6 +713,9 @@ public class ManagerService extends Service {
 
 	}
 
+	/**
+	 * Removes the notification bar from the system
+	 */
 	private void removeNotification() {
 		Log.d(LOG_TAG, "Removing notification");
 		this.mNM.cancelAll();
@@ -520,6 +723,8 @@ public class ManagerService extends Service {
 	}
 
 	/**
+	 * Sets the handler for communication between the bounded {@link Activity} with {@link #handler}
+	 * 
 	 * @param handler
 	 *            the handler to set
 	 */
@@ -527,10 +732,24 @@ public class ManagerService extends Service {
 		this.handler = handler;
 	}
 
+	/**
+	 * Show notification on the notification bar
+	 * 
+	 * @param isNetworkADBRunning
+	 *            Is the ADB network running
+	 */
 	private void showNotification(boolean isNetworkADBRunning) {
 		showNotification(isNetworkADBRunning, false);
 	}
 
+	/**
+	 * Show notification on the notification bar
+	 * 
+	 * @param isNetworkADBRunning
+	 *            Is the ADB network running
+	 * @param dontTriggerHandlerUpdate
+	 *            Do not trigger {@link IMessageHandler#update(AdbStateEnum)} for {@link #handler}
+	 */
 	private void showNotification(boolean isNetworkADBRunning,
 			boolean dontTriggerHandlerUpdate) {
 
@@ -602,6 +821,9 @@ public class ManagerService extends Service {
 
 	}
 
+	/**
+	 * Start the ADB in network mode
+	 */
 	public void startNetworkADB() {
 		Log.i(LOG_TAG, "Starting network ADB.");
 
@@ -625,6 +847,9 @@ public class ManagerService extends Service {
 		}
 	}
 
+	/**
+	 * Stop the ADB if it's running in network ADB
+	 */
 	public void stopNetworkADB() {
 		Log.i(LOG_TAG, "Stopping network ADB.");
 		(new MyRootCommandExecuter()).execute(new String[] {
@@ -632,24 +857,50 @@ public class ManagerService extends Service {
 
 	}
 
+	/**
+	 * Toggles the ADB status using {@link MyToggleNetworkAdb}
+	 */
 	public void toggleADB() {
 		(new MyToggleNetworkAdb()).execute();
 	}
 
+	/**
+	 * Triggers update with {@link IMessageHandler#update(AdbStateEnum)} through {@link #handler}, if {@link #handler}
+	 * is set.
+	 * 
+	 * Class {@link #triggerBoundActivityUpdate(AdbStateEnum)} with {@link #mAdbState}
+	 */
 	private void triggerBoundActivityUpdate() {
 		triggerBoundActivityUpdate(mAdbState);
 	}
 
+	/**
+	 * Triggers update with {@link IMessageHandler#update(AdbStateEnum)} through {@link #handler}, if {@link #handler}
+	 * is set.
+	 * 
+	 * @param state
+	 *            The current state of ADB service
+	 */
 	private void triggerBoundActivityUpdate(AdbStateEnum state) {
 		if (handler != null) {
 			handler.update(state);
 		}
 	}
 
+	/**
+	 * Update the available widgets throught {@link #updateWidgets(boolean)} with {@link #bNetworkADBStatus}.
+	 */
 	public void updateWidgets() {
 		updateWidgets(bNetworkADBStatus);
 	}
 
+	/**
+	 * Update the available widgets through {@link #updateWidgets(int[], boolean)} with a list of available widgets
+	 * through {@link AppWidgetManager#getAppWidgetIds(ComponentName)} and {@link #bNetworkADBStatus}
+	 * 
+	 * @param isNetworkADBRunning
+	 *            Is network ADB running
+	 */
 	public void updateWidgets(boolean isNetworkADBRunning) {
 
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this
@@ -663,6 +914,15 @@ public class ManagerService extends Service {
 
 	}
 
+	/**
+	 * Update the available widgets
+	 * 
+	 * @param allWidgetsIds
+	 *            The widgets ID
+	 * 
+	 * @param isNetworkADBRunning
+	 *            Is the network ADB running
+	 */
 	public void updateWidgets(int[] allWidgetsIds, boolean isNetworkADBRunning) {
 
 		AppWidgetManager widgetManager = AppWidgetManager.getInstance(this
@@ -713,7 +973,7 @@ public class ManagerService extends Service {
 			Intent mServiceIntent = new Intent(getApplicationContext(),
 					ManagerService.class);
 			mServiceIntent.putExtra(Constants.EXTRA_ACTION,
-					Constants.KEY_ACTION_ADB_TOGGLE);
+					Constants.ACTION_SERVICE_ADB_TOGGLE);
 
 			PendingIntent pendingIntent = PendingIntent.getService(
 					getApplicationContext(), 0, mServiceIntent, 0);
@@ -728,6 +988,10 @@ public class ManagerService extends Service {
 		}
 	}
 
+	/**
+	 * Wakes up the phone based on {@link SharedPreferences} property {@link Constants#KEY_WAKE_ON_NEW_PACKAGE}, it will
+	 * not trigger a screen update depending on {@link #bNetworkADBStatus}
+	 */
 	@SuppressWarnings("deprecation")
 	public void wakeUpPhone() {
 

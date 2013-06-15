@@ -1,10 +1,20 @@
 package com.matoski.adbm.pojo;
 
+/**
+ * Contains the IP4 and IP6 of the network, it's used to store the IP addresses
+ * for an easier transfer mechanism
+ * 
+ * <pre>
+ * new IP("127.0.0.1", "::1");
+ * new IP("127.0.0.1");
+ * </pre>
+ * 
+ * @author Ilija Matoski (ilijamt@gmail.com)
+ */
 public class IP {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -18,7 +28,6 @@ public class IP {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -50,15 +59,31 @@ public class IP {
 		return true;
 	}
 
-	public String ipv4, ipv6;
+	final public String ipv4;
+	final public String ipv6;
 
 	/**
+	 * Instantiates a new IP
+	 * 
 	 * @param ipv4
+	 *            the IP4 version of the IP
 	 * @param ipv6
+	 *            the IP6 version of the IP
 	 */
 	public IP(String ipv4, String ipv6) {
 		this.ipv4 = ipv4;
 		this.ipv6 = ipv6;
+	}
+
+	/**
+	 * Instantiates a new IP
+	 * 
+	 * @param ipv4
+	 *            the IP4 version of the IP
+	 */
+	public IP(String ipv4) {
+		this.ipv4 = ipv4;
+		this.ipv6 = null;
 	}
 
 }

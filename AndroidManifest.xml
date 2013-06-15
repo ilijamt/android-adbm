@@ -55,7 +55,7 @@
             android:name="com.matoski.adbm.activity.ChangeLogActivity"
             android:label="@string/change_log" />
         <activity
-            android:name="com.matoski.adbm.activity.ListViewCheckboxesActivity"
+            android:name="com.matoski.adbm.activity.WiFiListViewCheckboxesActivity"
             android:label="@string/app_wifi_list" />
 
         <!-- Execute on boot complete -->

@@ -1,5 +1,6 @@
 package com.matoski.adbm.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -22,8 +23,16 @@ import com.matoski.adbm.R;
 import com.matoski.adbm.service.ManagerService;
 import com.matoski.adbm.util.ServiceUtil;
 
+/**
+ * {@link Activity} that shows the preferences for the application,
+ * 
+ * @author Ilija Matoski (ilijamt@gmail.com)
+ */
 public class MyPreferencesActivity extends PreferenceActivity {
 
+	/**
+	 * Restart {@link MyPreferencesActivity}
+	 */
 	protected void restartActivity() {
 		finish();
 		startActivity(getIntent());
@@ -35,14 +44,24 @@ public class MyPreferencesActivity extends PreferenceActivity {
 	 */
 	private ManagerService service;
 
-	/** Interface connection to the {@link ManagerService} service */
+	/**
+	 * Interface connection to the {@link ManagerService} service.
+	 */
 	private ServiceConnection mConnection = new ServiceConnection() {
 
+		/*
+		 * (non-Javadoc)
+		 * @see android.content.ServiceConnection#onServiceDisconnected(android.content.ComponentName)
+		 */
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
 			service = null;
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * @see android.content.ServiceConnection#onServiceConnected(android.content.ComponentName, android.os.IBinder)
+		 */
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder binder) {
 			service = ((ManagerService.ServiceBinder) binder).getService();
@@ -51,22 +70,33 @@ public class MyPreferencesActivity extends PreferenceActivity {
 	};
 
 	/**
-	 * Do bind service.
+	 * Bind {@link ManagerService} for this {@link MyPreferencesActivity}
 	 */
 	private void doBindService() {
 		ServiceUtil.bind(this, mConnection);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see android.preference.PreferenceActivity#onDestroy()
+	 */
 	@Override
 	protected void onDestroy() {
 		this.doUnBindService();
 		super.onDestroy();
 	}
 
+	/**
+	 * Unbind {@link ManagerService} for this {@link MyPreferencesActivity}
+	 */
 	private void doUnBindService() {
 		ServiceUtil.unbind(this, mConnection);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see android.preference.PreferenceActivity#onCreate(android.os.Bundle)
+	 */
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +123,7 @@ public class MyPreferencesActivity extends PreferenceActivity {
 						if ((Boolean) newValue) {
 							mWakeOnNewPackage.setChecked(false);
 						}
-						
+
 						return true;
 					}
 				});
@@ -133,7 +163,7 @@ public class MyPreferencesActivity extends PreferenceActivity {
 					@Override
 					public boolean onPreferenceClick(Preference preference) {
 						startActivity(new Intent(getBaseContext(),
-								ListViewCheckboxesActivity.class));
+								WiFiListViewCheckboxesActivity.class));
 						return false;
 					}
 				});
