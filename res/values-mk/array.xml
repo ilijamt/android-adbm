@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="time_delay_entires">
+        <item>5 секунди</item>
+        <item>10 секунди</item>
+        <item>15 секунди</item>
+        <item>30 секунди</item>
+        <item>45 секунди</item>
+        <item>60 секунди</item>
+        <item>90 секунди</item>
+        <item>120 секунди</item>
+        <item>240 секунди</item>
+        <item>480 секунди</item>
+    </string-array>
+    
+</resources>
