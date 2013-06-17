@@ -1,5 +1,2 @@
-Features:
-+ You can toggle the ADB state by touching the image in the notification bar
-
 Bugfixes:
-+ Doesn't release wakelock always
++ Sometimes the service doesn't start fast enough so it cannot bind the service in time to request update, and it results in an crash

@@ -1,3 +1,8 @@
+0.9.7
+-----
+Bugfixes:
++ Sometimes the service doesn't start fast enough so it cannot bind the service in time to request update, and it results in an crash
+
 0.9.6
 -----
 Features:

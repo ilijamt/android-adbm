@@ -80,7 +80,9 @@ public class MainActivity extends Activity {
 			super.onPostExecute(result);
 			updateScreenDetails(false, result);
 			updateNetworkDependentScreenDetails(result);
-			service.notificationUpdateRemoteOnly(result == AdbStateEnum.ACTIVE);
+			if (service != null) {
+				service.notificationUpdateRemoteOnly(result == AdbStateEnum.ACTIVE);
+			}
 		}
 
 		/*
@@ -453,10 +455,12 @@ public class MainActivity extends Activity {
 	 */
 	private void toggleNetworkState(boolean isActive) {
 
-		if (isActive) {
-			this.service.stopNetworkADB();
-		} else {
-			this.service.startNetworkADB();
+		if (service != null) {
+			if (isActive) {
+				this.service.stopNetworkADB();
+			} else {
+				this.service.startNetworkADB();
+			}
 		}
 	}
 
