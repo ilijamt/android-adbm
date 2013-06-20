@@ -1,3 +1,8 @@
+0.9.8
+-----
+Bugfixes:
++ Fixed the wake lock issues on some occasions
+
 0.9.7
 -----
 Bugfixes:

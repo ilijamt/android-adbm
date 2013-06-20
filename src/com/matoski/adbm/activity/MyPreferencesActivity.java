@@ -28,6 +28,7 @@ import com.matoski.adbm.util.ServiceUtil;
  * 
  * @author Ilija Matoski (ilijamt@gmail.com)
  */
+@SuppressWarnings("deprecation")
 public class MyPreferencesActivity extends PreferenceActivity {
 
 	/**

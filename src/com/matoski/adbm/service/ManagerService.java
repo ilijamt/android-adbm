@@ -53,6 +53,7 @@ import com.matoski.adbm.widgets.ControlWidgetProvider;
  * 
  * @author Ilija Matoski (ilijamt@gmail.com)
  */
+@SuppressWarnings("deprecation")
 public class ManagerService extends Service {
 
 	/**
@@ -325,12 +326,50 @@ public class ManagerService extends Service {
 	 * {@link WakeLock} definition used to get or release a lock on the system, used in {@link #acquireWakeLock()} or
 	 * {@link #releaseWakeLock()}
 	 */
-	private PowerManager.WakeLock wakeLock;
+	private static volatile PowerManager.WakeLock wakeLock = null;
+
+	/**
+	 * Retrieve this {@link ManagerService} {@link WakeLock} for manipulation
+	 * 
+	 * @return
+	 */
+	synchronized private static PowerManager.WakeLock getLock() {
+		return (wakeLock);
+	}
+
+	/**
+	 * Create if there is no lock with the options supplied
+	 * 
+	 * @param context
+	 *            The application context
+	 * @param levelAndFlags
+	 *            The levelAndFlags parameter specifies a wake lock level and optional flags combined using the logical
+	 *            OR operator.
+	 * @param referenceCounted
+	 *            If false, it will release all the lock with one call to release, otherwise it will require a call of
+	 *            release for each acquire
+	 * 
+	 * @return
+	 */
+	synchronized private static PowerManager.WakeLock getInitialLock(
+			Context context, int levelAndFlags, boolean referenceCounted) {
+		if (wakeLock == null) {
+			PowerManager mgr = (PowerManager) context
+					.getSystemService(Context.POWER_SERVICE);
+
+			wakeLock = mgr.newWakeLock(levelAndFlags, LOG_TAG);
+			wakeLock.setReferenceCounted(referenceCounted);
+		}
+
+		return (wakeLock);
+	}
 
 	/**
 	 * Enables us to acquire a {@link WakeLock} that will enable us to keep the screen on for the duration of the lock
+	 * 
+	 * @todo Replace deprecated implementation {@link PowerManager#FULL_WAKE_LOCK}
 	 */
-	public void acquireWakeLock() {
+	public boolean acquireWakeLock() {
 
 		final Boolean bKeepScreenOn = preferences.getBoolean(
 				Constants.KEY_KEEP_SCREEN_ON, Constants.KEEP_SCREEN_ON);
@@ -340,21 +379,23 @@ public class ManagerService extends Service {
 		if (!bKeepScreenOn) {
 			addItem(getResources().getString(
 					R.string.item_no_need_for_wake_lock));
-			return;
+			return false;
 		}
 
-		final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		getInitialLock(getApplicationContext(),
+				PowerManager.FULL_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE,
+				false).acquire();
 
-		if (this.wakeLock == null) {
-			this.wakeLock = pm
-					.newWakeLock(PowerManager.FULL_WAKE_LOCK, LOG_TAG);
+		if (getLock() == null) {
+			Log.e(LOG_TAG, "Failed to acquire wake lock");
+			return false;
 		}
 
-		if (!wakeLock.isHeld()) {
-			wakeLock.acquire();
-			addItem(getResources().getString(R.string.item_acquired_wake_lock,
-					Boolean.toString(wakeLock.isHeld())));
-		}
+		Log.w(LOG_TAG, "Wake lock acquired");
+		addItem(getResources().getString(R.string.item_acquired_wake_lock,
+				Boolean.toString(getLock().isHeld())));
+
+		return getLock().isHeld();
 
 	}
 
@@ -391,6 +432,14 @@ public class ManagerService extends Service {
 	 *            The state of the system
 	 */
 	public void determineIfWeNeedWakeLock(AdbStateEnum state) {
+
+		final Boolean bKeepScreenOn = preferences.getBoolean(
+				Constants.KEY_KEEP_SCREEN_ON, Constants.KEEP_SCREEN_ON);
+
+		if (!bKeepScreenOn) {
+			Log.d(LOG_TAG, "We don't need wake lock");
+			return;
+		}
 
 		switch (state) {
 			case ACTIVE:
@@ -701,23 +750,27 @@ public class ManagerService extends Service {
 
 	/**
 	 * Enables us to release an acquired {@link WakeLock}
+	 * 
+	 * @return
 	 */
-	public void releaseWakeLock() {
+	public boolean releaseWakeLock() {
 
 		Log.d(LOG_TAG, "Trying to release a wake lock.");
 
-		if (this.wakeLock == null) {
+		if (getLock() == null) {
 			// we don't have a wake lock
-			return;
+			return false;
 		}
 
-		if (wakeLock.isHeld()) {
-			wakeLock.release();
-			addItem(getResources().getString(R.string.item_released_wake_lock,
-					Boolean.toString(!wakeLock.isHeld())));
-		}
+		getLock().release();
 
-		wakeLock = null;
+		Log.w(LOG_TAG,
+				"Releasing Wake Lock: " + Boolean.toString(!getLock().isHeld()));
+
+		addItem(getResources().getString(R.string.item_released_wake_lock,
+				Boolean.toString(!getLock().isHeld())));
+
+		return true;
 
 	}
 
@@ -1007,6 +1060,8 @@ public class ManagerService extends Service {
 	/**
 	 * Wakes up the phone based on {@link SharedPreferences} property {@link Constants#KEY_WAKE_ON_NEW_PACKAGE}, it will
 	 * not trigger a screen update depending on {@link #bNetworkADBStatus}
+	 * 
+	 * @todo Replace deprecated implementation {@link PowerManager#FULL_WAKE_LOCK}
 	 */
 	public void wakeUpPhone() {
 
@@ -1023,12 +1078,13 @@ public class ManagerService extends Service {
 			return;
 		}
 
-		final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-		final PowerManager.WakeLock wl = pm.newWakeLock(
-				PowerManager.FULL_WAKE_LOCK
-						| PowerManager.ACQUIRE_CAUSES_WAKEUP
-						| PowerManager.ON_AFTER_RELEASE, LOG_TAG);
+		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
 
+		PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK
+				| PowerManager.ACQUIRE_CAUSES_WAKEUP
+				| PowerManager.ON_AFTER_RELEASE, LOG_TAG);
+
+		wl.setReferenceCounted(false);
 		wl.acquire(10000);
 
 	}
