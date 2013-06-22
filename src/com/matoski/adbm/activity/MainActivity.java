@@ -330,7 +330,7 @@ public class MainActivity extends Activity {
 
 		this.prefs = PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
-
+/*
 		if (!ServiceUtil.isServiceRunning(getApplicationContext())) {
 			try {
 				this.alarmTimeout = this.prefs.getLong(
@@ -341,7 +341,7 @@ public class MainActivity extends Activity {
 			}
 			ServiceUtil.start(getApplicationContext(), 0, this.alarmTimeout);
 		}
-
+*/
 		updateScreenDetails(false, AdbStateEnum.NOT_ACTIVE);
 		this.doBindService();
 	}

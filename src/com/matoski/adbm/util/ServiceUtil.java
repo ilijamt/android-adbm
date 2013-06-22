@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.matoski.adbm.Constants;
-import com.matoski.adbm.receiver.MyStartServiceReceiver;
 import com.matoski.adbm.service.ManagerService;
 
 /**
@@ -96,7 +95,8 @@ public class ServiceUtil {
 
 		try {
 			// cancel any previous alarm managers, just in case
-			alarmManager.cancel(getServicePendingIntent(context));
+			alarmManager.cancel(getServicePendingIntent(context,
+					ManagerService.class));
 		} catch (Exception e) {
 			Log.w(LOG_TAG, "No existing alarms to cancel", e);
 		}
@@ -106,7 +106,7 @@ public class ServiceUtil {
 
 		alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
 				calendar.getTimeInMillis(), iRepeatTimeout,
-				getServicePendingIntent(context));
+				getServicePendingIntent(context, ManagerService.class));
 
 	}
 
@@ -116,9 +116,10 @@ public class ServiceUtil {
 	 * @param context
 	 * @return
 	 */
-	public final static PendingIntent getServicePendingIntent(Context context) {
-		return PendingIntent.getService(context, 0, new Intent(context,
-				ManagerService.class), PendingIntent.FLAG_CANCEL_CURRENT);
+	public final static PendingIntent getServicePendingIntent(Context context,
+			Class<?> cls) {
+		return PendingIntent
+				.getService(context, 0, new Intent(context, cls), 0);
 
 	}
 
@@ -129,10 +130,9 @@ public class ServiceUtil {
 	 * @return
 	 */
 	public final static PendingIntent getServiceBroadcastPendingIntent(
-			Context context) {
-		return PendingIntent.getBroadcast(context, 0, new Intent(context,
-				MyStartServiceReceiver.class),
-				PendingIntent.FLAG_CANCEL_CURRENT);
+			Context context, Class<?> cls) {
+		return PendingIntent.getBroadcast(context, 0, new Intent(context, cls),
+				0);
 	}
 
 	/**

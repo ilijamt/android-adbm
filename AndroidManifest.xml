@@ -81,9 +81,6 @@
             android:icon="@drawable/ic_launcher"
             android:label="@string/service_name" />
 
-        <!-- Starts the ADB Manager Service -->
-        <receiver android:name="com.matoski.adbm.receiver.MyStartServiceReceiver" />
-
         <!-- Widget -->
         <receiver android:name="com.matoski.adbm.widgets.ControlWidgetProvider" >
             <intent-filter>
