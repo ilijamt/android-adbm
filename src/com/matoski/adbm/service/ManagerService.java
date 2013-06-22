@@ -394,7 +394,7 @@ public class ManagerService extends Service {
 		Log.w(LOG_TAG, "Wake lock acquired");
 		addItem(getResources().getString(R.string.item_acquired_wake_lock,
 				Boolean.toString(getLock().isHeld())));
-		
+
 		return getLock().isHeld();
 
 	}
@@ -443,7 +443,7 @@ public class ManagerService extends Service {
 				break;
 
 		}
-		
+
 		triggerBoundActivityUpdate();
 
 	}
@@ -674,7 +674,7 @@ public class ManagerService extends Service {
 		String action = "No available action";
 
 		if (intent == null) {
-			Log.d(LOG_TAG, "onStartCommand: " + action);
+			Log.d(LOG_TAG, "onStartCommand: " + action + ", intent is null");
 			return Service.START_STICKY;
 		}
 
@@ -683,12 +683,13 @@ public class ManagerService extends Service {
 			final Bundle extras = intent.getExtras();
 
 			if (extras == null) {
-				Log.d(LOG_TAG, "onStartCommand: " + action);
+				Log.d(LOG_TAG, "onStartCommand: " + action
+						+ ", no extras in intent");
 				return Service.START_STICKY;
 			}
 
-			action = extras.getString(Constants.EXTRA_ACTION);
-
+			action = intent.getAction();
+			
 			Log.d(LOG_TAG, String.format("Running action: %s", action));
 
 			if (action.equals(Constants.ACTION_SERVICE_START)) {
@@ -767,7 +768,7 @@ public class ManagerService extends Service {
 		return true;
 
 	}
-	
+
 	/**
 	 * Checks if we are holding a wake lock or not?
 	 * 
@@ -866,12 +867,13 @@ public class ManagerService extends Service {
 		remoteView.setTextViewText(R.id.notification_text, stringIP);
 
 		final Intent mToggleIntent = new Intent(this, ManagerService.class);
+		mToggleIntent.setAction(Constants.ACTION_SERVICE_ADB_TOGGLE);
 		mToggleIntent.putExtra(Constants.EXTRA_ACTION,
 				Constants.ACTION_SERVICE_ADB_TOGGLE);
 
 		remoteView.setOnClickPendingIntent(R.id.notification_image,
 				PendingIntent.getService(getApplicationContext(), 0,
-						mToggleIntent, 0));
+						mToggleIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
 		builder.setContent(remoteView);
 
@@ -1044,11 +1046,13 @@ public class ManagerService extends Service {
 
 			Intent mServiceIntent = new Intent(getApplicationContext(),
 					ManagerService.class);
+			mServiceIntent.setAction(Constants.ACTION_SERVICE_ADB_TOGGLE);
 			mServiceIntent.putExtra(Constants.EXTRA_ACTION,
 					Constants.ACTION_SERVICE_ADB_TOGGLE);
 
 			PendingIntent pendingIntent = PendingIntent.getService(
-					getApplicationContext(), 0, mServiceIntent, 0);
+					getApplicationContext(), 0, mServiceIntent,
+					PendingIntent.FLAG_UPDATE_CURRENT);
 
 			remoteView.setOnClickPendingIntent(R.id.notification_image,
 					pendingIntent);

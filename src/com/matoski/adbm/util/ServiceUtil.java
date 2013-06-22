@@ -206,6 +206,7 @@ public class ServiceUtil {
 	public static void runServiceAction(Context context, String action,
 			Bundle bundle) {
 		Intent mServiceIntent = new Intent(context, ManagerService.class);
+		mServiceIntent.setAction(action);
 		mServiceIntent.putExtra(Constants.EXTRA_ACTION, action);
 		if (bundle != null) {
 			mServiceIntent.putExtras(bundle);
