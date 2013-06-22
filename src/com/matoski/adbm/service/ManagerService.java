@@ -394,7 +394,7 @@ public class ManagerService extends Service {
 		Log.w(LOG_TAG, "Wake lock acquired");
 		addItem(getResources().getString(R.string.item_acquired_wake_lock,
 				Boolean.toString(getLock().isHeld())));
-
+		
 		return getLock().isHeld();
 
 	}
@@ -433,14 +433,6 @@ public class ManagerService extends Service {
 	 */
 	public void determineIfWeNeedWakeLock(AdbStateEnum state) {
 
-		final Boolean bKeepScreenOn = preferences.getBoolean(
-				Constants.KEY_KEEP_SCREEN_ON, Constants.KEEP_SCREEN_ON);
-
-		if (!bKeepScreenOn) {
-			Log.d(LOG_TAG, "We don't need wake lock");
-			return;
-		}
-
 		switch (state) {
 			case ACTIVE:
 				this.acquireWakeLock();
@@ -451,6 +443,8 @@ public class ManagerService extends Service {
 				break;
 
 		}
+		
+		triggerBoundActivityUpdate();
 
 	}
 
@@ -772,6 +766,15 @@ public class ManagerService extends Service {
 
 		return true;
 
+	}
+	
+	/**
+	 * Checks if we are holding a wake lock or not?
+	 * 
+	 * @return
+	 */
+	public boolean isWakeLockAcquired() {
+		return getLock() == null ? false : getLock().isHeld();
 	}
 
 	/**

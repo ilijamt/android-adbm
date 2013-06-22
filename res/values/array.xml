@@ -9,9 +9,10 @@
         <item>45 seconds</item>
         <item>60 seconds</item>
         <item>90 seconds</item>
-        <item>120 seconds</item>
-        <item>240 seconds</item>
-        <item>480 seconds</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>5 hours</item>
     </string-array>
     
     <string-array name="time_delay_values">
@@ -22,9 +23,10 @@
         <item>45</item>
         <item>60</item>
         <item>90</item>
-        <item>120</item>
-        <item>240</item>
-        <item>480</item>
+        <item>1800</item>
+        <item>3600</item>
+        <item>7200</item>
+        <item>18000</item>
     </string-array>
     <string-array name="empty_array"></string-array>
 

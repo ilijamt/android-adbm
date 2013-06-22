@@ -7,6 +7,7 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -93,16 +94,45 @@ public class ServiceUtil {
 		AlarmManager alarmManager = (AlarmManager) context
 				.getSystemService(Context.ALARM_SERVICE);
 
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
-				new Intent(context, MyStartServiceReceiver.class),
-				PendingIntent.FLAG_CANCEL_CURRENT);
+		try {
+			// cancel any previous alarm managers, just in case
+			alarmManager.cancel(getServicePendingIntent(context));
+		} catch (Exception e) {
+			Log.w(LOG_TAG, "No existing alarms to cancel", e);
+		}
 
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.SECOND, delayStart);
 
 		alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
-				calendar.getTimeInMillis(), iRepeatTimeout, pendingIntent);
+				calendar.getTimeInMillis(), iRepeatTimeout,
+				getServicePendingIntent(context));
 
+	}
+
+	/**
+	 * Get a {@link PendingIntent} that will start the service through {@link BroadcastReceiver}
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public final static PendingIntent getServicePendingIntent(Context context) {
+		return PendingIntent.getService(context, 0, new Intent(context,
+				ManagerService.class), PendingIntent.FLAG_CANCEL_CURRENT);
+
+	}
+
+	/**
+	 * Get a {@link PendingIntent} that will start a service through {@link ManagerService} directly
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public final static PendingIntent getServiceBroadcastPendingIntent(
+			Context context) {
+		return PendingIntent.getBroadcast(context, 0, new Intent(context,
+				MyStartServiceReceiver.class),
+				PendingIntent.FLAG_CANCEL_CURRENT);
 	}
 
 	/**

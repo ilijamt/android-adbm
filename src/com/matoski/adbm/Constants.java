@@ -24,7 +24,7 @@ public class Constants {
 	 * How often should we check if the service is running when started from
 	 * boot. Used for AlarmManager. (default value)
 	 */
-	public final static int ALARM_TIMEOUT_INTERVAL = 480;
+	public final static int ALARM_TIMEOUT_INTERVAL = 7200;
 
 	/**
 	 * The port on which ADB listens to. (default value)

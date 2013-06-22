@@ -99,6 +99,38 @@
             android:text="@string/forward_slash"
             android:textStyle="italic" />
     </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/row_wakelock"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/row_ip" >
+
+        <TextView
+            android:id="@+id/adb_wakelock_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/wakelock"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/adb_colon_wakelock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/adb_wakelock_text"
+            android:paddingRight="10dip"
+            android:text="@string/colon" />
+
+        <TextView
+            android:id="@+id/adb_wakelock_status"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/adb_colon_wakelock"
+            android:text="@string/released"
+            android:textStyle="italic" />
+    </RelativeLayout>
+    
 
     <RelativeLayout
         android:id="@+id/row_bottom"
@@ -121,7 +153,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@id/row_bottom"
-        android:layout_below="@id/row_ip"
+        android:layout_below="@id/row_wakelock"
         android:layout_marginBottom="10dip"
         android:freezesText="true"
         android:layout_marginTop="10dip"

@@ -2,6 +2,10 @@
 <resources>
 
     <string name="app_name">ADB Manager</string>
+    <string name="wakelock">WakeLock</string>
+    <string name="acquired">Acquired</string>
+    <string name="released">Released</string>
+    <string name="unknown">Unknown</string>
     <string name="app_settings">Settings</string>
     <string name="app_wifi_list">WiFi List</string>
     <string name="action_settings">Settings</string>

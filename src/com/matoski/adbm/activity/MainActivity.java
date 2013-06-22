@@ -114,6 +114,11 @@ public class MainActivity extends Activity {
 	private TextView viewServiceStatus;
 
 	/**
+	 * The {@link TextView} reference for the wakelock status
+	 */
+	private TextView viewWakeLockStatus;
+
+	/**
 	 * The {@link TextView} reference for the ADB status
 	 */
 	private TextView viewStatus;
@@ -289,6 +294,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		this.viewServiceStatus = (TextView) findViewById(R.id.adb_service_status);
+		this.viewWakeLockStatus = (TextView) findViewById(R.id.adb_wakelock_status);
 		this.viewStatus = (TextView) findViewById(R.id.adb_status);
 		this.viewIP = (TextView) findViewById(R.id.adb_ip_status);
 		this.mList = (TextView) findViewById(R.id.adb_list);
@@ -543,6 +549,10 @@ public class MainActivity extends Activity {
 
 		this.viewServiceStatus.setText(this.service == null ? R.string.stopped
 				: R.string.running);
+
+		this.viewWakeLockStatus.setText(this.service == null ? R.string.unknown
+				: (this.service.isWakeLockAcquired() ? R.string.acquired
+						: R.string.released));
 
 		String ip = NetworkUtil.getLocalIPAddress(IPMode.ipv4);
 		String port = this.prefs.getString(Constants.KEY_ADB_PORT,
