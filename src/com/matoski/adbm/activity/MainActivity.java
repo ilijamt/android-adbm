@@ -216,12 +216,6 @@ public class MainActivity extends Activity {
 	};
 
 	/**
-	 * The alarm timeout definition, for use in starting the service through
-	 * {@link ServiceUtil#start(android.content.Context, int, long)}
-	 */
-	private long alarmTimeout;
-
-	/**
 	 * Add an item to {@link MainActivity#mList}
 	 * 
 	 * @param message
@@ -330,18 +324,7 @@ public class MainActivity extends Activity {
 
 		this.prefs = PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
-/*
-		if (!ServiceUtil.isServiceRunning(getApplicationContext())) {
-			try {
-				this.alarmTimeout = this.prefs.getLong(
-						Constants.KEY_ALARM_TIMEOUT_INTERVAL,
-						Constants.ALARM_TIMEOUT_INTERVAL * 1000);
-			} catch (Exception e) {
-				this.alarmTimeout = Constants.ALARM_TIMEOUT_INTERVAL * 1000;
-			}
-			ServiceUtil.start(getApplicationContext(), 0, this.alarmTimeout);
-		}
-*/
+
 		updateScreenDetails(false, AdbStateEnum.NOT_ACTIVE);
 		this.doBindService();
 	}
