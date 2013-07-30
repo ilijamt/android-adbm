@@ -24,27 +24,36 @@ ADB manager enables you to automatically start ADB in network mode when you conn
 
 Developing in cafes/bars/trains/toilet/other places over WiFi? ADB Manager will switch ADB into wireless and back automatically.
 
-Future versions:
-+ Delay between switching states
+### [Change Log](changelog.md)
 
 ### Permissions
 
 * android.permission.ACCESS_SUPERUSER 
+
 Used with SuperSU if available
 
 * android.permission.RECEIVE_BOOT_COMPLETED
+
 Used to automatically start the service on the boot of the device, how long should it wait before starting and how often should the AlarmManager check to see if the service is running is configurable from the Preferences menu.
 
 * android.permission.ACCESS_NETWORK_STATE, android.permission.ACCESS_WIFI_STATE
+
 Used to automate the switching between the the ADB states
 
 * android.permission.INTERNET
+
 Used to retrieve the IP, as it crashes when checking for the IP address without this permission.
 
 * android.permission.WAKE_LOCK
+
 Used to wake up the screen on new package install, or to keep the screen on while the ADB service is on
 
-Known issues:
+### Future versions:
+
+* Delay between switching states
+
+### Known issues
+
 On API 8, the menu icons look a little weird on LDPI devices.
 
 ### Tested on
