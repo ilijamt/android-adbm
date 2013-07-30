@@ -21,6 +21,8 @@ ADB manager enables you to automatically start ADB in network mode when you conn
 
 Developing in cafes/bars/trains/toilet/other places over WiFi? ADB Manager will switch ADB into wireless and back automatically.
 
+Released as open source, you can view the code at https://github.com/ilijamt/android-adbm
+
 Future versions:
 + Delay between switching states
 

@@ -1,3 +1,8 @@
+<a href="https://play.google.com/store/apps/details?id=com.matoski.adbm">
+  <img alt="Get it on Google Play"
+       src="https://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
+</a>
+
 ADB Manager (adbm)
 ------------------
 
@@ -78,11 +83,6 @@ Used to wake up the screen on new package install, or to keep the screen on whil
 * Galaxy S4 (4.2.2 API 17)
 * HTC Hero (2.2.1 API 8, 2.3.1 API 10)
 * HTC Wildfire (2.2.1 API 8)
-
-<a href="https://play.google.com/store/apps/details?id=com.matoski.adbm">
-  <img alt="Get it on Google Play"
-       src="https://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
-</a>
 
 Translations
 ------------
