@@ -1,8 +1,1 @@
-You should reset your preferences for this update from the preferences screen.
-
-Features:
-+ Added a status to show if we have wakelock or not
-
-Bugfixes:
-+ Tidy up for the strings, also added new time intervals for the preferences screen
-+ Hopefully fixed the issue with AlarmManager holding the CPU awake, even if we don't have a wake lock acquired
+Released as open source, you can view the code at https://github.com/ilijamt/android-adbm

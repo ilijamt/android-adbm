@@ -24,7 +24,11 @@ ADB manager enables you to automatically start ADB in network mode when you conn
 
 Developing in cafes/bars/trains/toilet/other places over WiFi? ADB Manager will switch ADB into wireless and back automatically.
 
-### [Change Log](changelog.md)
+### Change Log
+
+For a detailed list of the changes, take a look at this [change log](changelog.md)
+
+Released application as open source
 
 ### Permissions
 
@@ -54,7 +58,14 @@ Used to wake up the screen on new package install, or to keep the screen on whil
 
 ### Known issues
 
-On API 8, the menu icons look a little weird on LDPI devices.
+* On API 8, the menu icons look a little weird on LDPI devices.
+
+* Usually on Samsung devices
+
+Failed to install apk on device 'ip:port': timeout
+Launch canceled!
+Eclipse | Window > Preferences > Android > DDMS > ADB connection timeout (ms) Increase the value
+
 
 ### Tested on
 
