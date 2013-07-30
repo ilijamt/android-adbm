@@ -60,11 +60,8 @@ Used to wake up the screen on new package install, or to keep the screen on whil
 
 * On API 8, the menu icons look a little weird on LDPI devices.
 
-* Usually on Samsung devices
-
-Failed to install apk on device 'ip:port': timeout
-Launch canceled!
-Eclipse | Window > Preferences > Android > DDMS > ADB connection timeout (ms) Increase the value
+* Usually on Samsung devices, if you get the following error in the console log: *Failed to install apk on device 'ip:port': timeout\nLaunch canceled!*
+  Eclipse | Window > Preferences > Android > DDMS > ADB connection timeout (ms) Increase the value
 
 
 ### Tested on
