@@ -1,5 +1,10 @@
 Change Log
 ==========
+#### 1.0.1
+
+###### Bugfixes:
+
+* Fixed a crash that happens if you haven't saved any WiFi networks in the system, when you open the configuration screen for WiFi networks in settings
 
 #### 1.0.0
 

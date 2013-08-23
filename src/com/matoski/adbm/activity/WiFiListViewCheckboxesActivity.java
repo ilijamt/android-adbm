@@ -5,6 +5,7 @@ package com.matoski.adbm.activity;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.Application;
@@ -139,15 +140,18 @@ public class WiFiListViewCheckboxesActivity extends Activity {
 		}
 
 		Model model = null;
+		List<WifiConfiguration> networks = this.wifiManager
+				.getConfiguredNetworks();
 
-		for (WifiConfiguration configuration : this.wifiManager
-				.getConfiguredNetworks()) {
-			model = new Model(configuration.SSID.replaceAll("(^\")|(\"$)", ""));
-			if (!objects.contains(model)) {
-				Log.d(LOG_TAG,
-						String.format("New saved network detected: %s",
-								model.getName()));
-				objects.add(model);
+		if (networks != null) {
+			for (WifiConfiguration configuration : networks) {
+				model = new Model(configuration.SSID.replaceAll("(^\")|(\"$)",
+						""));
+				if (!objects.contains(model)) {
+					Log.d(LOG_TAG, String.format(
+							"New saved network detected: %s", model.getName()));
+					objects.add(model);
+				}
 			}
 		}
 
