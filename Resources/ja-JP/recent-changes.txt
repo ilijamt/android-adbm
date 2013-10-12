@@ -1,0 +1,4 @@
+Released as open source, you can view the code at https://github.com/ilijamt/android-adbm
+
+Bugfixes: 
++ Fixed a crash that happens if you haven't saved any WiFi networks in the system, when you open the configuration screen for WiFi networks in settings
