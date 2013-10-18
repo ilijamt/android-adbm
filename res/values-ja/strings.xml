@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">ADB Manager</string>
+    <string name="app_name">ADBマネージャー</string>
     <string name="wakelock">WakeLock</string>
     <string name="acquired">Acquired</string>
     <string name="released">Released</string>
