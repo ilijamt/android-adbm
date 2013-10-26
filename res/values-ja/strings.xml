@@ -42,8 +42,8 @@
     <string name="settings_reset_button_dialog_message">This will reset the application to it\'s default values, this action is IRREVERSIBLE.</string>
     <string name="service_general">General</string>
     <string name="service_show_notifications">通知バー</string>
-    <string name="service_show_notifications_on">起動中通知バーを表示する</string>
-    <string name="service_show_notifications_off">起動中通知バーを表示しない</string>
+    <string name="service_show_notifications_on">実行中通知バーを表示する</string>
+    <string name="service_show_notifications_off">実行中通知バーを表示しない</string>
     <string name="service_hideable_notification_bar">通知非表示可</string>
     <string name="service_hideable_notification_bar_on">スワイプすることで通知を消すことができる</string>
     <string name="service_hideable_notification_bar_off">通知は永久的なので消すことができない</string>
@@ -58,9 +58,9 @@
     <string name="service_settings_start_adb_off">Will not autostart the ADB service on known wifi networks</string>
     <string name="service_settings_start_adb_on">Will autostart the ADB service on known wifi networks</string>
     <string name="service_settings_start_adb">ADB自動開始</string>
-    <string name="service_settings_adb_port">ADB Port</string>
+    <string name="service_settings_adb_port">ADBポート</string>
     <string name="service_settings_adb_port_summary">ADB will listen on port %d for connections.</string>
-    <string name="settings_wifi_list">WiFi 自動開始リスト</string>
+    <string name="settings_wifi_list">WiFi自動開始リスト</string>
     <string name="settings_wifi_list_summary">A list of wireless connection to which we should automatically start ADB on network.</string>
     <string name="main_adb_command">adb 接続 %1$s:%2$s</string>
     <string name="ip_and_port">%1$s:%2$s</string>
@@ -105,9 +105,9 @@
     <string name="item_service_unbind_failed">Service failed to unbind successfully</string>
     <string name="item_initializiation_of_manager">Initialization of ADB Manager</string>
     <string name="item_menu_item_loaded">Menu items loaded</string>
-    <string name="item_openning_item">Openning item %s</string>
-    <string name="item_adb_manager_paused">ADB Manager activity paused</string>
-    <string name="item_adb_manager_resumed">ADB Manager activity resumed</string>
+    <string name="item_openning_item">アイテム%sを開いている</string>
+    <string name="item_adb_manager_paused">ADBマネージャーの動作が一時停止した</string>
+    <string name="item_adb_manager_resumed">ADBマネージャーの動作が再開した</string>
     <string name="item_update_screen_based_on_state_result">Updating screen details based on state result: %s</string>
     <string name="item_update_screen_details">Updating screen details, check network state: %1$b, supplied network state: %2$s</string>
 
