@@ -683,12 +683,16 @@ public class ManagerService extends Service {
 			final Bundle extras = intent.getExtras();
 
 			if (extras == null) {
-				Log.d(LOG_TAG, "onStartCommand: " + action
-						+ ", no extras in intent");
+				Log.d(LOG_TAG, "onStartCommand: no extras in intent");
 				return Service.START_STICKY;
 			}
 
 			action = intent.getAction();
+			
+			if (action == null) {
+				Log.d(LOG_TAG, "onStartCommand: no action in extras");
+				return Service.START_STICKY;
+			}			
 			
 			Log.d(LOG_TAG, String.format("Running action: %s", action));
 
