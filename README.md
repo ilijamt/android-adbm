@@ -8,7 +8,7 @@ ADB Manager (adbm)
 
 ADB Manager, your one stop to developing more easily on Android.
 
-Warning: REQUIRES ROOT!
+**Warning: REQUIRES ROOT!**
 
 The most automated, easy-to-use and stable ADB management tool with a great support.
 
