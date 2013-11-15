@@ -1,5 +1,11 @@
 Change Log
 ==========
+#### 1.0.2
+
+###### Bugfixes:
+
+* Very rarely the service got called with null action, and because of it crashed the service
+
 #### 1.0.1
 
 ###### Bugfixes:

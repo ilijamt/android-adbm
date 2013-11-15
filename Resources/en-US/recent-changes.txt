@@ -1,4 +1,6 @@
 Released as open source, you can view the code at https://github.com/ilijamt/android-adbm
 
 Bugfixes: 
++ Upgraded SuperSU library
++ Very rarely the service got called with null action, and because of it crashed the service
 + Fixed a crash that happens if you haven't saved any WiFi networks in the system, when you open the configuration screen for WiFi networks in settings
