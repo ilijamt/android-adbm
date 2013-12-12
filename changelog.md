@@ -1,5 +1,12 @@
 Change Log
 ==========
+#### 1.0.5
+
+###### Features:
+
+* Some fixes for activity and service interaction
+* Handler fixes, now it doesn't crash the service
+
 #### 1.0.2
 
 ###### Features:
