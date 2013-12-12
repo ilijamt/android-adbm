@@ -2,6 +2,7 @@ package com.matoski.adbm.service;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.Application;
@@ -398,6 +399,12 @@ public class ManagerService extends Service {
 		return getLock().isHeld();
 
 	}
+	
+	/**
+	 * A list of items to add
+	 */
+	private List<String> _add_items = new ArrayList<String>();
+	
 
 	/**
 	 * Add a message to the list queue, and it's sent to the binded {@link #handler} to update the UI
@@ -409,6 +416,8 @@ public class ManagerService extends Service {
 	private void addItem(String message) {
 		if (handler != null) {
 			handler.message(message);
+		} else {
+			this._add_items.add(message);
 		}
 	}
 
@@ -799,6 +808,18 @@ public class ManagerService extends Service {
 	 */
 	public void setHandler(IMessageHandler handler) {
 		this.handler = handler;
+		String[] messages = (String[]) this._add_items.toArray();
+		this._add_items.clear();
+		for (String message : messages) {
+			this.handler.message(message);
+		}
+	}
+	
+	/**
+	 * Remove a handler, this shuold be called on pause
+	 */
+	public void removeHandler() {
+		this.handler = null;
 	}
 
 	/**

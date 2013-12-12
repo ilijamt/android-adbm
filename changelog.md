@@ -44,13 +44,7 @@ You should reset your preferences for this update from the preferences screen.
 
 ###### Bugfixes: 
 
- Sometimes the service doesn't start fast enough so it cannot bind the service in time to request update, and it results in an crash
-
-#### 0.9.6
-
-###### Features:
-
-* You can toggle the ADB state by touching the image in the notification bar
+* ADB state by touching the image in the notification bar
 
 #### 0.9.5
 

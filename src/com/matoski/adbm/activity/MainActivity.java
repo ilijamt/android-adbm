@@ -412,6 +412,7 @@ public class MainActivity extends Activity {
 	protected void onPause() {
 		super.onPause();
 		this.addItem(getResources().getString(R.string.item_adb_manager_paused));
+		this.service.removeHandler();
 	}
 
 	/*
@@ -426,11 +427,23 @@ public class MainActivity extends Activity {
 
 	/*
 	 * (non-Javadoc)
+	 * @see android.app.Activity#onStop()
+	 */
+	@Override
+	protected void onStop() {
+		super.onStop();
+		this.service.removeHandler();
+	}
+	
+
+	/*
+	 * (non-Javadoc)
 	 * @see android.app.Activity#onResume()
 	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
+		this.service.setHandler(this.handler);
 		this.addItem(getResources()
 				.getString(R.string.item_adb_manager_resumed));
 		this.updateScreenDetails();
