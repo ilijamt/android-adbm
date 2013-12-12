@@ -1,3 +1,9 @@
+1.0.5
+-----
+Bugfixes:
++ Some fixes for activity and service interaction
++ Handler fixes, now it doesn't crash the service
+
 1.0.2
 -----
 Features:

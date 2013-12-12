@@ -808,7 +808,7 @@ public class ManagerService extends Service {
 	 */
 	public void setHandler(IMessageHandler handler) {
 		this.handler = handler;
-		String[] messages = (String[]) this._add_items.toArray();
+		String[] messages = (String[]) this._add_items.toArray(new String[this._add_items.size()]);
 		this._add_items.clear();
 		for (String message : messages) {
 			this.handler.message(message);

@@ -39,7 +39,10 @@ public class MainActivity extends Activity {
 
 	/*
 	 * (non-Javadoc)
-	 * @see android.app.Activity#onConfigurationChanged(android.content.res.Configuration)
+	 * 
+	 * @see
+	 * android.app.Activity#onConfigurationChanged(android.content.res.Configuration
+	 * )
 	 */
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
@@ -47,7 +50,8 @@ public class MainActivity extends Activity {
 	}
 
 	/**
-	 * A task that implements {@link NetworkStatusChecker} so we can use it to update the UI thread on the
+	 * A task that implements {@link NetworkStatusChecker} so we can use it to
+	 * update the UI thread on the
 	 * {@link MyNetworkStatusChecker#onPostExecute(AdbStateEnum)}
 	 * 
 	 * @author Ilija Matoski (ilijamt@gmail.com)
@@ -56,6 +60,7 @@ public class MainActivity extends Activity {
 
 		/*
 		 * (non-Javadoc)
+		 * 
 		 * @see com.matoski.adbm.tasks.GenericAsyncTask#getString(int)
 		 */
 		@Override
@@ -73,6 +78,7 @@ public class MainActivity extends Activity {
 
 		/*
 		 * (non-Javadoc)
+		 * 
 		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
 		 */
 		@Override
@@ -87,6 +93,7 @@ public class MainActivity extends Activity {
 
 		/*
 		 * (non-Javadoc)
+		 * 
 		 * @see android.os.AsyncTask#onProgressUpdate(Progress[])
 		 */
 		@Override
@@ -139,7 +146,8 @@ public class MainActivity extends Activity {
 	private TextView mList;
 
 	/**
-	 * The {@link ToggleButton} reference to have the ability to toggle the state of the ADB service
+	 * The {@link ToggleButton} reference to have the ability to toggle the
+	 * state of the ADB service
 	 */
 	private ToggleButton mSsButton;
 
@@ -155,15 +163,18 @@ public class MainActivity extends Activity {
 	private ManagerService service;
 
 	/**
-	 * {@link MainActivity} handler used to add messages to {@link MainActivity#mList} to be used as a log of what has
-	 * {@link ManagerService} done. And also to update the screen details based on the result of an action executed in
-	 * {@link ManagerService}
+	 * {@link MainActivity} handler used to add messages to
+	 * {@link MainActivity#mList} to be used as a log of what has
+	 * {@link ManagerService} done. And also to update the screen details based
+	 * on the result of an action executed in {@link ManagerService}
 	 */
 	protected IMessageHandler handler = new IMessageHandler() {
 
 		/*
 		 * (non-Javadoc)
-		 * @see com.matoski.adbm.interfaces.IMessageHandler#message(java.lang.String)
+		 * 
+		 * @see
+		 * com.matoski.adbm.interfaces.IMessageHandler#message(java.lang.String)
 		 */
 		@Override
 		public void message(String message) {
@@ -172,7 +183,10 @@ public class MainActivity extends Activity {
 
 		/*
 		 * (non-Javadoc)
-		 * @see com.matoski.adbm.interfaces.IMessageHandler#update(com.matoski.adbm.enums.AdbStateEnum)
+		 * 
+		 * @see
+		 * com.matoski.adbm.interfaces.IMessageHandler#update(com.matoski.adbm
+		 * .enums.AdbStateEnum)
 		 */
 		@Override
 		public void update(AdbStateEnum state) {
@@ -188,7 +202,10 @@ public class MainActivity extends Activity {
 
 		/*
 		 * (non-Javadoc)
-		 * @see android.content.ServiceConnection#onServiceConnected(android.content.ComponentName, android.os.IBinder)
+		 * 
+		 * @see
+		 * android.content.ServiceConnection#onServiceConnected(android.content
+		 * .ComponentName, android.os.IBinder)
 		 */
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder binder) {
@@ -205,7 +222,10 @@ public class MainActivity extends Activity {
 
 		/*
 		 * (non-Javadoc)
-		 * @see android.content.ServiceConnection#onServiceDisconnected(android.content.ComponentName)
+		 * 
+		 * @see
+		 * android.content.ServiceConnection#onServiceDisconnected(android.content
+		 * .ComponentName)
 		 */
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
@@ -280,6 +300,7 @@ public class MainActivity extends Activity {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -331,6 +352,7 @@ public class MainActivity extends Activity {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
 	 */
 	@Override
@@ -342,6 +364,7 @@ public class MainActivity extends Activity {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onDestroy()
 	 */
 	@Override
@@ -352,14 +375,15 @@ public class MainActivity extends Activity {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onKeyDown(int, android.view.KeyEvent)
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		switch (keyCode) {
-			case KeyEvent.KEYCODE_BACK:
-				moveTaskToBack(true);
-				return true;
+		case KeyEvent.KEYCODE_BACK:
+			moveTaskToBack(true);
+			return true;
 		}
 
 		return false;
@@ -367,38 +391,39 @@ public class MainActivity extends Activity {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
 	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		switch (item.getItemId()) {
-			case R.id.action_settings:
-				this.addItem(getResources().getString(
-						R.string.item_openning_item, item.getTitle()));
-				startActivity(new Intent(this, MyPreferencesActivity.class));
-				return true;
-			case R.id.action_refresh:
-				updateScreenDetails();
-				return true;
-			case R.id.action_adb:
-				if (this.service != null) {
-					toggleNetworkState(item.isChecked());
-				}
-				return true;
-			case R.id.action_about:
-				this.addItem(getResources().getString(
-						R.string.item_openning_item, item.getTitle()));
-				startActivity(new Intent(this, AboutActivity.class));
-				return true;
-			case R.id.action_change_log:
-				this.addItem(getResources().getString(
-						R.string.item_openning_item, item.getTitle()));
-				startActivity(new Intent(this, ChangeLogActivity.class));
-				return true;
-			case R.id.action_clear_list:
-				this.mList.setText("");
-				return true;
+		case R.id.action_settings:
+			this.addItem(getResources().getString(R.string.item_openning_item,
+					item.getTitle()));
+			startActivity(new Intent(this, MyPreferencesActivity.class));
+			return true;
+		case R.id.action_refresh:
+			updateScreenDetails();
+			return true;
+		case R.id.action_adb:
+			if (this.service != null) {
+				toggleNetworkState(item.isChecked());
+			}
+			return true;
+		case R.id.action_about:
+			this.addItem(getResources().getString(R.string.item_openning_item,
+					item.getTitle()));
+			startActivity(new Intent(this, AboutActivity.class));
+			return true;
+		case R.id.action_change_log:
+			this.addItem(getResources().getString(R.string.item_openning_item,
+					item.getTitle()));
+			startActivity(new Intent(this, ChangeLogActivity.class));
+			return true;
+		case R.id.action_clear_list:
+			this.mList.setText("");
+			return true;
 		}
 
 		return false;
@@ -406,17 +431,21 @@ public class MainActivity extends Activity {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onPause()
 	 */
 	@Override
 	protected void onPause() {
 		super.onPause();
 		this.addItem(getResources().getString(R.string.item_adb_manager_paused));
-		this.service.removeHandler();
+		if (this.service != null) {
+			this.service.removeHandler();
+		}
 	}
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onPrepareOptionsMenu(android.view.Menu)
 	 */
 	@Override
@@ -427,23 +456,28 @@ public class MainActivity extends Activity {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onStop()
 	 */
 	@Override
 	protected void onStop() {
 		super.onStop();
-		this.service.removeHandler();
+		if (this.service != null) {
+			this.service.removeHandler();
+		}
 	}
-	
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onResume()
 	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
-		this.service.setHandler(this.handler);
+		if (this.handler != null && this.service != null) {
+			this.service.setHandler(this.handler);
+		}
 		this.addItem(getResources()
 				.getString(R.string.item_adb_manager_resumed));
 		this.updateScreenDetails();
@@ -487,21 +521,21 @@ public class MainActivity extends Activity {
 		final int iResourceString;
 
 		switch (stateEnum) {
-			case ACTIVE:
-				bIsNetworkAdbActive = true;
-				iResourceString = bServiceNotRunning ? R.string.stopped
-						: R.string.running;
-				break;
+		case ACTIVE:
+			bIsNetworkAdbActive = true;
+			iResourceString = bServiceNotRunning ? R.string.stopped
+					: R.string.running;
+			break;
 
-			case NOT_ACTIVE:
-				bIsNetworkAdbActive = false;
-				iResourceString = bServiceNotRunning ? R.string.stopped
-						: R.string.stopped;
-				break;
+		case NOT_ACTIVE:
+			bIsNetworkAdbActive = false;
+			iResourceString = bServiceNotRunning ? R.string.stopped
+					: R.string.stopped;
+			break;
 
-			default:
-				bIsNetworkAdbActive = false;
-				iResourceString = R.string.stopped;
+		default:
+			bIsNetworkAdbActive = false;
+			iResourceString = R.string.stopped;
 		}
 
 		// update the view status
@@ -518,8 +552,10 @@ public class MainActivity extends Activity {
 	}
 
 	/**
-	 * Update the screen details, calls {@link MainActivity#updateScreenDetails(boolean, AdbStateEnum)}, to check the
-	 * network state before updating and calling {@link MainActivity#updateNetworkDependentScreenDetails(AdbStateEnum)}
+	 * Update the screen details, calls
+	 * {@link MainActivity#updateScreenDetails(boolean, AdbStateEnum)}, to check
+	 * the network state before updating and calling
+	 * {@link MainActivity#updateNetworkDependentScreenDetails(AdbStateEnum)}
 	 * with {@link MyNetworkStatusChecker}
 	 */
 	private void updateScreenDetails() {
