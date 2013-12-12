@@ -59,6 +59,7 @@ Used to wake up the screen on new package install, or to keep the screen on whil
 
 ### Future versions:
 
+* Auto connect to ADB without executing adb connect on your pc/laptop
 * Delay between switching states
 
 ### Known issues
