@@ -934,11 +934,11 @@ public class ManagerService extends Service {
 			this.mADBPort = Long.parseLong(PreferenceUtil.getString(
 					getBaseContext(), Constants.KEY_ADB_PORT,
 					Constants.ADB_PORT));
-
-			(new MyRootCommandExecuter()).execute(new String[] {
-					"setprop service.adb.tcp.port "
-							+ Long.toString(this.mADBPort), "stop adbd",
-					"start adbd" });
+			return;
+//			(new MyRootCommandExecuter()).execute(new String[] {
+//					"setprop service.adb.tcp.port "
+//							+ Long.toString(this.mADBPort), "stop adbd",
+//					"start adbd" });
 		} else {
 			this.addItem(getResources().getString(
 					R.string.item_no_wifi_connection_available));

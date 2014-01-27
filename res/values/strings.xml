@@ -110,5 +110,7 @@
     <string name="item_adb_manager_resumed">ADB Manager activity resumed</string>
     <string name="item_update_screen_based_on_state_result">Updating screen details based on state result: %s</string>
     <string name="item_update_screen_details">Updating screen details, check network state: %1$b, supplied network state: %2$s</string>
-
+    <string name="settings_clear_wifi_list">Clear WiFi list</string>
+    <string name="settings_clear_wifi_list_summary">Clear all the wifi\'s you have collected by now, this will repopulate the data on the next opening of WiFi list</string>
+    <string name="dialog_settings_wifi_list">This will reset your known WiFi list, and make sure on next load to repopuplate from the available networks. Are you sure you want to reinitialize the list?</string>
 </resources>

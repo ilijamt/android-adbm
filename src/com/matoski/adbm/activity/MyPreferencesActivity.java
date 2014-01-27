@@ -11,10 +11,10 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.CheckBoxPreference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
@@ -167,6 +167,44 @@ public class MyPreferencesActivity extends PreferenceActivity {
 						return false;
 					}
 				});
+		
+		findPreference("reset_wifi_list_button").setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+
+				AlertDialog.Builder builder = new AlertDialog.Builder(
+						context);
+				builder.setCancelable(true);
+				builder.setTitle(R.string.settings_clear_wifi_list);
+				builder.setInverseBackgroundForced(true);
+				builder.setPositiveButton("Yes",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								prefs.edit().putString(Constants.KEY_WIFI_LIST, "[]");
+								restartActivity();
+								dialog.dismiss();
+							}
+						});
+				builder.setNegativeButton("No",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+							}
+						});
+
+				builder.setMessage(R.string.dialog_settings_wifi_list);
+
+				AlertDialog dialog = builder.create();
+				dialog.show();
+				return false;
+			}
+		});
+		
 
 		findPreference("reset_button").setOnPreferenceClickListener(
 				new OnPreferenceClickListener() {

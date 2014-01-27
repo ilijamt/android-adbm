@@ -88,11 +88,19 @@
             android:title="@string/service_settings_start_adb" />
 
         <Preference
-            android:dependency="auto_start_on_known_wifi"
+            android:dependency="auto_start_on_kndown_wifi"
             android:key="wifi_button"
             android:persistent="false"
             android:summary="@string/settings_wifi_list_summary"
             android:title="@string/settings_wifi_list" />
+        <Preference
+            android:key="reset_wifi_list_button"
+            android:persistent="false"
+            android:summary="@string/settings_clear_wifi_list_summary"
+            android:title="@string/settings_clear_wifi_list" />
+
+        <string name="settings_clear_wifi_list" >Clear WiFi list
+        </string>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/service_general" >
         <Preference

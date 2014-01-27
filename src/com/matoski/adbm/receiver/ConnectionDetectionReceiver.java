@@ -76,8 +76,8 @@ public class ConnectionDetectionReceiver extends BroadcastReceiver {
 						break;
 
 					case AUTHENTICATING:
-					case BLOCKED:
-					case CAPTIVE_PORTAL_CHECK:
+					//case BLOCKED:
+					//case CAPTIVE_PORTAL_CHECK:
 					case CONNECTING:
 					case DISCONNECTING:
 					case FAILED:
@@ -85,7 +85,7 @@ public class ConnectionDetectionReceiver extends BroadcastReceiver {
 					case OBTAINING_IPADDR:
 					case SCANNING:
 					case SUSPENDED:
-					case VERIFYING_POOR_LINK:
+					//case VERIFYING_POOR_LINK:
 					default:
 						break;
 
