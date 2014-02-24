@@ -1,5 +1,21 @@
 Change Log
 ==========
+#### 1.0.7
+
+###### Bugfixes:
+
+* Fixed an issue that affects Android 4.0.3 and 4.0.4 of a crash in get java.net.NetworkInterface.getNetworkInterfacesList
+
+#### 1.0.6
+
+###### Bugfixes:
+
+* Fixed an issue introduced in an earlier version where it doesn't remove the double qoutes from the getSSID function, and therefore the autoconnect didn't work
+
+###### Features:
+
+* Added a button in preferences to clear the wifi list collected by the application, this is used to refresh the wifi list, and in some cases is usefull, if the autoconnect doesn't work, or after an upgrade of the android system.
+
 #### 1.0.5
 
 ###### Features:

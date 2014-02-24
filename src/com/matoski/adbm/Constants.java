@@ -201,4 +201,9 @@ public class Constants {
 	 */
 	public static final String SERVICE_ACTION_PACKAGE_ADD = "PACKAGE_ADD";
 
+
+	/**
+	 * How many times to retry to get the network list before giving up
+	 */
+	public static final int RETRY_GET_NETWORK_LIST = 3;
 }

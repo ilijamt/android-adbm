@@ -897,6 +897,11 @@ public class ManagerService extends Service {
 
 		IP ip = NetworkUtil.getLocalAddress();
 
+		if (ip.ipv4 == null) {
+			ip = new IP(getResources().getString(R.string.unknown),
+					getResources().getString(R.string.unknown));
+		}
+
 		String stringADB = getResources().getString(
 				R.string.status_adb_service_not_running);
 		String stringIP = getResources().getString(

@@ -7,6 +7,7 @@ import java.util.Enumeration;
 
 import org.apache.http.conn.util.InetAddressUtils;
 
+import com.matoski.adbm.Constants;
 import com.matoski.adbm.enums.IPMode;
 import com.matoski.adbm.pojo.IP;
 
@@ -54,9 +55,27 @@ public class NetworkUtil {
 	 * @param mode
 	 *            What IP address to retrieve, from {@link IPMode}
 	 * 
+	 * @param retry
+	 *            How many times to retry if we get NULL, use this as a
+	 *            workaround on older systems
 	 * @return The IP address, or <code>null</code> if not found
 	 */
 	public static String getLocalIPAddress(IPMode mode) {
+		return getLocalIPAddress(mode, Constants.RETRY_GET_NETWORK_LIST);
+	}
+
+	/**
+	 * Gets the local network address based on mode
+	 * 
+	 * @param mode
+	 *            What IP address to retrieve, from {@link IPMode}
+	 * 
+	 * @param retry
+	 *            How many times to retry if we get NULL, use this as a
+	 *            workaround on older systems
+	 * @return The IP address, or <code>null</code> if not found
+	 */
+	public static String getLocalIPAddress(IPMode mode, Integer retry) {
 		try {
 			for (Enumeration<NetworkInterface> en = NetworkInterface
 					.getNetworkInterfaces(); en.hasMoreElements();) {
@@ -66,24 +85,23 @@ public class NetworkUtil {
 					InetAddress inetAddress = enumIpAddr.nextElement();
 
 					switch (mode) {
-						case ipv4:
-							if (!inetAddress.isLoopbackAddress()
-									&& InetAddressUtils
-											.isIPv4Address(inetAddress
-													.getHostAddress())) {
-								return inetAddress.getHostAddress().toString();
-							}
-							break;
-						case ipv6:
-							String address = inetAddress.getHostAddress();
-							if (!inetAddress.isLoopbackAddress()
-									&& (InetAddressUtils.isIPv6Address(address)
-											|| InetAddressUtils
-													.isIPv6HexCompressedAddress(address) || InetAddressUtils
-												.isIPv6StdAddress(address))) {
-								return inetAddress.getHostAddress().toString();
-							}
-							break;
+					case ipv4:
+						if (!inetAddress.isLoopbackAddress()
+								&& InetAddressUtils.isIPv4Address(inetAddress
+										.getHostAddress())) {
+							return inetAddress.getHostAddress().toString();
+						}
+						break;
+					case ipv6:
+						String address = inetAddress.getHostAddress();
+						if (!inetAddress.isLoopbackAddress()
+								&& (InetAddressUtils.isIPv6Address(address)
+										|| InetAddressUtils
+												.isIPv6HexCompressedAddress(address) || InetAddressUtils
+											.isIPv6StdAddress(address))) {
+							return inetAddress.getHostAddress().toString();
+						}
+						break;
 
 					}
 				}
@@ -91,7 +109,13 @@ public class NetworkUtil {
 		} catch (SocketException ex) {
 			Log.e("Socket exception in GetIP Address of Utilities",
 					ex.toString());
+		} catch (Exception e) {
+			Log.e("Exception in GetIP Address of Utilities", e.toString());
+			return getLocalIPAddress(mode, --retry);
 		}
+
+		// if retry has expired then return null, we give up there is no choice
+		// this was added as a fix for Android 4.0.3 and 4.0.4
 		return null;
 	}
 }
