@@ -52,7 +52,10 @@ public class MyPreferencesActivity extends PreferenceActivity {
 
 		/*
 		 * (non-Javadoc)
-		 * @see android.content.ServiceConnection#onServiceDisconnected(android.content.ComponentName)
+		 * 
+		 * @see
+		 * android.content.ServiceConnection#onServiceDisconnected(android.content
+		 * .ComponentName)
 		 */
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
@@ -61,7 +64,10 @@ public class MyPreferencesActivity extends PreferenceActivity {
 
 		/*
 		 * (non-Javadoc)
-		 * @see android.content.ServiceConnection#onServiceConnected(android.content.ComponentName, android.os.IBinder)
+		 * 
+		 * @see
+		 * android.content.ServiceConnection#onServiceConnected(android.content
+		 * .ComponentName, android.os.IBinder)
 		 */
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder binder) {
@@ -79,6 +85,7 @@ public class MyPreferencesActivity extends PreferenceActivity {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see android.preference.PreferenceActivity#onDestroy()
 	 */
 	@Override
@@ -96,6 +103,7 @@ public class MyPreferencesActivity extends PreferenceActivity {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see android.preference.PreferenceActivity#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -167,44 +175,45 @@ public class MyPreferencesActivity extends PreferenceActivity {
 						return false;
 					}
 				});
-		
-		findPreference("reset_wifi_list_button").setOnPreferenceClickListener(new OnPreferenceClickListener() {
-			
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
 
-				AlertDialog.Builder builder = new AlertDialog.Builder(
-						context);
-				builder.setCancelable(true);
-				builder.setTitle(R.string.settings_clear_wifi_list);
-				builder.setInverseBackgroundForced(true);
-				builder.setPositiveButton("Yes",
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								prefs.edit().putString(Constants.KEY_WIFI_LIST, "[]");
-								restartActivity();
-								dialog.dismiss();
-							}
-						});
-				builder.setNegativeButton("No",
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								dialog.dismiss();
-							}
-						});
+		findPreference("reset_wifi_list_button").setOnPreferenceClickListener(
+				new OnPreferenceClickListener() {
 
-				builder.setMessage(R.string.dialog_settings_wifi_list);
+					@Override
+					public boolean onPreferenceClick(Preference preference) {
 
-				AlertDialog dialog = builder.create();
-				dialog.show();
-				return false;
-			}
-		});
-		
+						AlertDialog.Builder builder = new AlertDialog.Builder(
+								context);
+						builder.setCancelable(true);
+						builder.setTitle(R.string.settings_clear_wifi_list);
+						builder.setInverseBackgroundForced(true);
+						builder.setPositiveButton("Yes",
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										prefs.edit().putString(
+												Constants.KEY_WIFI_LIST, "[]");
+										restartActivity();
+										dialog.dismiss();
+									}
+								});
+						builder.setNegativeButton("No",
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										dialog.dismiss();
+									}
+								});
+
+						builder.setMessage(R.string.dialog_settings_wifi_list);
+
+						AlertDialog dialog = builder.create();
+						dialog.show();
+						return false;
+					}
+				});
 
 		findPreference("reset_button").setOnPreferenceClickListener(
 				new OnPreferenceClickListener() {
@@ -284,11 +293,23 @@ public class MyPreferencesActivity extends PreferenceActivity {
 		String currentPort = prefs.getString(Constants.KEY_ADB_PORT,
 				Long.toString(Constants.ADB_PORT));
 
+		long portValue = Constants.ADB_PORT;
+
+		try {
+			portValue = Long.parseLong(currentPort.toString());
+			if (portValue <= Constants.PORT_LOWER_LIMIT
+					|| portValue >= Constants.PORT_UPPER_LIMIT) {
+				portValue = Constants.ADB_PORT;
+			}
+		} catch (Exception e) {
+			portValue = Constants.ADB_PORT;
+		}
+
 		findPreference(Constants.KEY_ADB_PORT).setSummary(
 				String.format(
 						getResources().getString(
 								R.string.service_settings_adb_port_summary),
-						Long.parseLong(currentPort)));
+						portValue));
 
 		findPreference(Constants.KEY_ADB_PORT).setOnPreferenceChangeListener(
 				new OnPreferenceChangeListener() {
@@ -296,12 +317,33 @@ public class MyPreferencesActivity extends PreferenceActivity {
 					@Override
 					public boolean onPreferenceChange(Preference preference,
 							Object newValue) {
+
+						Long parsedValue = null;
+						boolean valid = false;
+
+						try {
+							parsedValue = Long.parseLong(newValue.toString());
+							if (parsedValue <= Constants.PORT_LOWER_LIMIT
+									|| parsedValue >= Constants.PORT_UPPER_LIMIT) {
+								parsedValue = Constants.ADB_PORT;
+								valid = false;
+							} else {
+								valid = true;
+							}
+						} catch (Exception e) {
+							parsedValue = Constants.ADB_PORT;
+							valid = false;
+						}
+
 						preference.setSummary(String
 								.format(getResources()
 										.getString(
 												R.string.service_settings_adb_port_summary),
-										Integer.parseInt(newValue.toString())));
-						return true;
+										parsedValue));
+
+						newValue = parsedValue;
+
+						return valid;
 					}
 
 				});

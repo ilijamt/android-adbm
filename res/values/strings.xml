@@ -59,7 +59,7 @@
     <string name="service_settings_start_adb_on">Will autostart the ADB service on known wifi networks</string>
     <string name="service_settings_start_adb">ADB Auto Start</string>
     <string name="service_settings_adb_port">ADB Port</string>
-    <string name="service_settings_adb_port_summary">ADB will listen on port %d for connections.</string>
+    <string name="service_settings_adb_port_summary">ADB will listen on port %d for connections (1024&#8211;49151).</string>
     <string name="settings_wifi_list">WiFi Autostart List</string>
     <string name="settings_wifi_list_summary">A list of wireless connection to which we should automatically start ADB on network.</string>
     <string name="main_adb_command">adb connect %1$s:%2$s</string>

@@ -1,5 +1,11 @@
 Change Log
 ==========
+#### 1.0.8
+
+###### Bugfixes:
+
+* Fixed an issue in preference where an user set the port to an absurdly big number for ADB port
+
 #### 1.0.7
 
 ###### Bugfixes:

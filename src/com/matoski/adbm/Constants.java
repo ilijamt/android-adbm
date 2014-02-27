@@ -206,4 +206,15 @@ public class Constants {
 	 * How many times to retry to get the network list before giving up
 	 */
 	public static final int RETRY_GET_NETWORK_LIST = 3;
+	
+	/**
+	 * The port number upper limit
+	 */
+	public static final int PORT_UPPER_LIMIT = 49151;
+	
+	/**
+	 * The port number lower limit
+	 */
+	public static final int PORT_LOWER_LIMIT = 1024;
+	
 }
