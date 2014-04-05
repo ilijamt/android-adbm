@@ -541,10 +541,17 @@ public class ManagerService extends Service {
 		}
 
 		if (objects.contains(new Model(SSID))) {
-			this.addItem(getResources().getString(
-					R.string.item_wifi_network_in_list, SSID));
-			Log.d(LOG_TAG, SSID + " WiFi network is in the auto connect list.");
-			return true;
+
+			Model model = objects.get(objects.indexOf(new Model(SSID)));
+
+			if (model.isSelected()) {
+				this.addItem(getResources().getString(
+						R.string.item_wifi_network_in_list, SSID));
+				Log.d(LOG_TAG, SSID
+						+ " WiFi network is in the auto connect list.");
+				return true;
+			}
+			
 		}
 
 		this.addItem(getResources().getString(
