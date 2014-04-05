@@ -1,5 +1,11 @@
 Change Log
 ==========
+#### 1.0.9
+
+###### Bugfixes:
+
+* Fixed an issue where all the wifi networks auto connect 
+
 #### 1.0.8
 
 ###### Bugfixes:
