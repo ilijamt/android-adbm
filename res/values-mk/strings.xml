@@ -112,4 +112,6 @@
   <string name="settings_clear_wifi_list">Исчитсти ја листата на бежични мрежи</string>
   <string name="settings_clear_wifi_list_summary">Исчисти ги сите бежични мрежи кои ги имате собрано до сега, ова ќе ги прочита постоечките мрежи на следното отворање на листата на бежичните мрежи</string>
   <string name="dialog_settings_wifi_list">Ова ќе ви ја ресетира вашата лист на бежични мрежи, и ќе ги прочитаме наново од постоечките бежично мрежи. Дали сте сигурни дека сакате да ја реиницијализирате листата?</string>
+  <string name="language_title">Јазик</string>
+  <string name="language_description">Одбран јазик: %s</string>
 </resources>

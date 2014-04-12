@@ -1,3 +1,8 @@
+1.1.0
+-----
+Features:
++ Added an option to change languages
+
 1.0.9
 -----
 Bugfixes:
