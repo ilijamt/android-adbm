@@ -217,4 +217,13 @@ public class Constants {
 	 */
 	public static final int PORT_LOWER_LIMIT = 1024;
 	
+	/**
+	 * The language key used for language
+	 */
+	public static final String KEY_LANGUAGE = "language";
+	
+	/**
+	 * The default language for the system
+	 */
+	public static final String KEY_LANGUAGE_DEFAULT = "en_US";
 }

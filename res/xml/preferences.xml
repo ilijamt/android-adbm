@@ -100,6 +100,15 @@
             android:title="@string/settings_clear_wifi_list" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/service_general" >
+        <ListPreference
+            android:entries="@array/languages_long"
+            android:entryValues="@array/languages_codes"
+            android:defaultValue="en_US"
+            android:key="language"
+            android:persistent="true"
+            android:summary="@string/language_description"
+            android:title="@string/language_title" />
+
         <Preference
             android:key="reset_button"
             android:persistent="false"

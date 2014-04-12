@@ -1,5 +1,7 @@
 package com.matoski.adbm.activity;
 
+import java.util.Locale;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
@@ -17,11 +19,12 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.matoski.adbm.Constants;
-import com.matoski.adbm.R;
 import com.matoski.adbm.service.ManagerService;
 import com.matoski.adbm.util.ServiceUtil;
+import com.matoski.adbm.R;
 
 /**
  * {@link Activity} that shows the preferences for the application,
@@ -310,6 +313,31 @@ public class MyPreferencesActivity extends PreferenceActivity {
 						getResources().getString(
 								R.string.service_settings_adb_port_summary),
 						portValue));
+
+		String languageValue = new Locale(prefs.getString(
+				Constants.KEY_LANGUAGE, Constants.KEY_LANGUAGE_DEFAULT))
+				.getDisplayLanguage();
+
+		findPreference(Constants.KEY_LANGUAGE).setSummary(
+				String.format(getResources().getString(
+						R.string.language_description, languageValue)));
+
+		findPreference(Constants.KEY_LANGUAGE).setOnPreferenceChangeListener(
+				new OnPreferenceChangeListener() {
+
+					@Override
+					public boolean onPreferenceChange(Preference preference,
+							Object newValue) {
+
+						findPreference(Constants.KEY_LANGUAGE).setSummary(
+								String.format(getResources().getString(
+										R.string.language_description,
+										new Locale(newValue.toString())
+												.getDisplayLanguage())));
+
+						return true;
+					}
+				});
 
 		findPreference(Constants.KEY_ADB_PORT).setOnPreferenceChangeListener(
 				new OnPreferenceChangeListener() {
