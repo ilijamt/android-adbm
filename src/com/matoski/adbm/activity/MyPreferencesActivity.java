@@ -10,6 +10,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -329,13 +331,42 @@ public class MyPreferencesActivity extends PreferenceActivity {
 					public boolean onPreferenceChange(Preference preference,
 							Object newValue) {
 
-						findPreference(Constants.KEY_LANGUAGE).setSummary(
-								String.format(getResources().getString(
-										R.string.language_description,
-										new Locale(newValue.toString())
-												.getDisplayLanguage())));
+						boolean valid = false;
 
-						return true;
+						try {
+							
+							Locale locale = new Locale(newValue.toString());
+							Locale.setDefault(locale);
+							Configuration configuration = new Configuration();
+							configuration.locale = locale;
+							getBaseContext().getResources()
+									.updateConfiguration(
+											configuration,
+											getBaseContext().getResources()
+													.getDisplayMetrics());
+							
+//							// store the new language in the system 
+//							Editor editor = prefs.edit();
+//							editor.putString(Constants.KEY_LANGUAGE, newValue.toString());
+//							editor.commit();
+							
+							// restart activity
+							restartActivity();
+							
+							valid = true;
+						} catch (Exception e) {
+							valid = false;
+						}
+
+						if (valid) {
+							findPreference(Constants.KEY_LANGUAGE).setSummary(
+									String.format(getResources().getString(
+											R.string.language_description,
+											new Locale(newValue.toString())
+													.getDisplayLanguage())));
+						}
+
+						return valid;
 					}
 				});
 

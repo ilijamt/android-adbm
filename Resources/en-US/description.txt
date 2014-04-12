@@ -2,6 +2,10 @@ ADB Manager, your one stop to developing more easily on Android.
 
 Warning: REQUIRES ROOT!
 
+If you want to help translating this application, help me with the translation on:
+
+https://crowdin.net/project/adbm
+
 The most automated, easy-to-use and stable ADB management tool with a great support.
 
 Features:
