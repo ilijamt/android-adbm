@@ -32,20 +32,20 @@
     <item
         android:id="@+id/action_about"
         android:icon="@android:drawable/ic_menu_help"
-        android:showAsAction="ifRoom"
+        android:showAsAction="never"
         android:title="@string/about"
         android:visible="true"/>
     <item
         android:id="@+id/action_change_log"
         android:icon="@android:drawable/ic_menu_info_details"
-        android:showAsAction="ifRoom"
+        android:showAsAction="never"
         android:title="@string/change_log"
         android:visible="true"/>
     
 	<item
 	    android:id="@+id/action_open_translate_page"
 	    android:icon="@android:drawable/btn_star_big_on"
-	    android:showAsAction="ifRoom"
+	    android:showAsAction="never"
 	    android:title="@string/help_translate_button"
 	    android:visible="true" />
 </menu>
