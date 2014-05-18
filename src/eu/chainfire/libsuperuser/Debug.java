@@ -16,6 +16,8 @@
 
 package eu.chainfire.libsuperuser;
 
+import com.matoski.adbm.BuildConfig;
+
 import android.os.Looper;
 import android.util.Log;
 
