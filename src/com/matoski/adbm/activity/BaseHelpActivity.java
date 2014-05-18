@@ -7,6 +7,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
 
@@ -30,7 +31,7 @@ public abstract class BaseHelpActivity extends Activity {
 	 * 
 	 * <pre>
 	 * int getResourceId() {
-	 *    return R.raw.file;
+	 * 	return R.raw.file;
 	 * }
 	 * </pre>
 	 * 
@@ -40,6 +41,7 @@ public abstract class BaseHelpActivity extends Activity {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +59,12 @@ public abstract class BaseHelpActivity extends Activity {
 		}
 
 		final WebView aboutText = (WebView) findViewById(R.id.help_about_text);
+		final WebSettings settings = aboutText.getSettings();
+
+		settings.setDefaultTextEncodingName("utf-8");
 
 		aboutText.setBackgroundColor(Color.argb(1, 0, 0, 0));
-		aboutText.loadData(html, "text/html", "UTF-8");
+		aboutText.loadData(html, "text/html; charset=utf-8", "utf-8");
 
 	}
 
