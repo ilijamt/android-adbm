@@ -92,6 +92,11 @@ Used to wake up the screen on new package install, or to keep the screen on whil
 |       HTC Hero | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) |    |    |    |    |    |
 |   HTC Wildfire | ![OK](Resources/checkmark.jpg) |    |    |    |    |    |    |
 
+Used libraries
+---------------
+
+ * [https://github.com/Chainfire/libsuperuser](libsuperuser)
+
 Translations
 ------------
 If you want to help translate this application feel free to send me a pull request, also if you want to help me translate the store description, see the Resources folder
