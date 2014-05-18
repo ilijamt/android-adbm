@@ -10,7 +10,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,12 +20,12 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.matoski.adbm.Constants;
-import com.matoski.adbm.service.ManagerService;
-import com.matoski.adbm.util.ServiceUtil;
 import com.matoski.adbm.R;
+import com.matoski.adbm.service.ManagerService;
+import com.matoski.adbm.util.GenericUtil;
+import com.matoski.adbm.util.ServiceUtil;
 
 /**
  * {@link Activity} that shows the preferences for the application,
@@ -35,6 +34,8 @@ import com.matoski.adbm.R;
  */
 @SuppressWarnings("deprecation")
 public class MyPreferencesActivity extends PreferenceActivity {
+
+	Activity _this;
 
 	/**
 	 * Restart {@link MyPreferencesActivity}
@@ -116,6 +117,7 @@ public class MyPreferencesActivity extends PreferenceActivity {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preferences);
 
+		_this = this;
 		final SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		final Context context = this;
@@ -216,6 +218,16 @@ public class MyPreferencesActivity extends PreferenceActivity {
 
 						AlertDialog dialog = builder.create();
 						dialog.show();
+						return false;
+					}
+				});
+
+		findPreference("help_translate_button").setOnPreferenceClickListener(
+				new OnPreferenceClickListener() {
+
+					@Override
+					public boolean onPreferenceClick(Preference preference) {
+						GenericUtil.openTranslationPage(_this);
 						return false;
 					}
 				});
@@ -334,7 +346,7 @@ public class MyPreferencesActivity extends PreferenceActivity {
 						boolean valid = false;
 
 						try {
-							
+
 							Locale locale = new Locale(newValue.toString());
 							Locale.setDefault(locale);
 							Configuration configuration = new Configuration();
@@ -344,15 +356,16 @@ public class MyPreferencesActivity extends PreferenceActivity {
 											configuration,
 											getBaseContext().getResources()
 													.getDisplayMetrics());
-							
-//							// store the new language in the system 
-//							Editor editor = prefs.edit();
-//							editor.putString(Constants.KEY_LANGUAGE, newValue.toString());
-//							editor.commit();
-							
+
+							// // store the new language in the system
+							// Editor editor = prefs.edit();
+							// editor.putString(Constants.KEY_LANGUAGE,
+							// newValue.toString());
+							// editor.commit();
+
 							// restart activity
 							restartActivity();
-							
+
 							valid = true;
 						} catch (Exception e) {
 							valid = false;

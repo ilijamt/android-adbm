@@ -96,6 +96,8 @@ Translations
 ------------
 If you want to help translate this application feel free to send me a pull request, also if you want to help me translate the store description, see the Resources folder
 
+[https://crowdin.net/project/adbm](https://crowdin.net/project/adbm)
+
 License
 -------
 

@@ -28,17 +28,5 @@
         <item>18000</item>
     </string-array>
     <string-array name="empty_array" />
-    <string-array name="languages_codes">
-        <item>en_US</item>
-        <item>ja</item>
-        <item>mk</item>
-        <item>et</item>
-    </string-array>
-    <string-array name="languages_long">
-        <item>Англиски</item>
-        <item>Јапонски</item>
-        <item>Македонски</item>
-        <item>Естонски</item>
-    </string-array>
 
 </resources>

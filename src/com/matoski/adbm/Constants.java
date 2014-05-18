@@ -226,4 +226,9 @@ public class Constants {
 	 * The default language for the system
 	 */
 	public static final String KEY_LANGUAGE_DEFAULT = "en_US";
+	
+	/**
+	 * Default translation URL for this project
+	 */
+	public static final String TRANSLATION_URL = "https://crowdin.net/project/adbm";
 }

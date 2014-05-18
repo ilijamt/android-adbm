@@ -32,16 +32,20 @@
     
     <string-array name="languages_codes">
         <item>en_US</item>
-        <item>ja</item>
         <item>mk</item>
+        <!--
+        <item>ja</item>
         <item>et</item>
+        -->
     </string-array>
     
     <string-array name="languages_long">
         <item>English</item>
-        <item>Japanese</item>
-        <item>Macedonian</item>
-        <item>Estonian</item>
+        <item>Македонски</item>
+        <!-- 
+        <item>日本語</item>        
+        <item>Eesti</item>
+         -->
     </string-array>
 
 </resources>

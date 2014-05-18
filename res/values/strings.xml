@@ -116,4 +116,7 @@
 
     <string name="language_title">Language</string>
     <string name="language_description">Current language: %s</string>
+    <string name="help_translate_button">Help translate</string>
+    <string name="help_translate_button_summary">By opening this link you will help me and you translate this application in your preferred language</string>
+   
 </resources>

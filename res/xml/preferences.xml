@@ -110,6 +110,12 @@
             android:title="@string/language_title" />
 
         <Preference
+            android:key="help_translate_button"
+            android:persistent="false"
+            android:summary="@string/help_translate_button_summary"
+            android:title="@string/help_translate_button" />
+        
+        <Preference
             android:key="reset_button"
             android:persistent="false"
             android:summary="@string/settings_reset_summary"

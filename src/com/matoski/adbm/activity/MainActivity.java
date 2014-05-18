@@ -27,6 +27,7 @@ import com.matoski.adbm.enums.IPMode;
 import com.matoski.adbm.interfaces.IMessageHandler;
 import com.matoski.adbm.service.ManagerService;
 import com.matoski.adbm.tasks.NetworkStatusChecker;
+import com.matoski.adbm.util.GenericUtil;
 import com.matoski.adbm.util.NetworkUtil;
 import com.matoski.adbm.util.ServiceUtil;
 
@@ -423,7 +424,12 @@ public class MainActivity extends Activity {
 			return true;
 		case R.id.action_clear_list:
 			this.mList.setText("");
+			
 			return true;
+		case R.id.action_open_translate_page:
+			GenericUtil.openTranslationPage(this);
+			return true;
+			
 		}
 
 		return false;
