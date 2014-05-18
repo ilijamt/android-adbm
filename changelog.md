@@ -1,7 +1,9 @@
 Change Log
 ==========
 
-#### Features:
+#### 1.1.1
+
+###### Features:
 * Added an option to change languages
 * Upgraded SU library 
 
