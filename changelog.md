@@ -1,5 +1,10 @@
 Change Log
 ==========
+
+#### Features:
+* Added an option to change languages
+* Upgraded SU library 
+
 #### 1.0.9
 
 ###### Bugfixes:
