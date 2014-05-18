@@ -1,7 +1,12 @@
 package com.matoski.adbm.activity;
 
+import java.util.Locale;
+
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.matoski.adbm.Constants;
 import com.matoski.adbm.R;
 
 /**
@@ -22,8 +27,23 @@ public class AboutActivity extends BaseHelpActivity {
 	 */
 	@Override
 	protected int getResourceId() {
-		Log.d(LOG_TAG, String.format("Loading resource: %d", R.raw.about));
-		return R.raw.about;
+		final SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+
+		String languageValue = new Locale(prefs.getString(
+				Constants.KEY_LANGUAGE, Constants.KEY_LANGUAGE_DEFAULT))
+				.getDisplayLanguage();
+		
+		int file = R.raw.about;
+		
+		if (languageValue.equalsIgnoreCase("mk")) {
+			file = R.raw.aboutmk;
+		} 
+		
+		Log.d(LOG_TAG, String.format("Loading resource: %d", file));
+	
+		return file;
+
 	}
 
 }
