@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -43,6 +44,15 @@ public class MyPreferencesActivity extends PreferenceActivity {
 	protected void restartActivity() {
 		finish();
 		startActivity(getIntent());
+	}
+
+	/**
+	 * Updates the locale of the context based on the current selected language
+	 */
+	protected void updateLocale(String lang) {
+
+		GenericUtil.updateApplicationLocale(this, lang);
+
 	}
 
 	/**
@@ -347,21 +357,12 @@ public class MyPreferencesActivity extends PreferenceActivity {
 
 						try {
 
-							Locale locale = new Locale(newValue.toString());
-							Locale.setDefault(locale);
-							Configuration configuration = new Configuration();
-							configuration.locale = locale;
-							getBaseContext().getResources()
-									.updateConfiguration(
-											configuration,
-											getBaseContext().getResources()
-													.getDisplayMetrics());
+							updateLocale(newValue.toString());
 
-							// // store the new language in the system
-							// Editor editor = prefs.edit();
-							// editor.putString(Constants.KEY_LANGUAGE,
-							// newValue.toString());
-							// editor.commit();
+							// store the new language in the system
+							Editor editor = prefs.edit();
+							editor.putBoolean("restartMainActivity", true);
+							editor.commit();
 
 							// restart activity
 							restartActivity();

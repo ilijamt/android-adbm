@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -307,6 +308,10 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		// switch to selected language
+		GenericUtil.updateApplicationLocale(this);
+
 		setContentView(R.layout.activity_main);
 
 		this.viewServiceStatus = (TextView) findViewById(R.id.adb_service_status);
@@ -424,12 +429,12 @@ public class MainActivity extends Activity {
 			return true;
 		case R.id.action_clear_list:
 			this.mList.setText("");
-			
+
 			return true;
 		case R.id.action_open_translate_page:
 			GenericUtil.openTranslationPage(this);
 			return true;
-			
+
 		}
 
 		return false;
@@ -484,6 +489,18 @@ public class MainActivity extends Activity {
 		if (this.handler != null && this.service != null) {
 			this.service.setHandler(this.handler);
 		}
+		final SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+
+		final boolean restart = prefs.getBoolean("restartMainActivity", false);
+		if (restart) {
+			Editor editor = prefs.edit();
+			editor.remove("restartMainActivity");
+			editor.commit();
+			finish();
+			startActivity(getIntent());
+		}
+
 		this.addItem(getResources()
 				.getString(R.string.item_adb_manager_resumed));
 		this.updateScreenDetails();
