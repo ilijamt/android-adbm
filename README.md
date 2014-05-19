@@ -95,7 +95,7 @@ Used to wake up the screen on new package install, or to keep the screen on whil
 Used libraries
 ---------------
 
- * [https://github.com/Chainfire/libsuperuser](libsuperuser)
+ * [libsuperuser](https://github.com/Chainfire/libsuperuser)
 
 Translations
 ------------
