@@ -1,6 +1,8 @@
 Change Log
 ==========
+#### 1.1.2 
 
+Added Spanish language to the project, thanks (
 #### 1.1.1
 
 ###### Features:

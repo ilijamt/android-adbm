@@ -1,0 +1,60 @@
+ADB Manager, tu primera parada para desarrollar fácilmente en Android.
+
+AVISO: ¡REQUIERE UN MÓVIL ROOTEADO!
+
+Si quieres ayudar a traducir esta aplicación, puedes hacerlo en:
+
+https://crowdin.net/project/adbm
+
+La herramienta de administración ADB más automatizada, sencilla y estable con un gran soporte.
+
+Características:
++ Control sencillo y acceso a los detalles desde la barra de notificaciones
++ Conexión automática a redes Wi-Fi guardadas
++ Se ejecuta automáticamente al inicio. Puedes desactivarlo en la pantalla de preferencias
++ Cambia automáticamente entre USB y RED cuando estés conectado o desconectado de Wi-Fi
++ Administración del servicio configurable
++ Iconos de distintos colores dependiendo del estado del ADB 
++ Puedes mantener la pantalla encendida mientras se ejecuta el servicio
++ Enciende la pantalla cuando se instala un nuevo paquete
++ Ahora puedes cambiar el estado de ADB tocando la imagen de la barra de notificaciones
+
+Es mucho más fácil de usar que otras, siempre visible en la barra de notificaciones. Es compatible con características avanzadas como control de estado ADB totalmente automatizado basado en conexión Wi-Fi y el estado de la red.
+
+ADB Manager te permite iniciar ADB automáticamente en modo de red al conectarse a cualquier red configurada de la lista de preferencias.
+
+¿Quieres desarrollar en el bar, el tren o en el baño con Wi-Fi? ADB Manager hará ADB inalámbrico cuando sea necesario automáticamente.
+
+Publicado como código abierto. Puedes ver el código en https://github.com/ilijamt/android-adbm
+
+Versiones futuras:
++ Demora entre cambios de estado
+
+Permisos:
++ android.permission.ACCESS_SUPERUSER 
+Utilizado con SuperSU si está disponible
+
++ android.permission.RECEIVE_BOOT_COMPLETED
+Utilizado para iniciar automáticamente el servicio en el arranque del dispositivo, cuánto tiempo debe esperar antes de comenzar y con qué frecuencia debe el AlarmManager revisar si está ejecutando el servicio configurable desde el menú de preferencias.
+
++ android.permission.ACCESS_NETWORK_STATE
+  android.permission.ACCESS_WIFI_STATE
+Utilizado para automatizar el cambio entre los estados del ADB
+
++ android.permission.INTERNET
+Utilizado para recuperar la dirección IP, se colgará si se realiza una comprobación de dirección IP sin este permiso.
+
++ android.permission.WAKE_LOCK
+Utilizado para encender la pantalla al instalar un nuevo paquete o mantener la pantalla encendida mientras se ejecuta el servicio de ADB
+
+Problemas conocidos:
+En IPA (API) 8, los iconos del menú aparecen algo extraños en dispositivos LDPI.
+
+Probado en:
++ Nexus 4 (4.0.3 API 15)
++ Galaxy S2 (2.3.3 API 10, 4.0.3 API 15, 4.1.2  API 16)
++ Galaxy S4 (4.2.2 API 17)
++ HTC Hero (2.2.1 API 8, 2.3.1 API 10)
++ HTC Wildfire (2.2.1 API 8)
+
+Para cualquier duda, sugerencia, informes de errores o para ayudar con la traducción, envía un correo electrónico a <0>ilijamt+adbm@gmail.com</0> 

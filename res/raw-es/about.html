@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Acerca de</title>
+<style type="text/css">
+BODY, HTML {background: transparent, word-wrap: break-word;}
+</style>
+</head>
+<body>
+
+<p>ADB Manager, tu primera parada para desarrollar fácilmente en Android.<p>
+
+<p><strong>AVISO: ¡REQUIERE UN MÓVIL ROOTEADO!</strong></p>
+
+<p>La herramienta de administración ADB más automatizada, sencilla y estable con un gran soporte.</p>
+
+<p>Es mucho más fácil de usar que otras, siempre visible en la barra de notificaciones. Es compatible con características avanzadas como control de estado ADB totalmente automatizado basado en conexión Wi-Fi y el estado de la red.</p>
+
+<p>ADB Manager te permite iniciar ADB automáticamente en modo de red al conectarse a cualquier red configurada de la lista de preferencias.</p>
+
+<p>¿Quieres desarrollar en el bar, el tren o en el baño con Wi-Fi? ADB Manager hará ADB inalámbrico cuando sea necesario automáticamente.</p>
+
+<p>Para cualquier duda, sugerencia, informes de errores o para ayudar con la traducción, envía un correo electrónico a <strong><em>ilijamt+adbm@gmail.com</em></strong></p>
+
+<h2>Permisos</h2>
+<ul>
+<li><strong>ACCESS_SUPERUSER</strong>: utilizado con SuperSU si está disponible</li>
+<li><strong>RECEIVE_BOOT_COMPLETED</strong>: utilizado para iniciar automáticamente el servicio en el arranque del dispositivo, cuánto tiempo debe esperar antes de comenzar y con qué frecuencia debe el AlarmManager revisar si está ejecutando el servicio configurable desde el menú de preferencias.</li> 
+<li><strong>ACCESS_NETWORK_STATE, ACCESS_WIFI_STATE</strong>: utilizado para automatizar la conmutación entre los estados ADB</li>
+<li><strong>INTERNET</strong>: utilizado para recuperar la dirección IP, se colgará si se realiza una comprobación de dirección IP sin este permiso.</li>
+<li><strong>WAKE_LOCK</strong>: utilizado para encender la pantalla al instalar un nuevo paquete o mantener la pantalla encendida mientras se ejecuta el servicio de ADB</li>
+</ul>
+
+<h2>Código fuente</h2>
+<ul>
+<li><a href="https://github.com/ilijamt/android-adbm">ADB Manager</a></li>
+</ul>
+
+<h2>Problemas conocidos</h2>
+<ul>
+<li>En IPA (API) 8, los iconos del menú aparecen algo extraños en dispositivos LDPI.</li>
+</ul>
+
+<h2>Fallos genéricos</h2>
+<ul>
+<li><strong>Generalmente en los dispositivos Samsung</strong> <br/>Error al instalar el apk en el dispositivo 'ip:port': tiempo agotado <br/>¡Se ha cancelado el inicio! <br/><strong>Eclipse</strong> | Ventana > Preferencias > Android > DDMS > Tiempo de conexión ADB agotado (ms) <strong>Aumenta el valor</strong>
+</ul>
+
+<h2>Bibliotecas usadas</h2>
+<ul>
+<li><a href="https://github.com/Chainfire/libsuperuser">libsuperuser</a></li>
+</ul>
+
+<h2>Traducciones</h2>
+
+<p>Si quieres ayudar a traducir esta aplicación no dudes en enviar una solicitud. Además, si quieres ayudarme traduciendo la descripción de la tienda, mira la carpeta de recursos</p>
+
+<a href="https://crowdin.net/project/adbm">https://crowdin.net/project/adbm</a>
+
+<h2>Licencia</h2>
+
+<p>Copyright (C) 2013 Ilija Matoski (ilijamt@gmail.com)</p>
+
+<p>Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at</p>
+
+<a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a>
+
+<p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</p>
+
+<h2>Colaboradores</h2>
+<ul>
+<li><strong><em>Desarrollador principal</em></strong> Ilija Matoski (ilijamt@gmail.com)</li>
+</ul>
+</body>
+</html>

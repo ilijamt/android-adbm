@@ -99,9 +99,9 @@
     <string name="item_released_wake_lock">Wake lock released: %s</string>
     <string name="item_no_need_for_wake_lock">There is no need to acquire wake lock</string>
     <string name="item_try_to_wake_phone">Trying to wake up the phone screen</string>
-    <string name="item_service_bind_succesfully">Service binded successfully</string>
+    <string name="item_service_bind_succesfully">Service bound successfully</string>
     <string name="item_service_bind_failed">Service failed to bind successfully</string>
-    <string name="item_service_unbind_succesfully">Service unbinded successfully</string>
+    <string name="item_service_unbind_succesfully">Service unbound successfully</string>
     <string name="item_service_unbind_failed">Service failed to unbind successfully</string>
     <string name="item_initializiation_of_manager">Initialization of ADB Manager</string>
     <string name="item_menu_item_loaded">Menu items loaded</string>

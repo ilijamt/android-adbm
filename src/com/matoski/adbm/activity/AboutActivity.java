@@ -1,10 +1,7 @@
 package com.matoski.adbm.activity;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.matoski.adbm.Constants;
 import com.matoski.adbm.R;
 
 /**
@@ -17,6 +14,7 @@ public class AboutActivity extends BaseHelpActivity {
 	/**
 	 * The tag used when logging with {@link Log}
 	 */
+	@SuppressWarnings("unused")
 	private static final String LOG_TAG = AboutActivity.class.getName();
 
 	/*
@@ -26,23 +24,7 @@ public class AboutActivity extends BaseHelpActivity {
 	 */
 	@Override
 	protected int getResourceId() {
-		final SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(this);
-
-		String languageValue = prefs.getString(Constants.KEY_LANGUAGE,
-				Constants.KEY_LANGUAGE_DEFAULT);
-
-		int file = R.raw.about;
-
-		if (languageValue.equalsIgnoreCase("mk")) {
-			file = R.raw.aboutmk;
-		}
-
-		Log.d(LOG_TAG,
-				String.format("Loading resource (%s): %d", languageValue, file));
-
-		return file;
-
+		return R.raw.about;
 	}
 
 }

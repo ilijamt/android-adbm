@@ -1,0 +1,144 @@
+1.1.1
+-----
+Características:
++ Se ha añadido una opción para cambiar de idioma
++ Se ha actualizado la biblioteca de SU
+
+1.0.9
+-----
+Corrección de errores:
++ Se ha solucionado un error por el cual se conectaba automáticamente a todas las redes Wi-Fi 
+
+1.0.8
+-----
+Corrección de errores: 
++ Se ha solucionado un error de preferencia por el cual un usuario podía establecer un puerto absurdamente grande para un puerto ADB
+
+1.0.7
+-----
+Corrección de errores:
++ Se ha solucinoado un error que provocaba un cuelgue en Android 4.0.3 y 4.0.4 en java.net.NetworkInterface.getNetworkInterfacesList
+
+1.0.6
+------
+Corrección de errores:
++ Se ha solucionado un error introducido en la versión anterior por el cual no se eliminaban las dobles comillas de la función de obtener SSID y, por lo tanto, la autoconexión no funcionaba
+
+Características:
++ Se ha añadido un botón en preferencias para eliminar todas las conexiones recogidas por la aplicación de la lista de Wi-Fi. Puede ser útil si la autoconexión no funciona o tras una actualización del sistema de Android.
+
+1.0.5
+-----
+Corrección de errores:
++ Se han solucionado algunos errores de actividad e interacción de servicio
++ Se ha solucionado un error de uso, ahora no se colgará el servicio
+
+1.0.2
+-----
+Características:
++ Se ha actualizado la biblioteca de SuperSU
+
+Corrección de errores:
++ En raras ocasiones el servicio recibía llamadas con acción nula, debido a cuelgues del servicio
+
+1.0.1
+-----
+Corrección de errores:
++ Se ha solucionado un cuelgue que se producía al abrir la pantalla de configuración de redes Wi-Fi en ajustes si no guardabas ninguna red Wi-Fi en el sistema
+
+1.0.0
+-----
+Publicado como código abierto. Puedes ver el código en https://github.com/ilijamt/android-adbm
+
+0.9.9
+-----
+Se deben reiniciar las preferencias de esta actualización desde la pantalla de preferencias.
+
+Características:
++ Se ha añadido un estado para mostrar si tenemos WakeLock o no
+
+Corrección de errores:
++ Se han reordenado las cadenas de texto, además se han añadido intervalos de tiempo en la pantalla de preferencias
++ Se ha solucionado un error con AlarmManager por el cual mantenía la CPU despierta, incluso cuando no se tenía un WakeLock
+
+
+0.9.8
+-----
+Corrección de errores:
++ Se han solucionado ciertos errores con WakeLock
+
+0.9.7
+-----
+Corrección de errores:
++ Se ha solucionado un error por el cual, a veces, el servicio no se iniciaba lo suficientemente rápido por lo que no podía enlazarse a tiempo para solicitar la actualización y, por lo tanto, se colgaba
+
+0.9.6
+-----
+Características:
++ Ahora puedes cambiar el estado de ADB tocando la imagen de la barra de notificaciones
+
+0.9.5
+-----
+Corrección de errores:
++ No siempre se liberaban los WakeLock
+
+0.9.4
+-----
+Características:
++ Se ha añadido una opción para mantener la pantalla mientras se ejecuta el servicio
++ Se ha añadido una opción para encender la pantalla cuando se instale un nuevo paquete si esta estaba apagada
+
+Permiso:
++ android.permission.WAKE_LOCK
+  Utilizado para encender la pantalla al instalar un nuevo paquete o mantener la pantalla encendida mientras se ejecuta el servicio de ADB
+
+0.9.1
+-----
+Corrección de errores:
++ Se ha solucionado un error por el cual, al iniciar el servicio, se colgaba
+
+0.9
+-----
+Características: 
++ Se ha añadido un widget
+
+Corrección de errores:
++ Varias optimizaciones y correcciones de errores
+
+0.8.4
+-----
+Características: 
++ Se ha añadido un menú "Acerca de"
++ Se ha añadido un menú del registro de cambios
+
+Corrección de errores:
++ Varias optimizaciones y correcciones de errores
+
+0.8.3
+-----
+Características:
++ Se ha añadido la posibilidad de hacer que la notificación sea permanente o no
+
+Corrección de errores:
++ Se ha solucionado un error por el cual la red de ADB no se actualizaba adecuadamente
+
+0.8.2
+-----
+Características:
++ Se ha añadido un nuevo icono para los estados. Ahora hay distintos para cada uno.
+  Interfaz blanca: sin conexiones Wi-Fi
+  Interfaz azul cielo: conexión Wi-Fi disponible, pero no conectada
+  Interfaz amarilla: conectado a Wi-Fi y ADB ejecutándose en estado de red
+
+Corrección de errores:
++ Se ha solucionado un error por el cual, a veces, el estado "DESCONECTADO" no se actualizaba en la barra de notificaciones
+
+v0.8.0 Versión inicial
+-----------------------
+
+Características:
++ Control sencillo y acceso a los detalles desde la barra de notificaciones
++ Conexión automática a redes Wi-Fi guardadas
++ Se ejecuta automáticamente al inicio. Puedes desactivarlo en la pantalla de preferencias
++ Cambia automáticamente entre USB y RED cuando estés conectado o desconectado de Wi-Fi
++ Administración del servicio configurable

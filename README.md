@@ -47,7 +47,7 @@ Used to automatically start the service on the boot of the device, how long shou
 
 * android.permission.ACCESS_NETWORK_STATE, android.permission.ACCESS_WIFI_STATE
 
-Used to automate the switching between the the ADB states
+Used to automate the switching between the ADB states
 
 * android.permission.INTERNET
 
