@@ -2,7 +2,9 @@ Change Log
 ==========
 #### 1.1.2 
 
-Added Spanish language to the project, thanks (
+###### Features:
+* Added Spanish translation by Ryo567 (eumase-04@hotmail.com)
+
 #### 1.1.1
 
 ###### Features:

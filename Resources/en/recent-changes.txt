@@ -1,0 +1,10 @@
+Released as open source, you can view the code at https://github.com/ilijamt/android-adbm
+
+Features:
++ Added an option to change languages
++ Upgraded SU library
++ Added Spanish translation by Ryo567 (eumase-04@hotmail.com) 
+
+Bugfixes:
++ Fixed an issue where all the wifi networks auto connect
++ Fixed an issue in preference where an user set the port to an absurdly big number for ADB port

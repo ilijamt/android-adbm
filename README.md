@@ -122,4 +122,5 @@ limitations under the License.
 
 Contributors
 ------------
-Ilija Matoski (ilijamt@gmail.com)
+* **Main Developer** Ilija Matoski (ilijamt@gmail.com)
+* **Translator (Spanish)** Ryo567 (eumase-04@hotmail.com)
