@@ -1,6 +1,10 @@
 Publicado como código abierto. Puedes ver el código en https://github.com/ilijamt/android-adbm
 
-Corrección de errores: 
+Características:
++ Se ha añadido una opción para cambiar de idioma
++ Se ha actualizado la biblioteca de SU
+Añadida traducción al español por Ryo567 (eumase-04@hotmail.com) 
+
+Corrección de errores:
 + Se ha solucionado un error por el cual se conectaba automáticamente a todas las redes Wi-Fi
 + Se ha solucionado un error de preferencia por el cual un usuario podía establecer un puerto absurdamente grande para un puerto ADB
-+ Se ha solucinoado un error que provocaba un cuelgue en Android 4.0.3 y 4.0.4 en java.net.NetworkInterface.getNetworkInterfacesList

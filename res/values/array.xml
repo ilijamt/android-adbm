@@ -33,6 +33,7 @@
     <string-array name="languages_codes">
         <item>en_US</item>
         <item>mk</item>
+        <item>es</item>
         <!--
         <item>ja</item>
         <item>et</item>
@@ -42,6 +43,7 @@
     <string-array name="languages_long">
         <item>English</item>
         <item>Македонски</item>
+        <item>Español</item>
         <!-- 
         <item>日本語</item>        
         <item>Eesti</item>
