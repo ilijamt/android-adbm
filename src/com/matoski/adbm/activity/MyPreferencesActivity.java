@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -259,6 +258,10 @@ public class MyPreferencesActivity extends PreferenceActivity {
 									public void onClick(DialogInterface dialog,
 											int which) {
 										prefs.edit().clear().commit();
+										Editor editor = prefs.edit();
+										editor.putBoolean("restartMainActivity", true);
+										editor.commit();										
+										updateLocale(Constants.KEY_LANGUAGE_DEFAULT);
 										restartActivity();
 										dialog.dismiss();
 									}
