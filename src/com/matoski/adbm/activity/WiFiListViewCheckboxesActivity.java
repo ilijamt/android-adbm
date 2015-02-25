@@ -30,8 +30,9 @@ import com.matoski.adbm.adapter.InteractiveArrayAdapter;
 import com.matoski.adbm.pojo.Model;
 
 /**
- * Activity that display the saved WiFi networks in an {@link ListView} to be able to select which ones to connect if
- * the network is in {@link Constants#KEY_WIFI_LIST}
+ * Activity that display the saved WiFi networks in an {@link ListView} to be
+ * able to select which ones to connect if the network is in
+ * {@link Constants#KEY_WIFI_LIST}
  * 
  * @author Ilija Matoski (ilijamt@gmail.com)
  */
@@ -62,7 +63,8 @@ public class WiFiListViewCheckboxesActivity extends Activity {
 	private Gson gson;
 
 	/**
-	 * The type of the {@link Model} used to convert to JSON or convert from JSON to {@link Model}
+	 * The type of the {@link Model} used to convert to JSON or convert from
+	 * JSON to {@link Model}
 	 */
 	private Type gsonType;
 
@@ -83,6 +85,7 @@ public class WiFiListViewCheckboxesActivity extends Activity {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -126,8 +129,9 @@ public class WiFiListViewCheckboxesActivity extends Activity {
 	}
 
 	/**
-	 * Helper function that prepares the adapter for the items in the list, also takes care that we integrate known
-	 * configuration networks and scan for new saved ones and add them to the list.
+	 * Helper function that prepares the adapter for the items in the list, also
+	 * takes care that we integrate known configuration networks and scan for
+	 * new saved ones and add them to the list.
 	 */
 	protected void prepareAdapter() {
 
@@ -145,12 +149,19 @@ public class WiFiListViewCheckboxesActivity extends Activity {
 
 		if (networks != null) {
 			for (WifiConfiguration configuration : networks) {
-				model = new Model(configuration.SSID.replaceAll("(^\")|(\"$)",
-						""));
-				if (!objects.contains(model)) {
-					Log.d(LOG_TAG, String.format(
-							"New saved network detected: %s", model.getName()));
-					objects.add(model);
+
+				if (configuration == null) {
+					Log.e(LOG_TAG, "Network entry is NULL");
+
+				} else {
+					model = new Model(configuration.SSID.replaceAll(
+							"(^\")|(\"$)", ""));
+					if (!objects.contains(model)) {
+						Log.d(LOG_TAG, String.format(
+								"New saved network detected: %s",
+								model.getName()));
+						objects.add(model);
+					}
 				}
 			}
 		}
