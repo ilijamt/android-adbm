@@ -83,7 +83,7 @@ Used to wake up the screen on new package install, or to keep the screen on whil
 |:--------------:|:--:|:--:|----|:--:|:--:|:--:|:--:|:--:|
 |   One+ |  |    |    |    |    |    |    | ![OK](Resources/checkmark.jpg) | 
 |        Nexus 4 |    |    |    | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) |    |
-|        Nexus 7 |    |    |    | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) |    |
+|        Nexus 7 |    |    |    | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg)   |
 |      Galaxy S2 |    | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) |    |    |    |
 |      Galaxy S3 |    |    |    | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) |
 |      Galaxy S4 |    |    |    |    |    | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg)|
