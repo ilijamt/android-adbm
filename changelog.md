@@ -1,5 +1,10 @@
 Change Log
 ==========
+#### 1.2.0
+* Added Chinese Simplified translation by yangfl (https://crowdin.com/profile/yangfl), yap7800 (https://crowdin.com/profile/yap7800)
+* Bugfixes and optimizations
+* Upgraded SU library
+
 #### 1.1.2 
 
 ###### Features:
