@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>关于</title>
+<style type="text/css">
+BODY, HTML {background: transparent, word-wrap: break-word;}
+</style>
+</head>
+<body>
+
+<p>ADB 管理器，更轻松地开发 Android。<p>
+
+<p><strong>警告：需要ROOT权限！</strong></p>
+
+<p>最自动、易用、稳定的 ADB 管理工具，方便至极。</p>
+
+<p>它比其它工具更易使用，总在通知栏中可见。 配备有高级功能，如基于无线网络和网络状态的全自动 ADB 状态控制。</p>
+
+<p>在首选项中配置好已知网络列表，ADB 管理器就能在连接到这些网络时自动启动网络 ADB。</p>
+
+<p>在咖啡馆/酒吧/火车/厕所/其他地方的无线网络上开发？ADB 管理器能自动切换无线和非无线 ADB。</p>
+
+<p>如有任何疑问、建议、bug 报告或协助翻译应用，请电邮我，地址 <strong><em>ilijamt+adbm@gmail.com</em></strong></p>
+
+<h2>权限</h2>
+<ul>
+<li><strong>ACCESS_SUPERUSER</strong>：与SuperSU一起使用，如果有的话</li>
+<li><strong>RECEIVE_BOOT_COMPLETED</strong>：用于在设备启动时自启动，在启动前应等待的时间及AlarmManager检查服务是否运行的频率可在首选项菜单中配置。</li> 
+<li><strong>ACCESS_NETWORK_STATE, ACCESS_WIFI_STATE</strong>：用于自动切换 ADB 状态</li>
+<li><strong>INTERNET</strong>：用于检索 IP 地址，没有该权限时检索 IP 地址会崩溃。</li>
+<li><strong>WAKE_LOCK</strong>：用于在新软件包安装时唤醒屏幕，或在 ADB 服务运行时保持屏幕开启。</li>
+</ul>
+
+<h2>源代码</h2>
+<ul>
+<li><a href="https://github.com/ilijamt/android-adbm">ADB 管理器</a></li>
+</ul>
+
+<h2>已知问题</h2>
+<ul>
+<li>在 API 8 上，LDPI 设备上的菜单图标看起来有点怪。</li>
+</ul>
+
+<h2>常见问题</h2>
+<ul>
+<li><strong>常见于三星设备</strong><br/>Failed to install apk on device 'ip:port': timeout<br/>Launch canceled!<br/><strong>Eclipse</strong> | 窗口 > 首选项 > 安卓 > DDMS > ADB 连接超时 (ms)<strong>增加设定值</strong>
+</ul>
+
+<h2>使用的库</h2>
+<ul>
+<li><a href="https://github.com/Chainfire/libsuperuser">libsuperuser</a></li>
+</ul>
+
+<h2>翻译</h2>
+
+<p>如果您想协助翻译这个应用程序，请随时向我发pull请求，如果您想帮我翻译商店描述，参见Resources文件夹</p>
+
+<a href="https://crowdin.net/project/adbm">https://crowdin.net/project/adbm</a>
+
+<h2>许可证</h2>
+
+<p>Copyright (C) 2013 Ilija Matoski (ilijamt@gmail.com)</p>
+
+<p>Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at</p>
+
+<a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a>
+
+<p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</p>
+
+<h2>贡献者</h2>
+<ul>
+<li><strong><em>主开发者</em></strong> Ilija Matoski (ilijamt@gmail.com)</li>
+<li><strong><em>翻译者（西班牙文）</em></strong> Ryo567 (eumase-04@hotmail.com)</li>
+<li><strong><em>翻译 （中国简化)</em></strong> yangfl (https://crowdin.com/profile/yangfl)、 yap7800 (https://crowdin.com/profile/yap7800)</li>
+</ul>
+</body>
+</html>

@@ -27,7 +27,7 @@ Developing in cafes/bars/trains/toilet/other places over WiFi? ADB Manager will 
 
 Released as open source, you can view the code at https://github.com/ilijamt/android-adbm
 
-Future versions:
+Future version:
 + Delay between switching states
 
 Permissions:
@@ -52,7 +52,7 @@ On API 8, the menu icons look a little weird on LDPI devices.
 
 Tested on:
 + Nexus 4 (4.0.3 API 15)
-+ Galaxy S2 (2.3.3 API 10, 4.0.3 API 15, 4.1.2  API 16)
++ Galaxy S2 (2.3.3 API 10, 4.0.3 API 15, 4.1.2 API 16)
 + Galaxy S4 (4.2.2 API 17)
 + HTC Hero (2.2.1 API 8, 2.3.1 API 10)
 + HTC Wildfire (2.2.1 API 8)

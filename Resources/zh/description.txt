@@ -1,0 +1,60 @@
+ADB 管理器，更轻松地开发 Android。
+
+警告：需要ROOT权限！
+
+如果您想协助翻译此应用程序，见此：
+
+https://crowdin.net/project/adbm
+
+最自动、易用、稳定的 ADB 管理工具，方便至极。
+
+特色：
++ 从通知栏上控制，并获取详细信息
++ 在已保存的无线网络上自动连接
++ 开机自启动，您可以在首选项界面中选择或取消
++ 连接或断开无线网络时，自动在 USB 和网络调试之间切换
++ 可配置的服务管理
++ 根据 ADB 的状态切换图标颜色 
++ 在服务运行时保持屏幕开启
++ 安装新软件包时唤醒屏幕
++ 触摸通知栏中的图标切换 ADB 状态
+
+它比其它工具更易使用，总在通知栏中可见。 配备有高级功能，如基于无线网络和网络状态的全自动 ADB 状态控制。
+
+在首选项中配置好已知网络列表，ADB 管理器就能在连接到这些网络时自动启动网络 ADB。
+
+在咖啡馆/酒吧/火车/厕所/其他地方的无线网络上开发？ ADB 管理器能自动切换无线和非无线 ADB。
+
+这是开放源代码软件，您可以在 https://github.com/ilijamt/android-adbm 查看代码
+
+将来版本：
++ 状态切换间延迟
+
+权限：
++ android.permission.ACCESS_SUPERUSER 
+与SuperSU一起使用，如果有的话
+
++ android.permission.RECEIVE_BOOT_COMPLETED
+用于在设备启动时自启动，在启动前应等待的时间及AlarmManager检查服务是否运行的频率可在首选项菜单中配置。
+
++ android.permission.ACCESS_NETWORK_STATE
+  android.permission.ACCESS_WIFI_STATE
+用于自动切换 ADB 状态
+
++ android.permission.INTERNET
+用于检索 IP 地址，没有该权限时检索 IP 地址会崩溃。
+
++ android.permission.WAKE_LOCK
+用于在新软件包安装时唤醒屏幕，或在 ADB 服务运行时保持屏幕开启
+
+已知问题：
+在 API 8 上，LDPI 设备上的菜单图标看起来有点怪。
+
+已在如下机型上测试：
++ Nexus 4 (4.0.3 API 15)
++ Galaxy S2 (2.3.3 API 10, 4.0.3 API 15, 4.1.2  API 16)
++ Galaxy S4 (4.2.2 API 17)
++ HTC Hero (2.2.1 API 8, 2.3.1 API 10)
++ HTC Wildfire (2.2.1 API 8)
+
+如有任何疑问、建议、bug 报告或协助翻译应用，请电邮我，地址 ilijamt+adbm@gmail.com 

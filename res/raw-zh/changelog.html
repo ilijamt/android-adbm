@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>更改日志</title>
+<style type="text/css">
+BODY, HTML {background: transparent, word-wrap: break-word;}
+</style>
+</head>
+<body>
+
+<h2>1.2.0</h2>
+<h3>功能</h3>
+<ul>
+<li>错误修正和优化</li>
+<li>升级 SU 库</li>
+<li>添加简体中文翻译由 yangfl (https://crowdin.com/profile/yangfl)、 yap7800 (https://crowdin.com/profile/yap7800)</li>
+</ul>
+
+<h2>1.1.2</h2>
+<h3>功能</h3>
+<ul>
+<li>添加西班牙语翻译，来自 Ryo567 (eumase-04@hotmail.com)</li>
+</ul>
+
+<h2>1.1.1</h2>
+<h3>功能</h3>
+<ul>
+<li>添加了选项以更改语言</li>
+<li>升级 SU 库</li>
+</ul>
+
+<h2>1.0.9</h2>
+<h3>错误修正</h3>
+<ul>
+<li>修复所有无线网络都自动连接的问题。</li>
+</ul>
+
+<h2>1.0.8</h2>
+<h3>错误修正</h3>
+<ul>
+<li>修复用户在首选项中将 ADB 端口设置为极大数的问题。</li>
+</ul>
+
+<h2>1.0.7</h2>
+<h3>错误修正</h3>
+<ul>
+<li>修复获取 java.net.NetworkInterface.getNetworkInterfacesList 导致崩溃的问题，影响 Android 4.0.3 和 4.0.4 。</li>
+</ul>
+
+<h2>1.0.6</h2>
+<h3>功能</h3>
+<ul>
+<li>在首选项中添加了按钮，以清除应用程序收集的无线网络列表，用于刷新无线网络列表，若自动连接不起作用，或升级 android 系统后可能会有用</li>
+</ul>
+<h3>错误修正</h3>
+<ul>
+<li>修复了一个在早期版本中引入的问题，getSSID 函数结果中的双引号没有去除，导致自动连接无法工作。</li>
+</ul>
+
+<h2>1.0.5</h2>
+<h3>错误修正</h3>
+<ul>
+<li>一些活动和服务交互方面的修复</li>
+<li>处理程序的修复，现在它不会导致服务崩溃</li>
+</ul>
+
+<h2>1.0.2</h2>
+<h3>功能</h3>
+<ul>
+<li>升级 SuperSU 库</li>
+</ul>
+<h3>错误修正</h3>
+<ul>
+<li>罕见情况下服务被 null 活动调用，并因此而崩溃。</li>
+</ul>
+
+<h2>1.0.1</h2>
+<h3>错误修正</h3>
+<ul>
+<li>修复了一个错误，如果系统中没有保存任何无线网络，在设置中打开无线网络配置界面会崩溃。</li>
+</ul>
+
+<h2>1.0.0</h2>
+<ul>
+<li>开放了源代码，您可以在 https://github.com/ilijamt/android-adbm 查看代码</li>
+</ul>
+
+<h2>0.9.9</h2>
+<p>此次更新，您应该在首选项界面中重置您的首选项。</p>
+<h3>功能</h3>
+<ul>
+<li>添加状态以显示我们是否有唤醒锁</li>
+</ul>
+<h3>错误修正</h3>
+<ul>
+<li>整理字符串，且在首选项界面中添加了新的时间间隔</li>
+<li>希望修复了 AlarmManager 保持 CPU 运行的问题，即使没有获得唤醒锁</li>
+</ul>
+
+<h2>0.9.8</h2>
+<h3>错误修正</h3>
+<ul>
+<li>修复某些情况下唤醒锁的问题</li>
+</ul>
+
+<h2>0.9.7</h2>
+<h3>错误修正</h3>
+<ul>
+<li>有时，服务启动速度不够快，不能及时绑定服务并请求更新，结果导致崩溃</li>
+</ul>
+
+<h2>0.9.6</h2>
+<h3>功能</h3>
+<ul>
+<li>可以触摸通知栏中的图标切换 ADB 状态</li>
+</ul>
+
+<h2>0.9.5</h2>
+<h3>更新</h3>
+<ul>
+<li>更新关于界面</li>
+</ul>
+<h3>错误修正</h3>
+<ul>
+<li>不总是释放唤醒锁</li>
+<li>代码清理</li>
+</ul>
+
+
+<h2>0.9.4</h2>
+<h3>功能</h3>
+<ul>
+<li>添加了选项，在服务运行时保持屏幕开启</li>
+<li>添加了选项，当保持屏幕功能没有启用时，在安装新软件包时唤醒屏幕</li>
+</ul>
+<h3>权限</h3>
+<ul>
+<li>android.permission.WAKE_LOCK</li>
+</ul>
+
+<h2>0.9.1</h2>
+<h3>错误修正</h3>
+<ul>
+<li>修复有时启动服务时的崩溃</li>
+</ul>
+
+<h2>0.9</h2>
+<h3>功能</h3>
+<ul>
+<li>添加小部件</li>
+</ul>
+<h3>错误修正</h3>
+<ul>
+<li>各种错误修正和改进</li>
+</ul>
+
+<h2>0.8.4</h2>
+<h3>功能</h3>
+<ul>
+<li>添加关于菜单</li>
+<li>添加更改日志菜单</li>
+</ul>
+<h3>错误修正</h3>
+<ul>
+<li>各种优化和错误修正</li>
+</ul>
+
+<h2>0.8.3</h2>
+<h3>功能</h3>
+<ul>
+<li>添加永久通知，或选择清除</li>
+</ul>
+
+<h3>错误修正</h3>
+<ul>
+<li>ADB 网络状态更新不正确</li>
+</ul>
+
+<h2>0.8.2</h2>
+<h3>功能</h3>
+<ul>
+<li>为状态添加了图标，现在不同状态有了不同的图标</li>
+  <li>白遮罩： 无无线连接</li>
+  <li>天蓝遮罩： 无线网络可用，但没有连接</li>
+  <li>黄遮罩： 无线已连接，网络 ADB 正在运行</li>
+</ul>
+<h3>错误修正</h3>
+<ul>
+<li>有时断开连接事件并没有更新通知栏</li>
+</ul>
+
+<h2>0.8.0 - 首次发布</h2>
+
+<h3>功能</h3>
+<ul>
+<li>从通知栏上控制，并获取详细信息</li>
+<li>在已保存的无线网络上自动连接</li>
+<li>开机自启动，您可以在首选项界面中选择或取消</li>
+<li>连接或断开无线网络时，自动在 USB 和网络调试之间切换</li>
+<li>可配置的服务管理</li>
+</ul>
+<h3>权限</h3>
+<ul>
+<li>android.permission.ACCESS_SUPERUSER</li>
+<li>android.permission.RECEIVE_BOOT_COMPLETED</li>
+<li>android.permission.INTERNET</li>
+<li>android.permission.ACCESS_NETWORK_STATE</li>
+<li>android.permission.ACCESS_WIFI_STATE</li>
+</ul>
+</body>
+</html>

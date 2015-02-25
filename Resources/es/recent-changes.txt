@@ -1,10 +1,6 @@
 Publicado como código abierto. Puedes ver el código en https://github.com/ilijamt/android-adbm
 
 Características:
-+ Se ha añadido una opción para cambiar de idioma
 + Se ha actualizado la biblioteca de SU
-Añadida traducción al español por Ryo567 (eumase-04@hotmail.com) 
-
-Corrección de errores:
-+ Se ha solucionado un error por el cual se conectaba automáticamente a todas las redes Wi-Fi
-+ Se ha solucionado un error de preferencia por el cual un usuario podía establecer un puerto absurdamente grande para un puerto ADB
+Añadida traducción en chino simplificado por yangfl (https://crowdin.com/profile/yangfl), yap7800 (https://crowdin.com/profile/yap7800)
++ Correcciones de errores y optimizaciones

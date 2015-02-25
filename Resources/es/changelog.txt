@@ -1,3 +1,9 @@
+1.2.0
+-----
++ Correcciones de errores y optimizaciones
++ Se ha actualizado la biblioteca de SU
+Añadida traducción en chino simplificado por yangfl (https://crowdin.com/profile/yangfl), yap7800 (https://crowdin.com/profile/yap7800)
+
 1.1.2
 -----
 Añadida traducción al español por Ryo567 (eumase-04@hotmail.com)  
