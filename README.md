@@ -124,3 +124,5 @@ Contributors
 ------------
 * **Main Developer** Ilija Matoski (ilijamt@gmail.com)
 * **Translator (Spanish)** Ryo567 (eumase-04@hotmail.com)
+* **Translator (Chinese Simplified)** yangfl (https://crowdin.com/profile/yangfl), yap7800 (https://crowdin.com/profile/yap7800)
+
