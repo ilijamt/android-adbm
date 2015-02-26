@@ -124,6 +124,7 @@ limitations under the License.
 Contributors
 ------------
 * **Main Developer** Ilija Matoski (ilijamt@gmail.com)
+* **Translator (Japanese)** Mari (https://crowdin.com/profile/marimaari)
 * **Translator (Spanish)** Ryo567 (eumase-04@hotmail.com)
 * **Translator (Chinese Simplified)** yangfl (https://crowdin.com/profile/yangfl), yap7800 (https://crowdin.com/profile/yap7800)
 

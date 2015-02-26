@@ -52,7 +52,7 @@ https://crowdin.net/project/adbm
 
 已在如下机型上测试：
 + Nexus 4 (4.0.3 API 15)
-+ Galaxy S2 (2.3.3 API 10, 4.0.3 API 15, 4.1.2  API 16)
++ Galaxy S2 (2.3.3 API 10, 4.0.3 API 15, 4.1.2 API 16)
 + Galaxy S4 (4.2.2 API 17)
 + HTC Hero (2.2.1 API 8, 2.3.1 API 10)
 + HTC Wildfire (2.2.1 API 8)

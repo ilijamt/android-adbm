@@ -32,11 +32,13 @@
     <item>mk</item>
     <item>es</item>
     <item>zh_CN</item>
+    <item>ja</item>
   </string-array>
   <string-array name="languages_long">
     <item>Inglés</item>
     <item>Македонски</item>
     <item>Español</item>
     <item>中国简体</item>
+    <item>日本語</item>
   </string-array>
 </resources>

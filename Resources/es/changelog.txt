@@ -1,3 +1,7 @@
+1.2.2 
+-----
++ Añadida Japonés por Mari (https://crowdin.com/profile/marimaari)
+
 1.2.1
 -----
 Idiomas de forma predeterminada se establece en at al compilar la aplicación

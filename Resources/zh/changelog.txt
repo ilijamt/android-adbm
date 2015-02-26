@@ -1,3 +1,7 @@
+1.2.2 
+-----
+添加日本翻译由 Mari (https://crowdin.com/profile/marimaari)
+
 1.2.1
 -----
 默认语言设置为 en 构建应用程序时

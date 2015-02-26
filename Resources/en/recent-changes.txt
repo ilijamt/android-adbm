@@ -2,6 +2,7 @@ Released as open source, you can view the code at https://github.com/ilijamt/and
 
 Features:
 + Upgraded SU library
++ Added Japanese language by Mari (https://crowdin.com/profile/marimaari)
 + Added Chinese Simplified translation by yangfl (https://crowdin.com/profile/yangfl), yap7800 (https://crowdin.com/profile/yap7800)
 + Bugfixes and optimizations
 + Default languages is set to en when building the application

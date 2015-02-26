@@ -1,5 +1,8 @@
 Change Log
 ==========
+#### 1.2.2 
+* Added Japanese language by Mari (https://crowdin.com/profile/marimaari)
+
 #### 1.2.1
 * Default languages is set to en when building the application
 
