@@ -4,3 +4,4 @@
 + 升级 SU 库
 + 添加简体中文翻译由 yangfl (https://crowdin.com/profile/yangfl)、 yap7800 (https://crowdin.com/profile/yap7800)
 + 错误修正和优化
++ 默认语言设置为 en 构建应用程序时

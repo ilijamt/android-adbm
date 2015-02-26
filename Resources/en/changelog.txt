@@ -1,3 +1,7 @@
+1.2.1
+-----
+Default languages is set to en when building the application
+
 1.2.0
 -----
 + Bugfixes and optimizations

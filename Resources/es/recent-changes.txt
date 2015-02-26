@@ -4,3 +4,4 @@ Características:
 + Se ha actualizado la biblioteca de SU
 Añadida traducción en chino simplificado por yangfl (https://crowdin.com/profile/yangfl), yap7800 (https://crowdin.com/profile/yap7800)
 + Correcciones de errores y optimizaciones
++ Idiomas valor predeterminado se establece en at al compilar la aplicación

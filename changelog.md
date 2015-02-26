@@ -1,5 +1,8 @@
 Change Log
 ==========
+#### 1.2.1
+* Default languages is set to en when building the application
+
 #### 1.2.0
 * Added Chinese Simplified translation by yangfl (https://crowdin.com/profile/yangfl), yap7800 (https://crowdin.com/profile/yap7800)
 * Bugfixes and optimizations

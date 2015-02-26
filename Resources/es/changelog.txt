@@ -1,3 +1,7 @@
+1.2.1
+-----
+Idiomas de forma predeterminada se establece en at al compilar la aplicación
+
 1.2.0
 -----
 + Correcciones de errores y optimizaciones
