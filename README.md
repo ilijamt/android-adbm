@@ -79,19 +79,19 @@ Used to wake up the screen on new package install, or to keep the screen on whil
 
 ### Tested on
 
-|       API      |  8 | 10 | 14 | 15 | 16 | 17 | 18 | 19 |
-|:--------------:|:--:|:--:|----|:--:|:--:|:--:|:--:|:--:|
-|   One+ |  |    |    |    |    |    |    | ![OK](Resources/checkmark.jpg) | 
-|        Nexus 4 |    |    |    | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) |    |
-|        Nexus 7 |    |    |    | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg)   |
-|      Galaxy S2 |    | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) |    |    |    |
-|      Galaxy S3 |    |    |    | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) |
-|      Galaxy S4 |    |    |    |    |    | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg)|
-|    Galaxy Note |    |    | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) |    |    |    |    |
-| Galaxy Note II |    |    |    | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) |    |    |    |
-| Galaxy Tab     |    |    | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) |    |    |    |    |
-|       HTC Hero | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) |    |    |    |    |    |    |
-|   HTC Wildfire | ![OK](Resources/checkmark.jpg) |    |    |    |    |    |    |    |
+|       API      |  8 | 10 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 |
+|:--------------:|:--:|:--:|----|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+|   One+ |  |    |    |    |    |    |    | ![OK](Resources/checkmark.jpg) | | | 
+|        Nexus 4 |    |    |    | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) |    | | |
+|        Nexus 7 |    |    |    | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg)   | | |
+|      Galaxy S2 |    | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) |    |    |    |  | |
+|      Galaxy S3 |    |    |    | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | | |
+|      Galaxy S4 |    |    |    |    |    | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg)|  | ![OK](Resources/checkmark.jpg) |
+|    Galaxy Note |    |    | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) |    |    |    |    |  | |
+| Galaxy Note II |    |    |    | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) |    |    |    |  | |
+| Galaxy Tab     |    |    | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) |    |    |    |    |  | |
+|       HTC Hero | ![OK](Resources/checkmark.jpg) | ![OK](Resources/checkmark.jpg) |    |    |    |    |    |    |  | |
+|   HTC Wildfire | ![OK](Resources/checkmark.jpg) |    |    |    |    |    |    |    |  | |
 
 Used libraries
 ---------------
@@ -127,4 +127,3 @@ Contributors
 * **Translator (Japanese)** Mari (https://crowdin.com/profile/marimaari)
 * **Translator (Spanish)** Ryo567 (eumase-04@hotmail.com)
 * **Translator (Chinese Simplified)** yangfl (https://crowdin.com/profile/yangfl), yap7800 (https://crowdin.com/profile/yap7800)
-
