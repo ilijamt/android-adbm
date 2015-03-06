@@ -2,39 +2,40 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/button_layout"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" 
-        android:gravity="center"
-        android:layout_alignParentBottom="true">
-        <Button
-            android:id="@+id/btn_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="30dip"
-            android:paddingRight="30dip"
-            android:layout_marginRight="15dip"
-            android:text="@string/save" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center">
 
         <Button
             android:id="@+id/btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="24dip"
-            android:paddingRight="24dip"            
-            android:layout_toRightOf="@id/btn_save"
+            android:paddingRight="24dip"
             android:text="@string/cancel" />
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dip"
+            android:layout_toRightOf="@id/btn_cancel"
+            android:paddingLeft="30dip"
+            android:paddingRight="30dip"
+            android:text="@string/save" />
     </RelativeLayout>
 
     <ListView
         android:id="@+id/list_wifi"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@id/button_layout" 
-        android:paddingTop="5dip"
-        android:paddingBottom="5dip"/>
+        android:layout_above="@id/button_layout"
+        android:paddingBottom="5dip"
+        android:paddingTop="5dip" />
 
 </RelativeLayout>

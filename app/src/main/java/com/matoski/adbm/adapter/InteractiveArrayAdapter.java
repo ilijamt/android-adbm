@@ -67,8 +67,8 @@ public class InteractiveArrayAdapter extends ArrayAdapter<Model> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view = null;
 		if (convertView == null) {
-			LayoutInflater inflator = context.getLayoutInflater();
-			view = inflator.inflate(R.layout.list_item, null);
+			LayoutInflater inflater = context.getLayoutInflater();
+			view = inflater.inflate(R.layout.list_item, parent, false);
 			final ViewHolder viewHolder = new ViewHolder();
 			viewHolder.checkbox = (CheckBox) view.findViewById(R.id.check);
 			viewHolder.checkbox

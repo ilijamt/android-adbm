@@ -497,7 +497,7 @@ public class MainActivity extends Activity {
 		if (restart) {
 			Editor editor = prefs.edit();
 			editor.remove("restartMainActivity");
-			editor.commit();
+			editor.apply();
 			finish();
 			startActivity(getIntent());
 		}

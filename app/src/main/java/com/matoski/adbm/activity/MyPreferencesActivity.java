@@ -210,7 +210,7 @@ public class MyPreferencesActivity extends PreferenceActivity {
                                     public void onClick(DialogInterface dialog,
                                                         int which) {
                                         prefs.edit().putString(
-                                                Constants.KEY_WIFI_LIST, "[]").commit();
+                                                Constants.KEY_WIFI_LIST, "[]").apply();
                                         restartActivity();
                                         dialog.dismiss();
                                     }
@@ -258,10 +258,10 @@ public class MyPreferencesActivity extends PreferenceActivity {
                                     @Override
                                     public void onClick(DialogInterface dialog,
                                                         int which) {
-                                        prefs.edit().clear().commit();
+                                        prefs.edit().clear().apply();
                                         Editor editor = prefs.edit();
                                         editor.putBoolean("restartMainActivity", true);
-                                        editor.commit();
+                                        editor.apply();
                                         updateLocale(Constants.KEY_LANGUAGE_DEFAULT);
                                         restartActivity();
                                         dialog.dismiss();
@@ -348,7 +348,7 @@ public class MyPreferencesActivity extends PreferenceActivity {
 
         findPreference(Constants.KEY_LANGUAGE).setSummary(
                 String.format(getResources().getString(
-                        R.string.language_description, languageValue)));
+                        R.string.language_description), languageValue));
 
         findPreference(Constants.KEY_LANGUAGE).setOnPreferenceChangeListener(
                 new OnPreferenceChangeListener() {
@@ -366,7 +366,7 @@ public class MyPreferencesActivity extends PreferenceActivity {
                             // store the new language in the system
                             Editor editor = prefs.edit();
                             editor.putBoolean("restartMainActivity", true);
-                            editor.commit();
+                            editor.apply();
 
                             // restart activity
                             restartActivity();
@@ -379,9 +379,9 @@ public class MyPreferencesActivity extends PreferenceActivity {
                         if (valid) {
                             findPreference(Constants.KEY_LANGUAGE).setSummary(
                                     String.format(getResources().getString(
-                                            R.string.language_description,
+                                            R.string.language_description),
                                             new Locale(newValue.toString())
-                                                    .getDisplayLanguage())));
+                                                    .getDisplayLanguage()));
                         }
 
                         return valid;
@@ -416,7 +416,7 @@ public class MyPreferencesActivity extends PreferenceActivity {
                                 .format(getResources()
                                                 .getString(
                                                         R.string.service_settings_adb_port_summary),
-                                        parsedValue));
+                                        parsedValue.longValue()));
 
                         newValue = parsedValue;
 

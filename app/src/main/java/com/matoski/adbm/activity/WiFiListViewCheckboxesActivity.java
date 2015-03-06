@@ -114,7 +114,7 @@ public class WiFiListViewCheckboxesActivity extends Activity {
 					ArrayList<Model> objects = adapter.getList();
 					data = gson.toJson(objects, gsonType);
 					preferences.edit().putString(Constants.KEY_WIFI_LIST, data)
-							.commit();
+							.apply();
 					Log.d(LOG_TAG, "Updated the WiFi auto connect list.");
 				}
 				finish();

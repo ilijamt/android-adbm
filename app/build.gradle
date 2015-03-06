@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.matoski.adbm"
-        minSdkVersion 11
+        minSdkVersion 14
         targetSdkVersion 19
     }
 
@@ -14,7 +14,7 @@ android {
         abortOnError true
         showAll true
         xmlReport false
-        disable 'OldTargetApi', 'LongLogTag'
+        disable 'OldTargetApi', 'LongLogTag', 'UnusedResources', 'PluralsCandidate', 'TypographyDashes'
     }
 
     signingConfigs {
@@ -35,6 +35,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
             signingConfig signingConfigs.release
             zipAlignEnabled true
@@ -43,6 +44,6 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:19.0.0'
-    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.android.support:support-v4:21.0.3'
+    compile 'com.google.code.gson:gson:2.3'
 }
