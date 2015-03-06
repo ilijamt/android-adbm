@@ -76,7 +76,6 @@ Used to wake up the screen on new package install, or to keep the screen on whil
   
   Eclipse | Window > Preferences > Android > DDMS > ADB connection timeout (ms) Increase the value
 
-
 ### Tested on
 
 |       API      |  8 | 10 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 |
@@ -103,6 +102,31 @@ Translations
 If you want to help translate this application feel free to send me a pull request, also if you want to help me translate the store description, see the Resources folder
 
 [https://crowdin.net/project/adbm](https://crowdin.net/project/adbm)
+
+Previous versions
+-----------------
+
+* [0.8.0] (http://files.matoski.com/adbm/releases/adbm-0.8.0-release.apk)
+* [0.8.2] (http://files.matoski.com/adbm/releases/adbm-0.8.2-release.apk)
+* [0.8.3] (http://files.matoski.com/adbm/releases/adbm-0.8.3-release.apk)
+* [0.8.4] (http://files.matoski.com/adbm/releases/adbm-0.8.4-release.apk)
+* [0.9.0] (http://files.matoski.com/adbm/releases/adbm-0.9.0-release.apk)
+* [0.9.4] (http://files.matoski.com/adbm/releases/adbm-0.9.4-release.apk)
+* [0.9.5] (http://files.matoski.com/adbm/releases/adbm-0.9.5-release.apk)
+* [0.9.6] (http://files.matoski.com/adbm/releases/adbm-0.9.6-release.apk)
+* [0.9.7] (http://files.matoski.com/adbm/releases/adbm-0.9.7-release.apk)
+* [0.9.8] (http://files.matoski.com/adbm/releases/adbm-0.9.8-release.apk)
+* [0.9.9] (http://files.matoski.com/adbm/releases/adbm-0.9.9-release.apk)
+* [1.0.0] (http://files.matoski.com/adbm/releases/adbm-1.0.0-release.apk)
+* [1.0.1] (http://files.matoski.com/adbm/releases/adbm-1.0.1-release.apk)
+* [1.0.5] (http://files.matoski.com/adbm/releases/adbm-1.0.5-release.apk)
+* [1.0.7] (http://files.matoski.com/adbm/releases/adbm-1.0.7-release.apk)
+* [1.0.8] (http://files.matoski.com/adbm/releases/adbm-1.0.8-release.apk)
+* [1.0.9] (http://files.matoski.com/adbm/releases/adbm-1.0.9-release.apk)
+* [1.1.1] (http://files.matoski.com/adbm/releases/adbm-1.1.1-release.apk)
+* [1.1.2] (http://files.matoski.com/adbm/releases/adbm-1.1.2-release.apk)
+* [1.2.0] (http://files.matoski.com/adbm/releases/adbm-1.2.0-release.apk)
+* [1.2.1] (http://files.matoski.com/adbm/releases/adbm-1.2.1-release.apk)
 
 License
 -------
