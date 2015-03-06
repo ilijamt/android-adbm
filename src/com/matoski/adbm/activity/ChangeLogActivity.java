@@ -20,6 +20,16 @@ public class ChangeLogActivity extends BaseHelpActivity {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see com.matoski.adbm.activity.BaseHelpActivity#getTitleId()
+	 */
+	@Override
+	protected int getTitleId() {
+		return R.string.change_log;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.matoski.adbm.activity.BaseHelpActivity#getResourceId()
 	 */
 	@Override

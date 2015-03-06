@@ -125,6 +125,7 @@ public class MyPreferencesActivity extends PreferenceActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preferences);
+		setTitle(R.string.app_settings);
 
 		_this = this;
 		final SharedPreferences prefs = PreferenceManager

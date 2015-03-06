@@ -70,7 +70,7 @@
   <string name="use_root_on">Ќе работи нормално користејќи рут.</string>
   <string name="widget">Виџети</string>
   <string name="adb_widget">АДБ Менаѓер виџет</string>
-  <string name="keep_screen_on">Држу ги екранот уклучен</string>
+  <string name="keep_screen_on">Држи го екранот уклучен</string>
   <string name="keep_screen_on_on">Држу ги екранот уклучен додека АДБ сервисот работи</string>
   <string name="keep_screen_on_off">Нема да го држи екранот уклучен додека АДБ сервисот работи</string>
   <string name="wake_on_new_package">Разбуди се на инсталација</string>

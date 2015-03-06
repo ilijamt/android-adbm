@@ -20,6 +20,16 @@ public class AboutActivity extends BaseHelpActivity {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see com.matoski.adbm.activity.BaseHelpActivity#getTitleId()
+	 */
+	@Override
+	protected int getTitleId() {
+		return R.string.about;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.matoski.adbm.activity.BaseHelpActivity#getResourceId()
 	 */
 	@Override

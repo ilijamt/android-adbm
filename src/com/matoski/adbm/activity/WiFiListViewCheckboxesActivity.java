@@ -92,6 +92,8 @@ public class WiFiListViewCheckboxesActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.wifi_list_activity);
+		setTitle(R.string.app_wifi_list);
+		
 		this.wifiManager = (WifiManager) getBaseContext().getSystemService(
 				Context.WIFI_SERVICE);
 		this.gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()

@@ -313,6 +313,7 @@ public class MainActivity extends Activity {
 		GenericUtil.updateApplicationLocale(this);
 
 		setContentView(R.layout.activity_main);
+		setTitle(R.string.app_name);
 
 		this.viewServiceStatus = (TextView) findViewById(R.id.adb_service_status);
 		this.viewWakeLockStatus = (TextView) findViewById(R.id.adb_wakelock_status);

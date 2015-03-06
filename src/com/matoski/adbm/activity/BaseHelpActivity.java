@@ -38,6 +38,18 @@ public abstract class BaseHelpActivity extends Activity {
 	 * @return the resource id
 	 */
 	protected abstract int getResourceId();
+	
+	/**
+	 * The methods returns the activity title id
+	 * 
+	 *  <pre>
+	 *  int getTitleId() {
+	 *    return R.string.title;
+	 *  }
+	 *  </pre>
+	 * @return
+	 */
+	protected abstract int getTitleId();
 
 	/*
 	 * (non-Javadoc)
@@ -47,6 +59,7 @@ public abstract class BaseHelpActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.base_help);
+		setTitle(getTitleId());
 
 		TextView versionView = (TextView) findViewById(R.id.help_about_version);
 		versionView.setText(getVersion());
