@@ -1,0 +1,48 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "com.matoski.adbm"
+        minSdkVersion 11
+        targetSdkVersion 19
+    }
+
+    lintOptions {
+        abortOnError true
+        showAll true
+        xmlReport false
+        disable 'OldTargetApi', 'LongLogTag'
+    }
+
+    signingConfigs {
+        release {
+            def Properties props = new Properties()
+            props.load(new FileInputStream(file( "../local.properties")))
+            assert props["key.store"]
+            assert props["key.alias"]
+            assert props["key.store.password"]
+            assert props["key.alias.password"]
+            storeFile file(props["key.store"])
+            storePassword props["key.store.password"]
+            keyAlias props["key.alias"]
+            keyPassword props["key.alias.password"]
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            signingConfig signingConfigs.release
+            zipAlignEnabled true
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:19.0.0'
+    compile 'com.google.code.gson:gson:2.2.4'
+}
