@@ -5,6 +5,7 @@ build
 
 # Gradle generated files
 .gradle/
+gradle-app.setting
 
 # Signing files
 .signing/
