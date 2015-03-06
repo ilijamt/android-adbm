@@ -20,7 +20,7 @@ android {
     signingConfigs {
         release {
             def Properties props = new Properties()
-            props.load(new FileInputStream(file( "../local.properties")))
+            props.load(new FileInputStream(file( "../signing.properties")))
             assert props["key.store"]
             assert props["key.alias"]
             assert props["key.store.password"]

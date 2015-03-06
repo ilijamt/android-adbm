@@ -17,6 +17,9 @@ javadoc
 # Local configuration file (sdk path, etc)
 local.properties
 
+# Private key
+signing.properties 
+
 # Intellij project files
 *.iml
 *.ipr
