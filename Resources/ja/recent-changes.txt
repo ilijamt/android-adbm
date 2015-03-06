@@ -1,0 +1,8 @@
+オープンソースとしてリリースしました、次のコードでみることができます　https://github.com/ilijamt/android-adbm
+
+機能:
++ SU ライブラリのアップグレード
+日本語が追加されました by Mari (https://crowdin.com/profile/marimaari)
++ 中国語が追加されました by yangfl (https://crowdin.com/profile/yangfl), yap7800 (https://crowdin.com/profile/yap7800)
++ バグ修正と最適化
++ アプリケーション組み立て時の既定言語は en に設定されています

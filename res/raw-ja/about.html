@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>について</title>
+<style type="text/css">
+BODY, HTML {background: transparent, word-wrap: break-word;}
+</style>
+</head>
+<body>
+
+<p>ADB マネージャー、 あなたのワンストップによって、アンドロイドでもっと簡単に開発できる<p>
+
+<p><strong>警告: ルートが必要です ！</strong></p>
+
+<p>最も自動化され、使いやすく、安定した、充実のサポートつきのADB 管理ツール</p>
+
+<p>通知バーでいつでも見ることができるので、他のものより本当にもっと簡単に使用できる WiFi ネットワークと、ネットワークの状態に基づいて、 ADB 状態のコントロールを完全に自動化するような高度な機能をサポートします。</p>
+
+<p>プリファランスのリストから既知の設定されたネットワークにつないだ場合、ADB マネージャーは自動的にネットワークモードにてADB を開始することが可能です。</p>
+
+<p>WiFi にてカフェ/バー/電車/トイレ/その他の場所で開発中ですか？ADB マネージャーが自動的に ADB をワイヤレスに切り替えたり、戻したりします。</p>
+
+<p>質問、提案、バグ報告、または翻訳に関してお困りでしたら私までご連絡ください <strong><em>ilijamt+adbm@gmail.com</em></strong></p>
+
+<h2>アクセス許可</h2>
+<ul>
+<li><strong>ACCESS_SUPERUSER</strong>: 可能な場合SuperSU を使用</li>
+<li><strong>RECEIVE_BOOT_COMPLETED</strong>: デバイスのブート時にサービスを自動的に開始するために使用。開始するのにどのくらい待つ必要があるのか、どのくらいの頻度で AlarmManager がサービスの実行状況をチェックするのかは、設定メニューから設定可能</li> 
+<li><strong>ACCESS_NETWORK_STATE、ACCESS_WIFI_STATE</strong>： ADB 状態の切り替えを自動化するために使用</li>
+<li><strong>インターネット</strong>： クラッシュによりこの許可なしに IP アドレスをチェックするときに、IPを回復するために使用</li>
+<li><strong>WAKE_LOCK</strong>: 新しいパッケージのインストール時に画面を立ち上げるため、または、ADB サービスが実行中に画面表示をオンにしておくために使用</li>
+</ul>
+
+<h2>ソース コード</h2>
+<ul>
+<li><a href="https://github.com/ilijamt/android-adbm">ADB マネージャー</a></li>
+</ul>
+
+<h2>既知の問題</h2>
+<ul>
+<li>API 8 バージョンでは、LDPI デバイスのメニューアイコンは少し変に見えます。</li>
+</ul>
+
+<h2>一般的な問題</h2>
+<ul>
+<li><strong>通常サムスンのデバイスにて</strong> <br/>デバイス 'ip:port' 上の apk のインストールに失敗しました: タイムアウト <br/> 起動キャンセル ！ <br/><strong>Eclipse</strong> |ウィンドウ > 設定 > アンドロイド > DDMS > ADB 接続タイムアウト (ミリ秒)  <strong>値を増やします</strong>
+</ul>
+
+<h2>使用したライブラリー</h2>
+<ul>
+<li><a href="https://github.com/Chainfire/libsuperuser">libsuperuser</a></li>
+</ul>
+
+<h2>翻訳</h2>
+
+<p>もしこのアプリケーションの翻訳に興味がありましたらお気軽に私までプルリクエストを送って下さい。また、もしアプリ説明欄の翻訳に興味がありましたら リソースフォルダを参照して下さい。</p>
+
+<a href="https://crowdin.net/project/adbm">https://crowdin.net/project/adbm</a>
+
+<h2>ライセンス</h2>
+
+<p>Copyright (C) 2013 Ilija Matoski (ilijamt@gmail.com)</p>
+
+<p>Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at</p>
+
+<a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a>
+
+<p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</p>
+
+<h2>寄稿者</h2>
+<ul>
+<li><strong><em>主要な開発者</em></strong>Ilija Matoski (ilijamt@gmail.com)</li>
+<li><strong><em>翻訳 （日本語）</em></strong>Mari (https://crowdin.com/profile/marimaari)</li>
+<li><strong><em>翻訳 (スペイン語)</em></strong>Ryo567 (eumase-04@hotmail.com)</li>
+<li><strong><em>翻訳 (中国語 Simplifed)</em></strong> yangfl (https://crowdin.com/profile/yangfl)、yap7800 (https://crowdin.com/profile/yap7800)</li>
+</ul>
+</body>
+</html>
