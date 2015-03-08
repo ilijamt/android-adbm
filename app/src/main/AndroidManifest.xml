@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.matoski.adbm"
-    android:versionCode="27"
-    android:versionName="1.2.2" >
+    package="com.matoski.adbm">
 
     <uses-feature android:name="android.hardware.wifi" />
 
@@ -26,7 +24,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
 
         <!-- Main activity the main screen -->
         <activity
@@ -55,7 +53,7 @@
             android:label="@string/app_wifi_list" />
 
         <!-- Execute on boot complete -->
-        <receiver android:name="com.matoski.adbm.receiver.BootCompleteReceiver" >
+        <receiver android:name="com.matoski.adbm.receiver.BootCompleteReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
 
@@ -64,7 +62,7 @@
         </receiver>
 
         <!-- For detecting connection changes -->
-        <receiver android:name="com.matoski.adbm.receiver.ConnectionDetectionReceiver" >
+        <receiver android:name="com.matoski.adbm.receiver.ConnectionDetectionReceiver">
             <intent-filter>
                 <action android:name="android.net.wifi.STATE_CHANGE" />
             </intent-filter>
@@ -78,7 +76,7 @@
             android:label="@string/service_name" />
 
         <!-- Widget -->
-        <receiver android:name="com.matoski.adbm.widgets.ControlWidgetProvider" >
+        <receiver android:name="com.matoski.adbm.widgets.ControlWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -90,7 +88,7 @@
         </receiver>
 
         <!-- For detecting if a new package has been installed on the system -->
-        <receiver android:name="com.matoski.adbm.receiver.ActionPackageAdded" >
+        <receiver android:name="com.matoski.adbm.receiver.ActionPackageAdded">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
 
