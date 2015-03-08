@@ -47,14 +47,4 @@ Used to retrieve the IP, as it crashes when checking for the IP address without 
 + android.permission.WAKE_LOCK
 Used to wake up the screen on new package install, or to keep the screen on while the ADB service is on
 
-Known issues:
-On API 8, the menu icons look a little weird on LDPI devices.
-
-Tested on:
-+ Nexus 4 (4.0.3 API 15)
-+ Galaxy S2 (2.3.3 API 10, 4.0.3 API 15, 4.1.2 API 16)
-+ Galaxy S4 (4.2.2 API 17)
-+ HTC Hero (2.2.1 API 8, 2.3.1 API 10)
-+ HTC Wildfire (2.2.1 API 8)
-
 For any questions, suggestions, bug reports or to help with translation of the application please email me ilijamt+adbm@gmail.com 
