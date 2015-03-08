@@ -103,7 +103,7 @@ If you want to help translate this application feel free to send me a pull reque
 
 [https://crowdin.net/project/adbm](https://crowdin.net/project/adbm)
 
-Previous versions
+Archive versions
 -----------------
 
 * [0.8.0] (http://files.matoski.com/adbm/releases/adbm-0.8.0-release.apk)
@@ -127,6 +127,7 @@ Previous versions
 * [1.1.2] (http://files.matoski.com/adbm/releases/adbm-1.1.2-release.apk)
 * [1.2.0] (http://files.matoski.com/adbm/releases/adbm-1.2.0-release.apk)
 * [1.2.1] (http://files.matoski.com/adbm/releases/adbm-1.2.1-release.apk)
+* [1.2.2] (http://files.matoski.com/adbm/releases/adbm-1.2.2-release.apk)
 
 License
 -------
