@@ -47,14 +47,4 @@ Utilizado para recuperar la dirección IP, se colgará si se realiza una comprob
 + android.permission.WAKE_LOCK
 Utilizado para encender la pantalla al instalar un nuevo paquete o mantener la pantalla encendida mientras se ejecuta el servicio de ADB
 
-Problemas conocidos:
-En IPA (API) 8, los iconos del menú aparecen algo extraños en dispositivos LDPI.
-
-Probado en:
-+ Nexus 4 (4.0.3 API 15)
-+ Galaxy S2 (2.3.3 API 10, 4.0.3 API 15, 4.1.2 API 16)
-+ Galaxy S4 (4.2.2 API 17)
-+ HTC Hero (2.2.1 API 8, 2.3.1 API 10)
-+ HTC Wildfire (2.2.1 API 8)
-
 Para cualquier duda, sugerencia, informes de errores o para ayudar con la traducción, envía un correo electrónico a <0>ilijamt+adbm@gmail.com</0> 
