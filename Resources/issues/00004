@@ -1,0 +1,28 @@
+**Last reported:** *Mar 19, 9:51 PM*
+
+**Reports this week:** *2*
+
+**Reports total:** *2*
+
+**Application version:** *1.2.2*
+
+**Android version:** *Android 4.4*
+
+**Device:** *Galaxy Core (afyonlteMetroPCS)*
+
+**Reason**: What was happening was, I was including the integer reference to the icon in the PendingIntent bundle, and that integer was later being referenced while being posted to the NotificationManager. In between getting the integer reference and the pending intent going off, the app was updated and all of the drawable references changed. The integer that used to reference the correct drawable now referenced either the incorrect drawable or none at all (none at all - causing this crash)
+
+**Stack:**
+
+```
+android.app.RemoteServiceException: Bad notification posted from package com.matoski.adbm: Couldn't create icon: StatusBarIcon(pkg=com.matoski.adbmuser=0 id=0x7f020004 level=0 visible=true num=0 )
+at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1484)
+at android.os.Handler.dispatchMessage(Handler.java:102)
+at android.os.Looper.loop(Looper.java:146)
+at android.app.ActivityThread.main(ActivityThread.java:5692)
+at java.lang.reflect.Method.invokeNative(Native Method)
+at java.lang.reflect.Method.invoke(Method.java:515)
+at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:1291)
+at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1107)
+at dalvik.system.NativeStart.main(Native Method)
+```
