@@ -3,6 +3,9 @@
        src="https://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
 </a>
 
+![License](https://img.shields.io/badge/license-Apache%202-blue.svg "License")
+![Release](https://img.shields.io/badge/release-1.2.2-blue.svg "Release")
+
 ADB Manager (adbm)
 ------------------
 
