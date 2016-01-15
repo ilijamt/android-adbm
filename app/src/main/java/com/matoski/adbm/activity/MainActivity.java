@@ -405,41 +405,46 @@ public class MainActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		switch (item.getItemId()) {
-		case R.id.action_settings:
-			this.addItem(getResources().getString(R.string.item_openning_item,
-					item.getTitle()));
-			startActivity(new Intent(this, MyPreferencesActivity.class));
-			return true;
-		case R.id.action_refresh:
-			updateScreenDetails();
-			return true;
-		case R.id.action_adb:
-			if (this.service != null) {
-				toggleNetworkState(item.isChecked());
-			}
-			return true;
-		case R.id.action_about:
-			this.addItem(getResources().getString(R.string.item_openning_item,
-					item.getTitle()));
-			startActivity(new Intent(this, AboutActivity.class));
-			return true;
-		case R.id.action_change_log:
-			this.addItem(getResources().getString(R.string.item_openning_item,
-					item.getTitle()));
-			startActivity(new Intent(this, ChangeLogActivity.class));
-			return true;
-		case R.id.action_clear_list:
-			this.mList.setText("");
-
-			return true;
-		case R.id.action_open_translate_page:
-			GenericUtil.openTranslationPage(this);
-			return true;
-
+			case R.id.action_settings:
+				this.addItem(getResources().getString(R.string.item_openning_item,
+						item.getTitle()));
+				startActivity(new Intent(this, MyPreferencesActivity.class));
+				break;
+			case R.id.action_refresh:
+				updateScreenDetails();
+				break;
+			case R.id.action_adb:
+				if (this.service != null) {
+					toggleNetworkState(item.isChecked());
+				}
+				break;
+			case R.id.action_about:
+				this.addItem(getResources().getString(R.string.item_openning_item,
+						item.getTitle()));
+				startActivity(new Intent(this, AboutActivity.class));
+				break;
+			case R.id.action_change_log:
+				this.addItem(getResources().getString(R.string.item_openning_item,
+						item.getTitle()));
+				startActivity(new Intent(this, ChangeLogActivity.class));
+				break;
+			case R.id.action_clear_list:
+				this.mList.setText("");
+				break;
+			case R.id.action_open_translate_page:
+				GenericUtil.openTranslationPage(this);
+				break;
+			case R.id.action_quit:
+				this.finish();
+				this.service.stopSelf();
+				break;
+			default:
+				return false;
 		}
 
-		return false;
+		return true;
 	}
+
 
 	/*
 	 * (non-Javadoc)
