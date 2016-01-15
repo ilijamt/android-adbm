@@ -1,7 +1,5 @@
 package com.matoski.adbm.activity;
 
-import java.util.Locale;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
@@ -26,6 +24,8 @@ import com.matoski.adbm.R;
 import com.matoski.adbm.service.ManagerService;
 import com.matoski.adbm.util.GenericUtil;
 import com.matoski.adbm.util.ServiceUtil;
+
+import java.util.Locale;
 
 /**
  * {@link Activity} that shows the preferences for the application,
@@ -167,6 +167,20 @@ public class MyPreferencesActivity extends PreferenceActivity {
                             }
 
                         });
+
+        final OnPreferenceChangeListener AutoStartListener = new OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(
+                    Preference preference, Object newValue) {
+                return true;
+            }
+        };
+
+        findPreference(Constants.KEY_AUTOSTART_ETH)
+                .setOnPreferenceChangeListener(AutoStartListener);
+
+        findPreference(Constants.KEY_AUTOSTART_MOBILE)
+                .setOnPreferenceChangeListener(AutoStartListener);
 
         findPreference(Constants.KEY_HIDEABLE_NOTIFICATION_BAR)
                 .setOnPreferenceChangeListener(
@@ -379,7 +393,7 @@ public class MyPreferencesActivity extends PreferenceActivity {
                         if (valid) {
                             findPreference(Constants.KEY_LANGUAGE).setSummary(
                                     String.format(getResources().getString(
-                                            R.string.language_description),
+                                                    R.string.language_description),
                                             new Locale(newValue.toString())
                                                     .getDisplayLanguage()));
                         }

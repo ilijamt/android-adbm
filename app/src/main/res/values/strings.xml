@@ -57,7 +57,7 @@
   <string name="service_general_alarm_timeout_summary">We will recheck if the service is running every %s.</string>
   <string name="service_settings_start_adb_off">Will not autostart the ADB service on known wifi networks</string>
   <string name="service_settings_start_adb_on">Will autostart the ADB service on known wifi networks</string>
-  <string name="service_settings_start_adb">ADB Auto Start</string>
+  <string name="service_settings_start_adb">WiFi</string>
   <string name="service_settings_adb_port">ADB Port</string>
   <string name="service_settings_adb_port_summary">ADB will listen on port %d for connections (1024–49151).</string>
   <string name="settings_wifi_list">WiFi Autostart List</string>
@@ -117,4 +117,8 @@
   <string name="language_description">Current language: %s</string>
   <string name="help_translate_button">Help translate</string>
   <string name="help_translate_button_summary">By opening this link you will help me and you translate this application in your preferred language</string>
+  <string name="quit">Quit</string>
+  <string name="action_autostart_adb">Autostart ADB on</string>
+  <string name="service_settings_autostart_eth">Ethernet</string>
+  <string name="service_settings_autostart_mobile">Mobile</string>
 </resources>

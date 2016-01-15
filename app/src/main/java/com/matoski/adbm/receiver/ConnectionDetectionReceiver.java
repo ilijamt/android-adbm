@@ -14,87 +14,121 @@ import com.matoski.adbm.service.ManagerService;
 import com.matoski.adbm.util.ServiceUtil;
 
 /**
- * A {@link BroadcastReceiver} that triggers when we get {@link WifiManager#NETWORK_STATE_CHANGED_ACTION}. Used to
+ * A {@link BroadcastReceiver} that triggers when we get {@link WifiManager#NETWORK_STATE_CHANGED_ACTION} or {@link ConnectivityManager#CONNECTIVITY_ACTION}. Used to
  * trigger actions in {@link ManagerService} to start or stop the ADB service.
- * 
+ *
  * @author Ilija Matoski (ilijamt@gmail.com)
  */
 public class ConnectionDetectionReceiver extends BroadcastReceiver {
 
-	/**
-	 * The tag used when logging with {@link Log}
-	 */
-	private static String LOG_TAG = ConnectionDetectionReceiver.class.getName();
+    /**
+     * The tag used when logging with {@link Log}
+     */
+    private static String LOG_TAG = ConnectionDetectionReceiver.class.getName();
 
-	/*
-	 * (non-Javadoc)
-	 * @see android.content.BroadcastReceiver#onReceive(android.content.Context, android.content.Intent)
-	 */
-	@Override
-	public void onReceive(Context context, Intent intent) {
+    private Context myContext;
 
-		final String action = intent.getAction();
-		final Boolean bAutoWiFiConnect;
+    /**
+     * Get a boolean value from {@link android.content.SharedPreferences}
+     *
+     * @param key
+     * @param defValue
+     * @return
+     */
+    private Boolean getBoolean(String key, Boolean defValue) {
+        return PreferenceManager.getDefaultSharedPreferences(myContext).getBoolean(key, defValue);
+    }
 
-		if (action.equals(WifiManager.NETWORK_STATE_CHANGED_ACTION)) {
+    /*
+     * (non-Javadoc)
+     * @see android.content.BroadcastReceiver#onReceive(android.content.Context, android.content.Intent)
+     */
+    @Override
+    public void onReceive(Context context, Intent intent) {
 
-			bAutoWiFiConnect = PreferenceManager.getDefaultSharedPreferences(
-					context).getBoolean(Constants.KEY_ADB_START_ON_KNOWN_WIFI,
-					Constants.ADB_START_ON_KNOWN_WIFI);
+        this.myContext = context;
+        final String action = intent.getAction();
 
-			NetworkInfo networkInfo = intent
-					.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
+        final Boolean bAutoWiFiConnect = getBoolean(Constants.KEY_ADB_START_ON_KNOWN_WIFI, Constants.ADB_START_ON_KNOWN_WIFI);
+        final Boolean bAutoMobileConnect = getBoolean(Constants.KEY_AUTOSTART_MOBILE, Constants.ADB_START_ON_MOBILE);
+        final Boolean bAutoEthernetConnect = getBoolean(Constants.KEY_AUTOSTART_ETH, Constants.ADB_START_ON_ETHERNET);
 
-			if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+        if (action.equals(WifiManager.NETWORK_STATE_CHANGED_ACTION)) {
 
-				Log.d(LOG_TAG, String.format("Going through network state: %s",
-						networkInfo.getDetailedState().toString()));
+            NetworkInfo networkInfo = intent
+                    .getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
 
-				switch (networkInfo.getDetailedState()) {
-					case CONNECTED:
+            if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
 
-						Log.d(LOG_TAG, String.format(
-								"Auto connecting to WiFi: %s",
-								Boolean.toString(bAutoWiFiConnect)));
+                Log.d(LOG_TAG, String.format("Going through network state: %s",
+                        networkInfo.getDetailedState().toString()));
 
-						if (bAutoWiFiConnect) {
-							ServiceUtil.runServiceAction(context,
-									Constants.ACTION_SERVICE_AUTO_WIFI);
-						} else {
-							ServiceUtil
-									.runServiceAction(
-											context,
-											Constants.ACTION_SERVICE_UPDATE_NOTIFICATION_NETWORK_ADB);
-						}
+                final NetworkInfo.DetailedState state = networkInfo.getDetailedState();
 
-						break;
+                switch (state) {
+                    case CONNECTED:
 
-					case DISCONNECTED:
-						ServiceUtil.runServiceAction(context,
-								Constants.ACTION_SERVICE_ADB_STOP);
+                        Log.d(LOG_TAG, String.format(
+                                "Auto connecting to WiFi: %s",
+                                Boolean.toString(bAutoWiFiConnect)));
 
-						break;
+                        if (bAutoWiFiConnect) {
+                            ServiceUtil.runServiceAction(context,
+                                    Constants.ACTION_SERVICE_AUTO_WIFI);
+                        } else {
+                            ServiceUtil
+                                    .runServiceAction(
+                                            context,
+                                            Constants.ACTION_SERVICE_UPDATE_NOTIFICATION_NETWORK_ADB);
+                        }
 
-					case AUTHENTICATING:
-					//case BLOCKED:
-					//case CAPTIVE_PORTAL_CHECK:
-					case CONNECTING:
-					case DISCONNECTING:
-					case FAILED:
-					case IDLE:
-					case OBTAINING_IPADDR:
-					case SCANNING:
-					case SUSPENDED:
-					//case VERIFYING_POOR_LINK:
-					default:
-						break;
+                        break;
 
-				}
+                    case DISCONNECTED:
+                        ServiceUtil.runServiceAction(context,
+                                Constants.ACTION_SERVICE_ADB_STOP);
 
-			}
+                        break;
 
-		}
+                    case AUTHENTICATING:
+                        //case BLOCKED:
+                        //case CAPTIVE_PORTAL_CHECK:
+                    case CONNECTING:
+                    case DISCONNECTING:
+                    case FAILED:
+                    case IDLE:
+                    case OBTAINING_IPADDR:
+                    case SCANNING:
+                    case SUSPENDED:
+                        //case VERIFYING_POOR_LINK:
+                    default:
+                        break;
 
-	}
+                }
+
+            }
+
+        } else if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+
+            final ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+            final NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+            final boolean isEthernet = activeNetwork.getType() == ConnectivityManager.TYPE_ETHERNET;
+            final boolean isMobile = activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE;
+            final boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+            final boolean noConnection = intent.getExtras().getBoolean(ConnectivityManager.EXTRA_NO_CONNECTIVITY);
+
+            if ((isEthernet && bAutoEthernetConnect) || (isMobile && bAutoMobileConnect)) {
+                if (isConnected) {
+                    ServiceUtil.runServiceAction(context, Constants.ACTION_SERVICE_ADB_START);
+                } else {
+                    ServiceUtil.runServiceAction(context, Constants.ACTION_SERVICE_ADB_STOP);
+                }
+            } else {
+                ServiceUtil.runServiceAction(context, Constants.ACTION_SERVICE_UPDATE_NOTIFICATION_NETWORK_ADB);
+            }
+        }
+
+    }
 
 }

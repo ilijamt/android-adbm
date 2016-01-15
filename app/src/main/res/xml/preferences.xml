@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
         android:orderingFromXml="true"
-        android:title="@string/service_general_settings" >
+        android:title="@string/service_general_settings">
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="start_on_boot"
@@ -70,7 +70,7 @@
             android:summaryOn="@string/wake_on_new_package_on"
             android:title="@string/wake_on_new_package" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/action_settings" >
+    <PreferenceCategory android:title="@string/action_settings">
         <EditTextPreference
             android:defaultValue="5555"
             android:inputType="number"
@@ -78,6 +78,9 @@
             android:persistent="true"
             android:summary="@string/service_settings_adb_port_summary"
             android:title="@string/service_settings_adb_port" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/action_autostart_adb">
 
         <CheckBoxPreference
             android:defaultValue="false"
@@ -93,17 +96,26 @@
             android:persistent="false"
             android:summary="@string/settings_wifi_list_summary"
             android:title="@string/settings_wifi_list" />
-        <Preference
-            android:key="reset_wifi_list_button"
-            android:persistent="false"
-            android:summary="@string/settings_clear_wifi_list_summary"
-            android:title="@string/settings_clear_wifi_list" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="auto_start_on_eth"
+            android:persistent="true"
+            android:title="@string/service_settings_autostart_eth" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="auto_start_on_mobile"
+            android:persistent="true"
+            android:title="@string/service_settings_autostart_mobile" />
+
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/service_general" >
+
+    <PreferenceCategory android:title="@string/service_general">
         <ListPreference
+            android:defaultValue="en_US"
             android:entries="@array/languages_long"
             android:entryValues="@array/languages_codes"
-            android:defaultValue="en_US"
             android:key="language"
             android:persistent="true"
             android:summary="@string/language_description"
@@ -114,12 +126,18 @@
             android:persistent="false"
             android:summary="@string/help_translate_button_summary"
             android:title="@string/help_translate_button" />
-        
+
         <Preference
             android:key="reset_button"
             android:persistent="false"
             android:summary="@string/settings_reset_summary"
             android:title="@string/settings_reset" />
+
+        <Preference
+            android:key="reset_wifi_list_button"
+            android:persistent="false"
+            android:summary="@string/settings_clear_wifi_list_summary"
+            android:title="@string/settings_clear_wifi_list" />
     </PreferenceCategory>
 
 </PreferenceScreen>
