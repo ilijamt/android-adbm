@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
 
     defaultConfig {
         applicationId "com.matoski.adbm"
-        minSdkVersion 10
-        targetSdkVersion 19
+        minSdkVersion 21
+        targetSdkVersion 26
         versionCode 28
         versionName "1.3.1"
     }
@@ -19,6 +19,7 @@ android {
         disable 'OldTargetApi', 'LongLogTag', 'UnusedResources', 'PluralsCandidate', 'TypographyDashes', 'RtlHardcoded', 'RtlSymmetry'
     }
 
+    /*
     signingConfigs {
         release {
             def Properties props = new Properties()
@@ -33,19 +34,30 @@ android {
             keyPassword props["key.alias.password"]
         }
     }
+    */
 
     buildTypes {
         release {
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-            signingConfig signingConfigs.release
+            //signingConfig signingConfigs.release
             zipAlignEnabled true
         }
     }
 }
 
+repositories {
+    maven {
+        url "https://maven.google.com"
+    }
+}
+
+android {
+    useLibrary 'org.apache.http.legacy'
+}
+
 dependencies {
-    compile 'com.android.support:support-v4:21.0.3'
-    compile 'com.google.code.gson:gson:2.3'
+    compile 'com.android.support:appcompat-v7:26.0.1'
+    compile 'com.google.code.gson:gson:2.7'
 }

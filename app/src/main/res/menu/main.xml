@@ -1,23 +1,23 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/action_refresh"
-        android:icon="@drawable/ic_action_refresh"
-        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_refresh_white_48dp"
+        android:showAsAction="always"
         android:title="@string/refresh"
         android:visible="true"/>
     <item
         android:id="@+id/action_settings"
         android:enabled="true"
-        android:icon="@android:drawable/ic_menu_preferences"
-        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_settings_white_48dp"
+        android:showAsAction="always"
         android:title="@string/action_settings"
         android:visible="true"/>
     <item
         android:id="@+id/action_clear_list"
         android:enabled="true"
-        android:icon="@drawable/ic_clear"
-        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_clear_all_white_48dp"
         android:title="@string/clear"
         android:visible="true"/>
     <item
@@ -26,33 +26,28 @@
         android:checked="false"
         android:enabled="true"
         android:icon="@android:drawable/ic_menu_mylocation"
-        android:showAsAction="never"
         android:title="@string/adb"
         android:visible="true"/>
     <item
         android:id="@+id/action_about"
         android:icon="@android:drawable/ic_menu_help"
-        android:showAsAction="never"
         android:title="@string/about"
         android:visible="true"/>
     <item
         android:id="@+id/action_change_log"
         android:icon="@android:drawable/ic_menu_info_details"
-        android:showAsAction="never"
         android:title="@string/change_log"
         android:visible="true"/>
     
 	<item
 	    android:id="@+id/action_open_translate_page"
 	    android:icon="@android:drawable/btn_star_big_on"
-	    android:showAsAction="never"
 	    android:title="@string/help_translate_button"
 	    android:visible="true" />
 
     <item
         android:id="@+id/action_quit"
         android:icon="@android:drawable/ic_menu_close_clear_cancel"
-        android:showAsAction="never"
         android:title="@string/quit"
         android:visible="true"/>
 
